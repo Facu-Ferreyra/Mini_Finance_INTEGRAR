@@ -39,20 +39,21 @@
 
         <section class="section-card history-container">
             <h2>Historial Completo</h2>
-            <div class="form-group" style="max-width: 300px; margin-bottom: 1.5rem;">
+            <div class="form-group filter-group">
                 <label for="filter-category">Filtrar por:</label>
-                <select id="filter-category">
+                <select id="filter-category" aria-controls="history-body">
                     <option value="all">Todas las categorías</option>
                 </select>
             </div>
             
-            <div class="movements-list-wrapper">
+            <div class="movements-list-wrapper" role="region" aria-label="Historial de movimientos">
                 <table class="history-table">
+                    <caption class="visually-hidden">Historial completo de movimientos financieros</caption>
                     <thead>
                         <tr>
-                            <th>Fecha</th>
-                            <th>Categoría</th>
-                            <th>Monto</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Categoría</th>
+                            <th scope="col">Monto</th>
                         </tr>
                     </thead>
                     <tbody id="history-body">

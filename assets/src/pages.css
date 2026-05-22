@@ -51,4 +51,9 @@
     .history-table tbody tr:hover {
         background-color: rgba(255, 255, 255, 0.02);
     }
+
+    .filter-group {
+    max-width: 300px;
+    margin-bottom: 1.5rem;
+    }
 }
