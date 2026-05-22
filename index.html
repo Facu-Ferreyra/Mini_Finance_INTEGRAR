@@ -11,15 +11,19 @@
 </head>
     <body data-theme="light" data-motion="night">
         
-        <header >
-            <nav class="navbar" aria-label="Navegacion principal">
-                <div class="logo">Mini Finance</div>
-                <ul class="nav-links">
-                    <li><a href="index.html" aria-current="page">Inicio</a></li>
-            <li><a href="pages/dashboard.html" class="btn-secondary">Ir al Dashboard</a></li>
-            </nav>
-            
-            <main class="hero-section">
+        <header class="main-navbar">
+    <div class="navbar-container">
+        <div class="logo">Mini <span class="accent-text">Finance</span></div>
+        <nav aria-label="Navegación principal">
+            <ul class="nav-links"> 
+                <!-- Añadidas las clases requeridas por components.css y layout.css -->
+                <li><a href="index.html" class="nav-link-home" aria-current="page">Inicio</a></li>
+                <li><a href="pages/dashboard.html" class="btn-secondary">Ir al Dashboard</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+            <main class="hero">
                 <h1>Bienvenido a Mini Finance</h1>
                 <p>Registra ingresos, controla tus gastos mensuales y alcanza tus metas de ahorro en un solo lugar.</p>
                 <a href="pages/dashboard.html" class="btn-primary">Comenzar Ahora  →</a>

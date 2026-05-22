@@ -3,6 +3,82 @@
         display: grid;
         grid-template-rows: auto 1fr auto; 
         min-height: 100vh;
+        background-color: var(--color-bg, #0f172a); 
+        color: #ffffff;
+        margin: 0;
+        font-family: 'Inter', sans-serif;
+    }
+
+    header.main-navbar {
+        background-color: #1e293b; 
+        border-bottom: 1px solid #334155;
+        width: 100%;
+    }
+
+
+    .navbar-container {
+        display: flex;
+        justify-content: space-between; 
+        align-items: center; 
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 0;
+    }
+
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: #ffffff;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-weight: 700;
+        font-size: 1.25rem;
+    }
+
+    .accent-text {
+        color: var(--color-action, #4f46e5);
+    }
+
+
+    nav ul {
+        display: flex; 
+        align-items: center; 
+        gap: var(--gap-base, 1.5rem); 
+        list-style: none; 
+        margin: 0;
+        padding: 0;
+    }
+
+
+    .navbar-actions {
+        display: flex;
+        align-items: center;
+    }
+
+    .user-avatar {
+        background: var(--color-action, #4f46e5);
+        color: #ffffff;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.85rem;
+    }
+
+    .hero {
+        display: flex;
+        flex-direction: column;
+        align-items: center;    
+        justify-content: center; 
+        text-align: center;
+        min-height: 75vh;
+        gap: 2rem;
     }
 
     main {
@@ -10,19 +86,39 @@
         max-width: 1200px;
         margin: 2rem auto;
         display: grid;
-        gap: var(--gap-base);
+        gap: var(--gap-base, 1.5rem);
     }
 
 
     .metrics-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr); 
-        gap: var(--gap-base);
+        gap: var(--gap-base, 1.5rem);
     }
 
+
+    .dashboard-grid,
     .dashboard-content {
         display: grid;
-        grid-template-columns: 1.5fr 1fr; 
-        gap: var(--gap-base);
+        grid-template-columns: 1fr 1.5fr; 
+        align-items: start;
     }
-} 
+
+    .main-footer {
+        background-color: #0f172a;
+        border-top: 1px solid #1e293b;
+        padding: 1.5rem 0;
+        width: 100%;
+    }
+
+    .footer-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+        color: #64748b;
+        font-size: 0.85rem;
+    }
+}
