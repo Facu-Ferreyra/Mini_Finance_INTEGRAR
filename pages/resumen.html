@@ -10,11 +10,18 @@
     
     <header class="main-navbar">
         <div class="navbar-container">
-            <div class="logo">Mini <span class="accent-text">Resumen</span></div>
+            <a href="../index.html" class="logo" aria-label="Mini Finance - Volver al inicio">
+                Mini <span class="accent-text">Finance</span>
+            </a>
             <nav aria-label="Navegación principal">
                 <ul class="nav-links">
                     <li><a href="../index.html" class="nav-link-home">Inicio</a></li>
                     <li><a href="dashboard.html" class="btn-secondary">Dashboard</a></li>
+                    <li>
+                        <button id="theme-toggle" class="btn-theme-toggle" aria-label="Cambiar tema">
+                            🌙
+                        </button>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -48,7 +55,7 @@
                         </tr>
                     </thead>
                     <tbody id="history-body">
-    
+                    </tbody>
                 </table>
             </div>
         </section>

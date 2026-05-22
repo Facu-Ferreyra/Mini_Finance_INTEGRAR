@@ -4,14 +4,14 @@
         grid-template-rows: auto 1fr auto; 
         min-height: 100vh;
         background-color: var(--color-bg, #0f172a); 
-        color: #ffffff;
+        color: var(--color-white);
         margin: 0;
         font-family: 'Inter', sans-serif;
     }
 
     header.main-navbar {
-        background-color: #1e293b; 
-        border-bottom: 1px solid #334155;
+        background-color: var(--color-surface); 
+        border-bottom: 1px solid var(--color-border);
         width: 100%;
     }
 
@@ -100,13 +100,14 @@
     .dashboard-grid,
     .dashboard-content {
         display: grid;
-        grid-template-columns: 1fr 1.5fr; 
+        grid-template-columns: 1fr 1.5fr;
+        gap: var(--gap-base, 1.5rem);
         align-items: start;
     }
 
     .main-footer {
-        background-color: #0f172a;
-        border-top: 1px solid #1e293b;
+        background-color: var(--color-bg);
+        border-top: 1px solid var(--color-surface);
         padding: 1.5rem 0;
         width: 100%;
     }

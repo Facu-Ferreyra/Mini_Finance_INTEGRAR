@@ -9,16 +9,23 @@
     
     <link rel="stylesheet" href="assets/src/main.css">    
 </head>
-    <body data-theme="light" data-motion="night">
+    <body>
         
         <header class="main-navbar">
     <div class="navbar-container">
-        <div class="logo">Mini <span class="accent-text">Finance</span></div>
+        <a href="index.html" class="logo" aria-label="Mini Finance - Inicio">
+            Mini <span class="accent-text">Finance</span>
+        </a>
         <nav aria-label="Navegación principal">
             <ul class="nav-links"> 
                 <!-- Añadidas las clases requeridas por components.css y layout.css -->
                 <li><a href="index.html" class="nav-link-home" aria-current="page">Inicio</a></li>
                 <li><a href="pages/dashboard.html" class="btn-secondary">Ir al Dashboard</a></li>
+                <li>
+                    <button id="theme-toggle" class="btn-theme-toggle" aria-label="Cambiar tema">
+                        🌙
+                    </button>
+                </li>
             </ul>
         </nav>
     </div>

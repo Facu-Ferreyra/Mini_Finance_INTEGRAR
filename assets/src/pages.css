@@ -1,15 +1,15 @@
 @layer pages {
     .goal-container {
-        background: #1e293b; 
+        background: var (--color-surface); 
         padding: 2rem;
         border-radius: var(--radius-lg, 12px);
         margin-bottom: 2rem;
         text-align: center;
-        border: 1px solid #334155;
+        border: 1px solid var(--color-border);
     }
 
     .progress-bar-bg {
-        background: #0f172a; 
+        background: var(--color-bg); 
         height: 24px;
         border-radius: 12px;
         overflow: hidden;
@@ -25,7 +25,7 @@
     .history-table {
         width: 100%;
         border-collapse: collapse;
-        background: #1e293b;
+        background: var(--color-surface);
         border-radius: var(--radius-lg, 12px);
         overflow: hidden;
         margin-top: 1rem;
@@ -34,14 +34,14 @@
     .history-table th, 
     .history-table td {
         padding: 1rem; 
-        border-bottom: 1px solid #334155;
+        border-bottom: 1px solid var(--color-border);
         font-size: 0.95rem;
-        color: #ffffff; 
+        color: var(--color-white); 
     }
 
     .history-table th {
-        background: #2d3a4f; 
-        color: var(--color-text-muted, #94a3b8);
+        background: var(--color-surface-2); 
+        color: var(--color-text-muted);
         text-transform: uppercase;
         font-size: 0.85rem;
         font-weight: 600;
