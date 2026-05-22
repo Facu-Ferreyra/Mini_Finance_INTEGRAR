@@ -1,0 +1,8 @@
+@layer reset, variables, layout, components, pages, responsive;
+
+@import url("/assets/src/components.css") layer(components);
+@import url("/assets/src/layout.css") layer(layout);
+@import url("/assets/src/pages.css") layer(pages);
+@import url("/assets/src/variables.css") layer(variables);
+@import url("/assets/src/reset.css") layer(reset);
+@import url("/assets/src/responsive.css") layer(responsive);
