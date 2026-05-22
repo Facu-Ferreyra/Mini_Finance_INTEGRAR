@@ -1,0 +1,27 @@
+@layer responsive {
+    @media (max-width: 767px) {
+        main {
+            width: 95%; 
+        }
+        .metrics-grid, 
+        .dashboard-content,
+        .history-table thead {
+            grid-template-columns: 1fr;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .history-table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }      
+        h1 { font-size: 1.5rem; }
+        .card h3 { font-size: 1rem; }
+    }
+}
