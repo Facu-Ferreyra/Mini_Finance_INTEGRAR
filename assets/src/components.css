@@ -165,4 +165,81 @@
     color: var(--color-white);
     background-color: transparent;
     }
+
+
+
+
+
+
+
+    /* Alertas */
+    .alert {
+    padding: 0.85rem 1.25rem;
+    border-radius: var(--radius-lg);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    }
+
+    .alert-error {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--color-alert);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .alert-warning {
+    background-color: rgba(234, 179, 8, 0.1);
+    color: #854d0e;
+    border: 1px solid rgba(234, 179, 8, 0.3);
+    }
+
+    /* Movimientos */
+    .movement-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--color-border);
+    list-style: none;
+    gap: 1rem;
+    }
+
+    .movement-item:last-child {
+    border-bottom: none;
+    }
+
+    .movement-category {
+    text-transform: capitalize;
+    font-weight: 500;
+    color: var(--color-white);
+    flex: 1;
+    }
+
+    .movement-date {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    }
+
+    .movement-amount {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    }
+
+    .movement-income  .movement-amount { color: var(--color-success); }
+    .movement-expense .movement-amount { color: var(--color-alert); }
+
+    /* Montos en tabla */
+    .amount-income { color: var(--color-success); font-weight: 700; }
+    .amount-expense { color: var(--color-alert);   font-weight: 700; }
+
+    /* Estado vacío */
+    .empty-state {
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: 2rem 0;
+    font-size: 0.9rem;
+    }
 }
