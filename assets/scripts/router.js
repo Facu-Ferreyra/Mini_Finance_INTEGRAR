@@ -62,7 +62,8 @@ function initDashboard() {
     });
 }
 
-
+// --- Inicializador de Resumen (¡LÍNEA AGREGADA Y CORREGIDA!) ---
+function initResumen() {
     const GOAL_NAME   = 'exampleMeta';
     const GOAL_AMOUNT = 5000;
 
@@ -78,12 +79,12 @@ function initDashboard() {
         const selected = filterSelect.value;
         renderHistory(getMovementsByCategory(selected));
     });
+} 
 
-
-
+// --- Orquestador de Rutas ---
 export function handleRouting() {
     const page = document.body.dataset.page;
 
     if (page === 'dashboard') initDashboard();
-    if (page === 'resumen')   initResumen();
+    if (page === 'resumen')   initResumen(); // Ahora sí va a encontrar la función perfectamente
 }
