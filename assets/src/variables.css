@@ -1,6 +1,9 @@
 :root {
     
     --color-bg: #0f172a;        /* Azul oscuro base */
+    --color-surface: #1e293b;
+    --color-surface-2: #334155;
+    --color-border: #334155;
     --color-success: #10b981;   /* Verde para Ingresos */
     --color-alert: #ef4444;     /* Rojo para Gastos y Alertas */
     --color-action: #4f46e5;    /* Violeta para botones y enlaces */

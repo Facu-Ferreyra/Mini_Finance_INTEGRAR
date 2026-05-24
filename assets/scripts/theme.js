@@ -1,5 +1,5 @@
 export function initTheme() {
-    const saved = localStorage.getItem('mf-theme') || 'dark';
+    const saved = localStorage.getItem('mf-theme') || 'light';
     document.documentElement.setAttribute('data-theme', saved);
     updateIcon(saved);
 }

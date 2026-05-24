@@ -69,4 +69,8 @@
             gap: 0.5rem;
         }
     }
+
+    .type-options {
+        flex-wrap: wrap;
+    }
 }

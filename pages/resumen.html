@@ -37,11 +37,6 @@
             <p id="goal-status">Faltan $0 para completar tu objetivo.</p>
         </section>
 
-        <article class="metric-card card-savings">
-            <h3>Porcentaje de Ahorro</h3>
-            <p id="savings-rate" class="card-value">0%</p>
-        </article>
-
         <section class="section-card" aria-labelledby="goal-form-title">
             <h2 id="goal-form-title">Configurar Meta</h2>
             <div class="form-group">
@@ -58,12 +53,14 @@
                 <span id="goal-amount-error" class="error-message" 
                     role="status" aria-live="polite"></span>
             </div>
-            <button type="button" id="save-goal-btn" class="btn-primary btn-block">
-                Guardar Meta
-            </button>
-            <button type="button" id="delete-goal-btn" class="btn-danger btn-block">
-                Eliminar Meta
-            </button>
+            <div class="goal-actions">
+                <button type="button" id="save-goal-btn" class="btn-primary btn-block">
+                    Guardar Meta
+                </button>
+                <button type="button" id="delete-goal-btn" class="btn-danger btn-block">
+                    Eliminar Meta
+                </button>
+            </div>
         </section>
 
         <section class="metrics-grid" aria-label="Métricas de ahorro">

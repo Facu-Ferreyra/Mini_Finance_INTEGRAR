@@ -32,7 +32,7 @@
         align-items: center;
         gap: 0.75rem;
         text-decoration: none;
-        color: #ffffff;
+        color: var(--color-white);
         font-family: 'Plus Jakarta Sans', sans-serif;
         font-weight: 700;
         font-size: 1.25rem;

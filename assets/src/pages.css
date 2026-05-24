@@ -1,6 +1,6 @@
 @layer pages {
     .goal-container {
-        background: var (--color-surface); 
+        background: var(--color-surface); 
         padding: 2rem;
         border-radius: var(--radius-lg, 12px);
         margin-bottom: 2rem;
