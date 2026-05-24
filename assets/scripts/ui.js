@@ -33,7 +33,7 @@ export function renderRecentMovements() {
         const li = document.createElement('li');
         li.classList.add('movement-item', m.type === 'income' ? 'movement-income' : 'movement-expense');
         li.innerHTML = `
-            <span class="movement-category">${escapeHTML(m.category)}</span>
+            <span class="movement-category">${escapeHTML(capitalizeFirst(m.category))}</span>
             <span class="movement-amount">${m.type === 'income' ? '+' : '-'}${formatCurrency(m.amount)}</span>
             <time class="movement-date" datetime="${m.date}">${formatDate(m.date)}</time>
         `;

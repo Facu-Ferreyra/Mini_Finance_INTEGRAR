@@ -46,7 +46,7 @@ function initDashboard() {
             id:       Date.now(),
             amount:   parseFloat(amountValue),
             category: categoryValue,
-            type:     parseFloat(amountValue) > 0 ? 'income' : 'expense',
+            type:     document.querySelector('input[name="type"]:checked')?.value || 'income',
             date:     new Date().toISOString().split('T')[0]
         };
 
@@ -62,7 +62,7 @@ function initDashboard() {
     });
 }
 
-// --- Inicializador de Resumen (¡LÍNEA AGREGADA Y CORREGIDA!) ---
+
 function initResumen() {
     const GOAL_NAME   = 'exampleMeta';
     const GOAL_AMOUNT = 5000;
