@@ -89,14 +89,16 @@
 /* Carrusel de prueba*/
 /* FALTA ARREGLAR DIMENSIONES*/
 /* FALTA ARREGLAR DIMENSIONES*/
+/* Posible FEATURE??????*/
 .hero-carousel {
     position: relative;
     border-radius: var(--radius-lg);
     overflow: hidden;
     width: 100%;
-    max-width: 560px;
-    aspect-ratio: 4 / 3;
-    max-height: 380px;
+    max-width: 520px;
+    /*aspect-ratio: 4 / 3;
+    max-height: 380px;*/
+    height: 380px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     justify-items: end;
 }
@@ -111,7 +113,9 @@
 
 .carousel-slide {
     position: absolute;
-    inset: 0;
+    /*inset: 0;*/
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;

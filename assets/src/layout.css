@@ -3,7 +3,8 @@
         display: grid;
         grid-template-rows: auto 1fr auto; 
         min-height: 100vh;
-        background-color: var(--color-bg, #0f172a); 
+        /*background-color: var(--color-bg, #0f172a); */
+        background: var(--gradient-bg);
         color: var(--color-white);
         margin: 0;
         font-family: 'Inter', sans-serif;
