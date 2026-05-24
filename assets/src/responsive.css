@@ -68,6 +68,30 @@
             flex-direction: row;
             gap: 0.5rem;
         }
+
+        .hero {
+            grid-template-columns: 1fr;
+            min-height: auto;
+            gap: 1.5rem;
+            padding: 1.5rem 0;
+        }
+
+        .hero-carousel {
+            aspect-ratio: 16 / 9;
+            max-height: 240px;
+            max-width: 100%;
+            order: -1;
+            justify-self: stretch;
+        }
+
+        .hero-content {
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero-description {
+            max-width: 100%;
+        }
     }
 
     .type-options {
