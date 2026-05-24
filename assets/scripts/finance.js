@@ -1,6 +1,6 @@
 // depende de storage.hs para leer los datos
 
-import { getMovements } from './storage.js';
+import { getMovements, getGoal } from './storage.js';
 
 export function calcIncome() {
     const movements = getMovements();
@@ -52,4 +52,10 @@ export function getMovementsByCategory(category) {
 export function getUniqueCategories() {
     const movements = getMovements();
     return [...new Set(movements.map(m => m.category))];
+}
+
+export function isGoalUnreached() {
+    const goal    = getGoal();
+    const balance = calcBalance();
+    return goal.amount > 0 && balance < goal.amount;
 }

@@ -1,4 +1,4 @@
-import { saveMovement, getMovements } from './storage.js';
+import { saveMovement, getMovements, getGoal, saveGoal, deleteGoal } from './storage.js';
 import { getUniqueCategories, getMovementsByCategory } from './finance.js';
 import { validateForm } from './validations.js';
 import { 
@@ -7,9 +7,10 @@ import {
     renderAlerts, 
     renderHistory, 
     renderGoalProgress, 
+    renderSavingsRate,
     populateCategoryFilter, 
     showFieldError, 
-    clearAllErrors 
+    clearAllErrors, 
 } from './ui.js';
 
 // --- Inicializador de Dashboard ---
@@ -64,22 +65,82 @@ function initDashboard() {
 
 
 function initResumen() {
-    const GOAL_NAME   = 'exampleMeta';
-    const GOAL_AMOUNT = 5000;
+    const goal = getGoal();
 
-    // Renderizado inicial
-    renderGoalProgress(GOAL_NAME, GOAL_AMOUNT);
+    // Render inicial
+    renderMetrics();
+    renderSavingsRate();
+    renderGoalProgress(goal.name || 'Sin meta', goal.amount);
     populateCategoryFilter(getUniqueCategories());
     renderHistory(getMovements());
 
-    const filterSelect = document.getElementById('filter-category');
-    if (!filterSelect) return;
+    // Prellenar el formulario con la meta guardada (si existe)
+    const nameInput   = document.getElementById('goal-name-input');
+    const amountInput = document.getElementById('goal-amount-input');
 
-    filterSelect.addEventListener('change', () => {
-        const selected = filterSelect.value;
-        renderHistory(getMovementsByCategory(selected));
-    });
-} 
+    if (nameInput && goal.name)     nameInput.value   = goal.name;
+    if (amountInput && goal.amount) amountInput.value = goal.amount;
+
+    // Listener guardar meta
+    const saveGoalBtn = document.getElementById('save-goal-btn');
+    if (saveGoalBtn) {
+        saveGoalBtn.addEventListener('click', () => {
+            const name   = nameInput?.value.trim();
+            const amount = parseFloat(amountInput?.value);
+
+            if (!name) {
+                document.getElementById('goal-name-error').textContent = 
+                    'Ingresá un nombre para la meta.';
+                return;
+            }
+
+            if (isNaN(amount) || amount <= 0) {
+                document.getElementById('goal-amount-error').textContent = 
+                    'Ingresá un monto válido mayor a cero.';
+                return;
+            }
+
+            // Limpiar errores
+            document.getElementById('goal-name-error').textContent   = '';
+            document.getElementById('goal-amount-error').textContent = '';
+
+            saveGoal({ name, amount });
+            renderGoalProgress(name, amount);
+            renderSavingsRate();
+            renderAlerts();
+        });
+    }
+
+    const deleteGoalBtn = document.getElementById('delete-goal-btn');
+    if (deleteGoalBtn) {
+        deleteGoalBtn.addEventListener('click', () => {
+            deleteGoal();
+
+            // Limpiar formulario
+            if (nameInput)   nameInput.value   = '';
+            if (amountInput) amountInput.value = '';
+
+            // Limpiar errores
+            document.getElementById('goal-name-error').textContent   = '';
+            document.getElementById('goal-amount-error').textContent = '';
+
+            // Re-renderizar con estado vacío
+            renderGoalProgress('', 0);
+            renderSavingsRate();
+            renderAlerts();
+        });
+    }
+
+    // Listener filtro categorías
+    const filterSelect = document.getElementById('filter-category');
+    if (filterSelect) {
+        filterSelect.addEventListener('change', () => {
+            renderHistory(getMovementsByCategory(filterSelect.value));
+        });
+    }
+
+}
+ 
 
 // --- Orquestador de Rutas ---
 export function handleRouting() {

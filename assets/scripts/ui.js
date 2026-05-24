@@ -1,8 +1,8 @@
 // depende de finance.js para mostrar resultados
 
 
-import { calcBalance, calcIncome, calcExpenses, isBalanceCritical, isExpenseLimitExceeded, getRecentMovements } from './finance.js';
-
+import { calcBalance, calcIncome, calcExpenses, isBalanceCritical, isExpenseLimitExceeded, isGoalUnreached, getRecentMovements} from './finance.js';
+import { getGoal } from './storage.js';
 // --- Métricas ---
 
 export function renderMetrics() {
@@ -13,6 +13,22 @@ export function renderMetrics() {
     if (balance) balance.textContent = formatCurrency(calcBalance());
     if (income)  income.textContent  = formatCurrency(calcIncome());
     if (expense) expense.textContent = formatCurrency(calcExpenses());
+}
+
+export function renderSavingsRate() {
+    const el = document.getElementById('savings-rate');
+    if (!el) return;
+
+    const income   = calcIncome();
+    const balance  = calcBalance();
+
+    if (income <= 0 || balance <= 0) {
+        el.textContent = '0%';
+        return;
+    }
+
+    const rate = ((balance / income) * 100).toFixed(1);
+    el.textContent = `${rate}%`;
 }
 
 // --- Actividad reciente ---
@@ -54,6 +70,14 @@ export function renderAlerts() {
     } else if (isExpenseLimitExceeded()) {
         container.appendChild(createAlert('Has superado el 80% de tu límite de gastos previsto.', 'warning'));
     }
+
+    if (isGoalUnreached()) {
+        const goal      = getGoal();
+        const remaining = goal.amount - calcBalance();
+        container.appendChild(
+        createAlert(`Te faltan ${formatCurrency(remaining)} para alcanzar tu meta "${goal.name}".`, 'warning')
+    );
+}
 }
 
 function createAlert(message, type) {
