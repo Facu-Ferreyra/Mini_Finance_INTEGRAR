@@ -1,4 +1,4 @@
-import { saveMovement, getMovements, getGoal, saveGoal, deleteGoal } from './storage.js';
+import { saveMovement, getMovements, getGoals, saveGoal, deleteGoal } from './storage.js';
 import { getUniqueCategories, getMovementsByCategory } from './finance.js';
 import { validateForm } from './validations.js';
 import { 
@@ -6,16 +6,16 @@ import {
     renderRecentMovements, 
     renderAlerts, 
     renderHistory, 
-    renderGoalProgress, 
+    renderGoals, 
     renderSavingsRate,
     populateCategoryFilter, 
     showFieldError, 
+    clearFieldError,
     clearAllErrors, 
 } from './ui.js';
 
 // --- Inicializador de Dashboard ---
 function initDashboard() {
-    // Render inicial
     renderMetrics();
     renderRecentMovements();
     renderAlerts();
@@ -31,7 +31,6 @@ function initDashboard() {
 
     const requiresDescription = ['ingreso-extra', 'servicios', 'otros-ingreso', 'otros-gasto'];
 
-    // Filtro de Categorias x tIPO
     function updateCategoryOptions(type) {
         if (type === 'income') {
             incomeOptgroup.removeAttribute('hidden');
@@ -45,7 +44,6 @@ function initDashboard() {
         updateDescriptionVisibility(categorySelect.value);
     }
 
-    // S/H descripción
     function updateDescriptionVisibility(category) {
         if (requiresDescription.includes(category)) {
             descriptionGroup.removeAttribute('hidden');
@@ -55,7 +53,6 @@ function initDashboard() {
         }
     }
 
-    // Listeners de tipo y categoría
     document.querySelectorAll('input[name="type"]').forEach(radio => {
         radio.addEventListener('change', (e) => {
             updateCategoryOptions(e.target.value);
@@ -68,7 +65,6 @@ function initDashboard() {
 
     updateCategoryOptions('income');
 
-    // Listener del submit 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         clearAllErrors();
@@ -102,100 +98,103 @@ function initDashboard() {
         renderAlerts();
 
         form.reset();
-
-        incomeOptgroup.removeAttribute('hidden');
-        expenseOptgroup.setAttribute('hidden', '');
-        categorySelect.value = 'salario';
-        descriptionGroup.setAttribute('hidden', '');
-        if (descriptionInput) descriptionInput.value = '';
-
+        updateCategoryOptions('income');
         amountInput.focus();
     });
 }
 
-
+// --- Inicializador de Resumen (Listado de Metas) ---
 function initResumen() {
-    const goal = getGoal();
-
-    // Render inicial
     renderMetrics();
     renderSavingsRate();
-    renderGoalProgress(goal.name || 'Sin meta', goal.amount);
+    renderGoals(getGoals()); 
     populateCategoryFilter(getUniqueCategories());
     renderHistory(getMovements());
 
-    // Prellenar el formulario con la meta guardada (si existe)
+    const goalForm    = document.getElementById('goal-form');
+    const saveGoalBtn = document.getElementById('save-goal-btn'); 
     const nameInput   = document.getElementById('goal-name-input');
     const amountInput = document.getElementById('goal-amount-input');
+    const prioritySel = document.getElementById('goal-priority');
 
-    if (nameInput && goal.name)     nameInput.value   = goal.name;
-    if (amountInput && goal.amount) amountInput.value = goal.amount;
+    // Función unificada para procesar el guardado de la meta
+    const ejecutarGuardado = (e) => {
+        if (e) e.preventDefault(); 
+        
+        clearFieldError('goal-name');
+        clearFieldError('goal-amount');
 
-    // Listener guardar meta
-    const saveGoalBtn = document.getElementById('save-goal-btn');
-    if (saveGoalBtn) {
-        saveGoalBtn.addEventListener('click', () => {
-            const name   = nameInput?.value.trim();
-            const amount = parseFloat(amountInput?.value);
+        const name = nameInput?.value.trim();
+        const amountAttr = amountInput?.value.trim();
+        const amount = parseFloat(amountAttr);
+        const priority = prioritySel?.value || 'high';
 
-            if (!name) {
-                document.getElementById('goal-name-error').textContent = 
-                    'Ingresá un nombre para la meta.';
-                return;
-            }
+        let hasError = false;
 
-            if (isNaN(amount) || amount <= 0) {
-                document.getElementById('goal-amount-error').textContent = 
-                    'Ingresá un monto válido mayor a cero.';
-                return;
-            }
+        if (!name) {
+            showFieldError('goal-name', 'Ingresá un nombre para la meta.');
+            hasError = true;
+        }
+        if (!amountAttr || isNaN(amount) || amount <= 0) {
+            showFieldError('goal-amount', 'Ingresá un monto válido mayor a cero.');
+            hasError = true;
+        }
 
-            // Limpiar errores
-            document.getElementById('goal-name-error').textContent   = '';
-            document.getElementById('goal-amount-error').textContent = '';
+        if (hasError) return;
 
-            saveGoal({ name, amount });
-            renderGoalProgress(name, amount);
-            renderSavingsRate();
-            renderAlerts();
-        });
-    }
+        const newGoal = {
+            id: Date.now(),
+            name,
+            amount,
+            priority
+        };
 
-    const deleteGoalBtn = document.getElementById('delete-goal-btn');
-    if (deleteGoalBtn) {
-        deleteGoalBtn.addEventListener('click', () => {
-            deleteGoal();
+        saveGoal(newGoal);
+        renderGoals(getGoals()); 
+        renderSavingsRate();
+        renderAlerts();
 
-            // Limpiar formulario
-            if (nameInput)   nameInput.value   = '';
+        if (goalForm) {
+            goalForm.reset();
+        } else {
+            if (nameInput) nameInput.value = '';
             if (amountInput) amountInput.value = '';
+        }
+    };
 
-            // Limpiar errores
-            document.getElementById('goal-name-error').textContent   = '';
-            document.getElementById('goal-amount-error').textContent = '';
+    // Soportar tanto estructura de <form> como de <button> suelto
+    if (goalForm) {
+        goalForm.addEventListener('submit', ejecutarGuardado);
+    } else if (saveGoalBtn) {
+        saveGoalBtn.addEventListener('click', ejecutarGuardado);
+    }
 
-            // Re-renderizar con estado vacío
-            renderGoalProgress('', 0);
-            renderSavingsRate();
-            renderAlerts();
+    // Delegación de eventos en el contenedor de metas (Eliminar)
+    const goalsContainer = document.getElementById('goals-list-container');
+    if (goalsContainer) {
+        goalsContainer.addEventListener('click', (e) => {
+            const deleteBtn = e.target.closest('.delete-goal-btn');
+            if (deleteBtn) {
+                const goalId = parseInt(deleteBtn.dataset.id, 10);
+                deleteGoal(goalId);
+                renderGoals(getGoals());
+                renderSavingsRate();
+                renderAlerts();
+            }
         });
     }
 
-    // Listener filtro categorías
     const filterSelect = document.getElementById('filter-category');
     if (filterSelect) {
         filterSelect.addEventListener('change', () => {
             renderHistory(getMovementsByCategory(filterSelect.value));
         });
     }
-
 }
- 
 
 // --- Orquestador de Rutas ---
 export function handleRouting() {
     const page = document.body.dataset.page;
-
     if (page === 'dashboard') initDashboard();
-    if (page === 'resumen')   initResumen(); // Ahora sí va a encontrar la función perfectamente
+    if (page === 'resumen')   initResumen();
 }

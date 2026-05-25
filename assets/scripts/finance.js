@@ -1,17 +1,13 @@
-// depende de storage.hs para leer los datos
-
-import { getMovements, getGoal } from './storage.js';
+import { getMovements, getGoals } from './storage.js';
 
 export function calcIncome() {
-    const movements = getMovements();
-    return movements
+    return getMovements()
         .filter(m => m.type === 'income')
         .reduce((total, m) => total + m.amount, 0);
 }
 
 export function calcExpenses() {
-    const movements = getMovements();
-    return movements
+    return getMovements()
         .filter(m => m.type === 'expense')
         .reduce((total, m) => total + m.amount, 0);
 }
@@ -20,11 +16,10 @@ export function calcBalance() {
     return calcIncome() - calcExpenses();
 }
 
-export function calcSavingsProgress(goal) {
+export function calcSavingsProgress(goalAmount) {
     const balance = calcBalance();
-    if (goal <= 0) return 0;
-    const percentage = (balance / goal) * 100;
-    return Math.min(percentage, 100);
+    if (goalAmount <= 0) return 0;
+    return Math.min((balance / goalAmount) * 100, 100);
 }
 
 export function isBalanceCritical() {
@@ -39,8 +34,7 @@ export function isExpenseLimitExceeded(limit = 0.8) {
 }
 
 export function getRecentMovements(count = 5) {
-    const movements = getMovements();
-    return movements.slice(-count).reverse();
+    return getMovements().slice(-count).reverse();
 }
 
 export function getMovementsByCategory(category) {
@@ -54,8 +48,9 @@ export function getUniqueCategories() {
     return [...new Set(movements.map(m => m.category))];
 }
 
+// Verifica si hay alguna meta pendiente en la lista
 export function isGoalUnreached() {
-    const goal    = getGoal();
+    const goals = getGoals();
     const balance = calcBalance();
-    return goal.amount > 0 && balance < goal.amount;
+    return goals.some(goal => goal.amount > 0 && balance < goal.amount);
 }

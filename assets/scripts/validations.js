@@ -1,20 +1,15 @@
-// no depende de nadie, solo evalúa valores
-
 export function validateAmount(value) {
     const amount = parseFloat(value);
 
     if (value === '' || value === null || value === undefined) {
         return { valid: false, error: 'El monto no puede estar vacío.' };
     }
-
     if (isNaN(amount)) {
         return { valid: false, error: 'El monto debe ser un número.' };
     }
-
     if (amount <= 0) {
         return { valid: false, error: 'El monto debe ser mayor a cero.' };
     }
-
     return { valid: true, error: null };
 }
 
@@ -24,11 +19,9 @@ export function validateCategory(value) {
     if (!value || value === '') {
         return { valid: false, error: 'Seleccioná una categoría.' };
     }
-
     if (!allowed.includes(value)) {
         return { valid: false, error: 'La categoría seleccionada no es válida.' };
     }
-
     return { valid: true, error: null };
 }
 

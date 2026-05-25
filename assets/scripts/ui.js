@@ -1,10 +1,7 @@
-// depende de finance.js para mostrar resultados
+import { calcBalance, calcIncome, calcExpenses, isBalanceCritical, isExpenseLimitExceeded, isGoalUnreached, getRecentMovements } from './finance.js';
+import { getGoals } from './storage.js';
 
-
-import { calcBalance, calcIncome, calcExpenses, isBalanceCritical, isExpenseLimitExceeded, isGoalUnreached, getRecentMovements} from './finance.js';
-import { getGoal } from './storage.js';
 // --- Métricas ---
-
 export function renderMetrics() {
     const balance = document.getElementById('balance-total');
     const income = document.getElementById('income-total');
@@ -19,8 +16,8 @@ export function renderSavingsRate() {
     const el = document.getElementById('savings-rate');
     if (!el) return;
 
-    const income   = calcIncome();
-    const balance  = calcBalance();
+    const income  = calcIncome();
+    const balance = calcBalance();
 
     if (income <= 0 || balance <= 0) {
         el.textContent = '0%';
@@ -32,7 +29,6 @@ export function renderSavingsRate() {
 }
 
 // --- Actividad reciente ---
-
 export function renderRecentMovements() {
     const list = document.getElementById('recent-list');
     if (!list) return;
@@ -57,8 +53,7 @@ export function renderRecentMovements() {
     });
 }
 
-// --- Historial completo (resumen.html) ---
-
+// --- Historial completo ---
 export function renderHistory(movements) {
     const tbody = document.getElementById('history-body');
     if (!tbody) return;
@@ -74,52 +69,96 @@ export function renderHistory(movements) {
     }
 
     movements.forEach(m => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-        <td><time datetime="${m.date}">${formatDate(m.date)}</time></td>
-        <td>
-            ${escapeHTML(capitalizeFirst(m.category))}
-            ${m.description 
-                ? `<small class="movement-description">${escapeHTML(m.description)}</small>` 
-                : ''}
-        </td>
-        <td class="${m.type === 'income' ? 'amount-income' : 'amount-expense'}">
-            ${m.type === 'income' ? '+' : '-'}${formatCurrency(m.amount)}
-        </td>
-    `;
-    tbody.appendChild(tr);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><time datetime="${m.date}">${formatDate(m.date)}</time></td>
+            <td>
+                ${escapeHTML(capitalizeFirst(m.category))}
+                ${m.description ? `<small class="movement-description">${escapeHTML(m.description)}</small>` : ''}
+            </td>
+            <td class="${m.type === 'income' ? 'amount-income' : 'amount-expense'}">
+                ${m.type === 'income' ? '+' : '-'}${formatCurrency(m.amount)}
+            </td>
+        `;
+        tbody.appendChild(tr);
     });
 }
 
-// --- Barra de progreso (resumen.html) ---
+// --- Render del Listado de Metas ---
+export function renderGoals(goals) {
+    const container = document.getElementById('goals-list-container');
+    if (!container) return;
 
-export function renderGoalProgress(goalName, goalAmount) {
-    const nameEl   = document.getElementById('goal-name');
-    const statusEl = document.getElementById('goal-status');
-    const fillEl   = document.getElementById('goal-progress');
-    const barEl    = fillEl?.parentElement;
+    if (goals.length === 0) {
+        container.innerHTML = '<p class="empty-state">No tenés metas financieras configuradas en este momento.</p>';
+        return;
+    }
 
-    if (!nameEl || !statusEl || !fillEl) return;
+    const balance = calcBalance();
+    const priorityLabels = { high: 'Alta', medium: 'Media', low: 'Baja' };
 
-    const balance    = calcBalance();
-    const percentage = goalAmount > 0 ? Math.min((balance / goalAmount) * 100, 100) : 0;
-    const remaining  = Math.max(goalAmount - balance, 0);
+    // Mapeamos el array generando una tarjeta por cada meta guardada
+    container.innerHTML = goals.map(goal => {
+        const percentage = goal.amount > 0 ? Math.min((balance / goal.amount) * 100, 100) : 0;
+        const remaining = Math.max(goal.amount - balance, 0);
 
-    nameEl.textContent   = goalName;
-    fillEl.style.width   = `${percentage.toFixed(1)}%`;
-    statusEl.textContent = remaining > 0
-        ? `Faltan ${formatCurrency(remaining)} para completar tu objetivo.`
-        : '¡Objetivo alcanzado!';
+        return `
+            <article class="goal-card" data-id="${goal.id}">
+                <div class="goal-card-main">
+                    <div class="goal-info-body">
+                        <div class="goal-title-wrapper">
+                            <h3>${escapeHTML(goal.name)}</h3>
+                            <span class="priority-badge ${goal.priority}">${priorityLabels[goal.priority]}</span>
+                        </div>
+                        <p class="goal-card-description">Fondo de ahorro personalizado controlado por tus balances.</p>
+                        
+                        <div class="goal-values-track">
+                            <span class="current-saved">${formatCurrency(balance)}</span>
+                            <span class="divider" aria-hidden="true">/</span>
+                            <span class="target-total">${formatCurrency(goal.amount)}</span>
+                        </div>
 
-    if (barEl) barEl.setAttribute('aria-valuenow', percentage.toFixed(1));
+                        <div class="progress-container-row">
+                            <div
+                                class="progress-bar-bg"
+                                role="progressbar"
+                                aria-valuemin="0"
+                                aria-valuemax="100"
+                                aria-valuenow="${percentage.toFixed(0)}"
+                                aria-label="Progreso de ${escapeHTML(goal.name)}"
+                            >
+                                <div class="progress-fill" style="width: ${percentage.toFixed(1)}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="goal-card-actions-panel">
+                    <div class="goal-remaining-status">
+                        ${remaining > 0 
+                            ? `<span class="remaining-lbl">Faltan</span>
+                               <span class="remaining-money">${formatCurrency(remaining)}</span>
+                               <span class="remaining-lbl-sub">para completar tu objetivo</span>`
+                            : `<span class="remaining-lbl" style="color: var(--accent-text, #2ecc71); font-weight: bold;">¡Meta Alcanzada! 🎉</span>`
+                        }
+                    </div>
+                    <div class="action-buttons-stack">
+                        <button type="button" class="btn-action-assign btn-add-funds" aria-label="Asignar fondos excedentes">
+                            <span class="btn-icon-span" aria-hidden="true">+</span> Asignar
+                        </button>
+                        <button type="button" class="btn-action-delete btn-danger delete-goal-btn" data-id="${goal.id}" aria-label="Eliminar meta ${escapeHTML(goal.name)}">
+                            <span class="btn-icon-span" aria-hidden="true">🗑️</span> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </article>
+        `;
+    }).join('');
 }
 
-
-
 // --- Alertas ---
-
 export function renderAlerts() {
-    const container = document.getElementById('alert-container');
+    const container = document.getElementById('alerts-container');
     if (!container) return;
 
     container.innerHTML = '';
@@ -131,12 +170,16 @@ export function renderAlerts() {
     }
 
     if (isGoalUnreached()) {
-        const goal      = getGoal();
-        const remaining = goal.amount - calcBalance();
-        container.appendChild(
-        createAlert(`Te faltan ${formatCurrency(remaining)} para alcanzar tu meta "${goal.name}".`, 'warning')
-    );
-}
+        const goals = getGoals();
+        const balance = calcBalance();
+        const unreached = goals.find(g => g.amount > 0 && balance < g.amount);
+        if (unreached) {
+            const remaining = unreached.amount - balance;
+            container.appendChild(
+                createAlert(`Te faltan ${formatCurrency(remaining)} para alcanzar tu meta "${unreached.name}".`, 'warning')
+            );
+        }
+    }
 }
 
 function createAlert(message, type) {
@@ -148,10 +191,9 @@ function createAlert(message, type) {
 }
 
 // --- Errores de formulario ---
-
 export function showFieldError(fieldId, message) {
     const errorEl = document.getElementById(`${fieldId}-error`);
-    const inputEl = document.getElementById(fieldId);
+    const inputEl = document.getElementById(fieldId) || document.getElementById(`${fieldId}-input`);
 
     if (errorEl) errorEl.textContent = message;
     if (inputEl) inputEl.setAttribute('aria-invalid', 'true');
@@ -159,7 +201,7 @@ export function showFieldError(fieldId, message) {
 
 export function clearFieldError(fieldId) {
     const errorEl = document.getElementById(`${fieldId}-error`);
-    const inputEl = document.getElementById(fieldId);
+    const inputEl = document.getElementById(fieldId) || document.getElementById(`${fieldId}-input`);
 
     if (errorEl) errorEl.textContent = '';
     if (inputEl) inputEl.removeAttribute('aria-invalid');
@@ -168,11 +210,11 @@ export function clearFieldError(fieldId) {
 export function clearAllErrors() {
     clearFieldError('amount');
     clearFieldError('category');
+    clearFieldError('goal-name');
+    clearFieldError('goal-amount');
 }
 
-
-// --- Filtro de categorías (resumen.html) ---
-
+// --- Filtro de categorías ---
 export function populateCategoryFilter(categories) {
     const select = document.getElementById('filter-category');
     if (!select) return;
@@ -187,8 +229,7 @@ export function populateCategoryFilter(categories) {
     });
 }
 
-// --- Utilidades privadas ---
-
+// --- Utilidades ---
 function formatCurrency(amount) {
     return new Intl.NumberFormat('es-AR', {
         style: 'currency',
@@ -202,7 +243,7 @@ function formatDate(isoDate) {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric'
-    }).format(new Date(isoDate));
+    }).format(new Date(isoDate + 'T00:00:00'));
 }
 
 function capitalizeFirst(str) {
