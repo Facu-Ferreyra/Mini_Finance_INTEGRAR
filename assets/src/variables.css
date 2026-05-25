@@ -15,8 +15,6 @@
     --gap-base: 1rem;
     --radius-lg: 12px;
     --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-
-    --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     --priority-high: #f87171;
     --priority-medium: #facc15;
     --priority-low: #60a5fa;
