@@ -94,11 +94,11 @@ export function renderGoals(goals) {
         return;
     }
 
-    const balance = calcBalance();
+    const balance = calcBalance(); // Asumo que esta función ya calcula el saldo general
     const priorityLabels = { high: 'Alta', medium: 'Media', low: 'Baja' };
 
-    // Mapeamos el array generando una tarjeta por cada meta guardada
     container.innerHTML = goals.map(goal => {
+        // Lógica matemática de la barra de progreso y faltantes
         const percentage = goal.amount > 0 ? Math.min((balance / goal.amount) * 100, 100) : 0;
         const remaining = Math.max(goal.amount - balance, 0);
 
@@ -118,17 +118,8 @@ export function renderGoals(goals) {
                             <span class="target-total">${formatCurrency(goal.amount)}</span>
                         </div>
 
-                        <div class="progress-container-row">
-                            <div
-                                class="progress-bar-bg"
-                                role="progressbar"
-                                aria-valuemin="0"
-                                aria-valuemax="100"
-                                aria-valuenow="${percentage.toFixed(0)}"
-                                aria-label="Progreso de ${escapeHTML(goal.name)}"
-                            >
-                                <div class="progress-fill" style="width: ${percentage.toFixed(1)}%;"></div>
-                            </div>
+                        <div class="progress-bar-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percentage.toFixed(0)}">
+                            <div class="progress-fill ${goal.priority}" style="width: ${percentage.toFixed(1)}%;"></div>
                         </div>
                     </div>
                 </div>
@@ -138,15 +129,16 @@ export function renderGoals(goals) {
                         ${remaining > 0 
                             ? `<span class="remaining-lbl">Faltan</span>
                                <span class="remaining-money">${formatCurrency(remaining)}</span>
-                               <span class="remaining-lbl-sub">para completar tu objetivo</span>`
-                            : `<span class="remaining-lbl" style="color: var(--accent-text, #2ecc71); font-weight: bold;">¡Meta Alcanzada! 🎉</span>`
+                               <span class="remaining-lbl-sub">para cumplir el objetivo</span>`
+                            : `<span class="status-achieved" style="color: #2ecc71; font-weight: bold; font-size: 0.95rem;">¡META ALCANZADA! 🎉</span>`
                         }
                     </div>
+                    
                     <div class="action-buttons-stack">
-                        <button type="button" class="btn-action-assign btn-add-funds" aria-label="Asignar fondos excedentes">
+                        <button type="button" class="btn-action-assign btn-add-funds">
                             <span class="btn-icon-span" aria-hidden="true">+</span> Asignar
                         </button>
-                        <button type="button" class="btn-action-delete btn-danger delete-goal-btn" data-id="${goal.id}" aria-label="Eliminar meta ${escapeHTML(goal.name)}">
+                        <button type="button" class="btn-action-delete delete-goal-btn" data-id="${goal.id}">
                             <span class="btn-icon-span" aria-hidden="true">🗑️</span> Eliminar
                         </button>
                     </div>
