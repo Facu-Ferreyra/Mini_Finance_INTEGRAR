@@ -34,8 +34,10 @@
 
     <main class="summary-layout page-goals">
         
+        <!-- Contenedor de alertas financieras -->
         <div id="alerts-container" aria-live="polite"></div>
 
+        <!-- Header de metas -->
         <header class="summary-hero section-card">
             <div class="hero-header-flex">
                 <div>
@@ -48,6 +50,7 @@
 
         <div class="dashboard-grid goals-grid">
             
+            <!-- Formulario de creacion de meta -->
             <section class="section-card goal-form-section" aria-labelledby="goal-form-title">
                 <form id="goal-form" action="#" method="POST">
                     <h2 id="goal-form-title">Crear Nueva Meta</h2>
@@ -101,6 +104,7 @@
                 </form>
             </section>
 
+            <!-- Lista de metas activas/completadas -->
             <section class="section-card goals-list-section" aria-labelledby="goals-list-title">
                 <div class="goals-header">
                     <div class="goals-header-row">
@@ -139,6 +143,7 @@
             </div>
         </div>
 
+        <!-- Metricas de ahorro -->
         <section class="metrics-grid" aria-label="Métricas de ahorro">
             <div class="metric-card card-balance">
                 <h3>Balance Neto</h3>
@@ -154,6 +159,7 @@
             </div>
         </section>
 
+        <!-- Historial completo de movimientos -->
         <section class="section-card history-container" aria-labelledby="history-title">
             <h2 id="history-title">Historial Completo</h2>
             <div class="form-group filter-group">

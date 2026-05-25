@@ -1,3 +1,4 @@
+// --- Inicializar carrusel de imagenes ---
 export function initCarousel() {
 
     const slides = document.querySelectorAll('.carousel-slide');
@@ -11,6 +12,7 @@ export function initCarousel() {
     let current  = 0;
     let interval = null;
 
+    // --- Navegar a un slide especifico ---
     function goTo(index) {
 
         slides[current].classList.remove('active');
@@ -20,6 +22,7 @@ export function initCarousel() {
         dots[current].classList.add('active');
     }
 
+    // --- Siguiente / Anterior ---
     function next() {
         goTo(current + 1);
     }
@@ -28,6 +31,7 @@ export function initCarousel() {
         goTo(current - 1);
     }
 
+    // --- Auto-play ---
     function start() {
         stop();
         interval = setInterval(() => {
@@ -46,6 +50,7 @@ export function initCarousel() {
         start();
     }
 
+    // --- Eventos de botones y dots ---
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
             next();
@@ -67,6 +72,7 @@ export function initCarousel() {
         });
     });
 
+    // --- Pausar al cambiar de pestaña ---
     document.addEventListener('visibilitychange', () => {
         document.hidden
             ? stop()

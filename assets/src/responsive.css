@@ -98,7 +98,7 @@
         flex-wrap: wrap;
     }
 
-    /* --- Resumen / Summary Responsive --- */
+    /* --- Media queries para mobile (Summary) --- */
     @media (max-width: 767px) {
         .goals-grid {
             grid-template-columns: 1fr !important;

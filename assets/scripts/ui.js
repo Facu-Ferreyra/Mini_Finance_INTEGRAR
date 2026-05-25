@@ -1,6 +1,7 @@
 import { calcBalance, calcIncome, calcExpenses, isBalanceCritical, isExpenseLimitExceeded, isGoalUnreached, getRecentMovements, getGoalProgress, getGoalsSummary, getActiveGoals, getCompletedGoals } from './finance.js';
 import { getGoals, deleteGoal } from './storage.js';
 
+// --- Iconos SVG por categoria de meta ---
 const GOAL_ICONS = {
     plane: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>',
     laptop: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="2" y1="21" x2="22" y2="21"/></svg>',
@@ -12,6 +13,7 @@ const GOAL_ICONS = {
     target: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>'
 };
 
+// --- Renderizar metricas del dashboard ---
 export function renderMetrics() {
     const balance = document.getElementById('balance-total');
     const income = document.getElementById('income-total');
@@ -21,6 +23,7 @@ export function renderMetrics() {
     if (expense) expense.textContent = formatCurrency(calcExpenses());
 }
 
+// --- Renderizar porcentaje de ahorro ---
 export function renderSavingsRate() {
     const el = document.getElementById('savings-rate');
     if (!el) return;
@@ -30,6 +33,7 @@ export function renderSavingsRate() {
     el.textContent = ((balance / income) * 100).toFixed(1) + '%';
 }
 
+// --- Renderizar actividad reciente ---
 export function renderRecentMovements() {
     const list = document.getElementById('recent-list');
     if (!list) return;
@@ -49,6 +53,7 @@ export function renderRecentMovements() {
     });
 }
 
+// --- Renderizar historial completo con tipo y categoria ---
 export function renderHistory(movements) {
     const tbody = document.getElementById('history-body');
     if (!tbody) return;
@@ -71,6 +76,7 @@ export function renderHistory(movements) {
     });
 }
 
+// --- Renderizar badges del header de metas ---
 export function renderGoalsHeader() {
     const headerEl = document.getElementById('goals-header-info');
     if (!headerEl) return;
@@ -83,6 +89,7 @@ export function renderGoalsHeader() {
         + '<div class=\"goals-count-badge\">' + chartSvg + '<span>' + summary.avgProgress.toFixed(0) + '% Progreso promedio</span></div>';
 }
 
+// --- Renderizar leyenda de prioridades ---
 export function renderPriorityLegend() {
     const legendEl = document.getElementById('priority-legend');
     if (!legendEl) return;
@@ -94,6 +101,7 @@ export function renderPriorityLegend() {
         + '</div>';
 }
 
+// --- Renderizar banner de ayuda ---
 export function renderGoalsFooterBanner() {
     const bannerEl = document.getElementById('goals-footer-banner');
     if (!bannerEl) return;
@@ -106,6 +114,7 @@ export function renderGoalsFooterBanner() {
         + '</div>';
 }
 
+// --- Renderizar boton de filtro activas/completadas ---
 export function renderGoalsFilterToggle() {
     var container = document.getElementById('goals-filter-toggle');
     if (!container) return;
@@ -122,6 +131,7 @@ export function renderGoalsFilterToggle() {
         + '</button>';
 }
 
+// --- Renderizar lista de metas (activas o completadas) ---
 export function renderGoals(goals) {
     var container = document.getElementById('goals-list-container');
     if (!container) return;
@@ -219,6 +229,7 @@ export function renderGoals(goals) {
     }).join('');
 }
 
+// --- Renderizar alertas financieras ---
 export function renderAlerts() {
     const container = document.getElementById('alerts-container');
     if (!container) return;
@@ -238,6 +249,7 @@ export function renderAlerts() {
     }
 }
 
+// --- Crear elemento de alerta ---
 function createAlert(message, type) {
     var el = document.createElement('div');
     el.classList.add('alert', 'alert-' + type);
@@ -246,6 +258,7 @@ function createAlert(message, type) {
     return el;
 }
 
+// --- Mostrar error en un campo del formulario ---
 export function showFieldError(fieldId, message) {
     var errorEl = document.getElementById(fieldId + '-error');
     var inputEl = document.getElementById(fieldId) || document.getElementById(fieldId + '-input');
@@ -253,6 +266,7 @@ export function showFieldError(fieldId, message) {
     if (inputEl) inputEl.setAttribute('aria-invalid', 'true');
 }
 
+// --- Limpiar error de un campo ---
 export function clearFieldError(fieldId) {
     var errorEl = document.getElementById(fieldId + '-error');
     var inputEl = document.getElementById(fieldId) || document.getElementById(fieldId + '-input');
@@ -260,6 +274,7 @@ export function clearFieldError(fieldId) {
     if (inputEl) inputEl.removeAttribute('aria-invalid');
 }
 
+// --- Limpiar todos los errores de formularios ---
 export function clearAllErrors() {
     clearFieldError('amount');
     clearFieldError('category');
@@ -267,6 +282,7 @@ export function clearAllErrors() {
     clearFieldError('goal-amount');
 }
 
+// --- Poblar filtro de categorias en el historial ---
 export function populateCategoryFilter(categories) {
     var select = document.getElementById('filter-category');
     if (!select) return;
@@ -279,6 +295,7 @@ export function populateCategoryFilter(categories) {
     });
 }
 
+// --- Abrir modal de asignacion de fondos ---
 export function openAssignModal(goal) {
     var modal = document.getElementById('assign-modal');
     if (!modal) return;
@@ -290,24 +307,29 @@ export function openAssignModal(goal) {
     modal.classList.add('open');
 }
 
+// --- Cerrar modal de asignacion ---
 export function closeAssignModal() {
     var modal = document.getElementById('assign-modal');
     if (!modal) return;
     modal.classList.remove('open');
 }
 
+// --- Formatear monto en ARS ---
 function formatCurrency(amount) {
     return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 2 }).format(amount);
 }
 
+// --- Formatear fecha ISO a DD/MM/AAAA ---
 function formatDate(isoDate) {
     return new Intl.DateTimeFormat('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(isoDate + 'T00:00:00'));
 }
 
+// --- Capitalizar primera letra ---
 function capitalizeFirst(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+// --- Escapar HTML para evitar XSS ---
 function escapeHTML(str) {
     var div = document.createElement('div');
     div.textContent = str;

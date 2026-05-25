@@ -1,6 +1,8 @@
+// --- Claves de almacenamiento en localStorage ---
 const STORAGE_KEY = 'mf-movements';
 const GOALS_KEY = 'mf-goals';
 
+// --- Movimientos ---
 export function getMovements() {
     const data = localStorage.getItem(STORAGE_KEY);
     return data ? JSON.parse(data) : [];
@@ -16,6 +18,7 @@ export function clearMovements() {
     localStorage.removeItem(STORAGE_KEY);
 }
 
+// --- Metas de ahorro ---
 export function getGoals() {
     const data = localStorage.getItem(GOALS_KEY);
     return data ? JSON.parse(data) : [];

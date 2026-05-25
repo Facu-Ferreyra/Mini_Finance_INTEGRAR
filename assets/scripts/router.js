@@ -37,6 +37,7 @@ function initDashboard() {
 
     const requiresDescription = ['ingreso-extra', 'servicios', 'otros-ingreso', 'otros-gasto'];
 
+    // --- Actualizar opciones de categoria segun tipo ---
     function updateCategoryOptions(type) {
         if (type === 'income') {
             incomeOptgroup.removeAttribute('hidden');
@@ -50,6 +51,7 @@ function initDashboard() {
         updateDescriptionVisibility(categorySelect.value);
     }
 
+    // --- Mostrar/ocultar campo de descripcion segun categoria ---
     function updateDescriptionVisibility(category) {
         if (requiresDescription.includes(category)) {
             descriptionGroup.removeAttribute('hidden');
@@ -71,6 +73,7 @@ function initDashboard() {
 
     updateCategoryOptions('income');
 
+    // --- Guardar nuevo movimiento ---
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         clearAllErrors();
@@ -128,7 +131,7 @@ function initResumen() {
     const prioritySel = document.getElementById('goal-priority');
     const descInput   = document.getElementById('goal-description');
 
-    // Función unificada para procesar el guardado de la meta
+    // --- Guardar nueva meta ---
     const ejecutarGuardado = (e) => {
         if (e) e.preventDefault(); 
         
@@ -181,7 +184,7 @@ function initResumen() {
         saveGoalBtn.addEventListener('click', ejecutarGuardado);
     }
 
-    // Delegación de eventos en el contenedor de metas (Asignar / Eliminar)
+    // --- Eliminar o asignar fondos a una meta ---
     const goalsContainer = document.getElementById('goals-list-container');
     if (goalsContainer) {
         goalsContainer.addEventListener('click', (e) => {
@@ -201,7 +204,7 @@ function initResumen() {
         });
     }
 
-    // Modal: Confirmar asignación
+    // --- Modal de asignacion: confirmar/cancelar ---
     var confirmBtn = document.getElementById('assign-confirm');
     var cancelBtn = document.getElementById('assign-cancel');
     var modalOverlay = document.getElementById('assign-modal');
@@ -247,10 +250,11 @@ function initResumen() {
         });
     }
 
-    // Toggle: Ver activas / Ver completadas
+    // --- Toggle entre metas activas y completadas ---
     window._goalsShowCompleted = false;
 
     var filterBtn = document.getElementById('goals-filter-btn');
+    // --- Configurar evento del boton de filtro ---
     function setupFilterToggle() {
         filterBtn = document.getElementById('goals-filter-btn');
         if (filterBtn) {
@@ -266,6 +270,7 @@ function initResumen() {
     }
     setupFilterToggle();
 
+    // --- Filtro de historial por categoria ---
     const filterSelect = document.getElementById('filter-category');
     if (filterSelect) {
         filterSelect.addEventListener('change', () => {

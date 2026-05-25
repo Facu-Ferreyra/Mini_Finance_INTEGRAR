@@ -1,3 +1,4 @@
+/* --- Estructura general: navbar, hero, grids, footer --- */
 @layer layout {
     body {
         display: grid;

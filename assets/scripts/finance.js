@@ -1,25 +1,30 @@
 import { getMovements, getGoals, updateGoal, saveMovement } from './storage.js';
 
+// --- Calculo de ingresos totales ---
 export function calcIncome() {
     return getMovements()
         .filter(m => m.type === 'income')
         .reduce((total, m) => total + m.amount, 0);
 }
 
+// --- Calculo de gastos totales ---
 export function calcExpenses() {
     return getMovements()
         .filter(m => m.type === 'expense')
         .reduce((total, m) => total + m.amount, 0);
 }
 
+// --- Balance neto (ingresos - gastos) ---
 export function calcBalance() {
     return calcIncome() - calcExpenses();
 }
 
+// --- Verificar si el balance es negativo ---
 export function isBalanceCritical() {
     return calcBalance() < 0;
 }
 
+// --- Verificar si los gastos superan el 80% de los ingresos ---
 export function isExpenseLimitExceeded(limit = 0.8) {
     const income = calcIncome();
     const expenses = calcExpenses();
@@ -27,27 +32,32 @@ export function isExpenseLimitExceeded(limit = 0.8) {
     return expenses / income >= limit;
 }
 
+// --- Obtener los ultimos N movimientos ---
 export function getRecentMovements(count = 5) {
     return getMovements().slice(-count).reverse();
 }
 
+// --- Filtrar movimientos por categoria ---
 export function getMovementsByCategory(category) {
     const movements = getMovements();
     if (category === 'all') return movements;
     return movements.filter(m => m.category === category);
 }
 
+// --- Obtener categorias unicas ---
 export function getUniqueCategories() {
     const movements = getMovements();
     return [...new Set(movements.map(m => m.category))];
 }
 
+// --- Verificar si alguna meta no fue alcanzada ---
 export function isGoalUnreached() {
     const goals = getGoals();
     const balance = calcBalance();
     return goals.some(goal => goal.amount > 0 && balance < goal.amount);
 }
 
+// --- Progreso individual de una meta ---
 export function getGoalProgress(goal) {
     const saved = goal.saved || 0;
     const target = goal.amount || 0;
@@ -56,14 +66,17 @@ export function getGoalProgress(goal) {
     return { percentage, remaining, saved, target };
 }
 
+// --- Obtener metas activas (no completadas) ---
 export function getActiveGoals() {
     return getGoals().filter(function(g) { return (g.saved || 0) < (g.amount || 0); });
 }
 
+// --- Obtener metas completadas ---
 export function getCompletedGoals() {
     return getGoals().filter(function(g) { return (g.saved || 0) >= (g.amount || 0) && g.amount > 0; });
 }
 
+// --- Asignar fondos a una meta ---
 export function assignFundsToGoal(goalId, amount) {
     const goals = getGoals();
     const goal = goals.find(g => g.id === goalId);
@@ -94,6 +107,7 @@ export function assignFundsToGoal(goalId, amount) {
     return true;
 }
 
+// --- Resumen de metas activas ---
 export function getGoalsSummary() {
     const goals = getActiveGoals();
     const totalAssigned = goals.reduce(function(sum, g) { return sum + (g.saved || 0); }, 0);

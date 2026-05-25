@@ -1,3 +1,4 @@
+// --- Validar campo monto ---
 export function validateAmount(value) {
     const amount = parseFloat(value);
 
@@ -13,6 +14,7 @@ export function validateAmount(value) {
     return { valid: true, error: null };
 }
 
+// --- Validar categoria seleccionada ---
 export function validateCategory(value) {
     const allowed = ['salario', 'ingreso-extra', 'otros-ingreso', 'vivienda', 'servicios', 'transporte', 'educacion', 'alimentos', 'delivery', 'indumentaria', 'otros-gasto'];
 
@@ -25,6 +27,7 @@ export function validateCategory(value) {
     return { valid: true, error: null };
 }
 
+// --- Validar formulario completo ---
 export function validateForm(amount, category) {
     const amountResult = validateAmount(amount);
     const categoryResult = validateCategory(category);

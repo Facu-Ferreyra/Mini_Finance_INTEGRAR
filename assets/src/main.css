@@ -1,3 +1,4 @@
+/* --- Capas CSS en orden de precedencia --- */
 @layer reset, variables, layout, components, pages, responsive;
 
 @import url("components.css") layer(components);

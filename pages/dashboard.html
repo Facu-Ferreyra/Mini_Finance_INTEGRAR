@@ -30,8 +30,10 @@
     </header>
 
     <main>
+        <!-- Alertas financieras -->
         <section id="alerts-container" role="alert" aria-live="assertive"></section>
 
+        <!-- Metricas: balance, ingresos, gastos -->
         <section class="metrics-grid">
             <article class="metric-card card-balance">
                 <h3>Balance Neto</h3>
@@ -50,6 +52,7 @@
 
         <div class="dashboard-grid">
             
+            <!-- Formulario de nuevo movimiento -->
             <section class="section-card" aria-labelledby="form-title">
                 <h2 id="form-title">Nuevo Movimiento</h2>
                 <form id="finance-form" novalidate>
@@ -106,6 +109,7 @@
                 </form>
             </section>
 
+            <!-- Actividad reciente -->
             <section class="section-card recent-activity" aria-labelledby="activity-title">
                 <h2 id="activity-title">Actividad Reciente</h2>
                 <div class="movements-list-wrapper" role="region" aria-label="Lista de movimientos recientes">

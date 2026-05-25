@@ -1,9 +1,11 @@
+// --- Inicializar tema guardado ---
 export function initTheme() {
     const saved = localStorage.getItem('mf-theme') || 'light';
     document.documentElement.setAttribute('data-theme', saved);
     updateIcon(saved);
 }
 
+// --- Alternar tema oscuro/claro ---
 export function setupThemeToggle() {
     const btn = document.getElementById('theme-toggle');
     if (!btn) return;
@@ -17,6 +19,7 @@ export function setupThemeToggle() {
     });
 }
 
+// --- Actualizar icono del boton segun tema ---
 function updateIcon(theme) {
     const btn = document.getElementById('theme-toggle');
     if (!btn) return;
