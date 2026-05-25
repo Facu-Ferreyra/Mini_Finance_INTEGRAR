@@ -15,7 +15,7 @@ import {
 
 // --- Inicializador de Dashboard ---
 function initDashboard() {
-    // Renderizado inicial
+    // Render inicial
     renderMetrics();
     renderRecentMovements();
     renderAlerts();
@@ -23,6 +23,52 @@ function initDashboard() {
     const form = document.getElementById('finance-form');
     if (!form) return;
 
+    const categorySelect    = document.getElementById('category');
+    const descriptionGroup  = document.getElementById('description-group');
+    const descriptionInput  = document.getElementById('description');
+    const incomeOptgroup    = categorySelect.querySelector('.optgroup-income');
+    const expenseOptgroup   = categorySelect.querySelector('.optgroup-expense');
+
+    const requiresDescription = ['ingreso-extra', 'servicios', 'otros-ingreso', 'otros-gasto'];
+
+    // Filtro de Categorias x tIPO
+    function updateCategoryOptions(type) {
+        if (type === 'income') {
+            incomeOptgroup.removeAttribute('hidden');
+            expenseOptgroup.setAttribute('hidden', '');
+            categorySelect.value = 'salario';
+        } else {
+            incomeOptgroup.setAttribute('hidden', '');
+            expenseOptgroup.removeAttribute('hidden');
+            categorySelect.value = 'vivienda';
+        }
+        updateDescriptionVisibility(categorySelect.value);
+    }
+
+    // S/H descripción
+    function updateDescriptionVisibility(category) {
+        if (requiresDescription.includes(category)) {
+            descriptionGroup.removeAttribute('hidden');
+        } else {
+            descriptionGroup.setAttribute('hidden', '');
+            if (descriptionInput) descriptionInput.value = '';
+        }
+    }
+
+    // Listeners de tipo y categoría
+    document.querySelectorAll('input[name="type"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            updateCategoryOptions(e.target.value);
+        });
+    });
+
+    categorySelect.addEventListener('change', () => {
+        updateDescriptionVisibility(categorySelect.value);
+    });
+
+    updateCategoryOptions('income');
+
+    // Listener del submit 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         clearAllErrors();
@@ -33,7 +79,6 @@ function initDashboard() {
         const amountValue   = amountInput.value.trim();
         const categoryValue = categoryInput.value;
 
-        // Validación
         const { valid, errors } = validateForm(amountValue, categoryValue);
 
         if (!valid) {
@@ -42,23 +87,28 @@ function initDashboard() {
             return;
         }
 
-        // Construcción del objeto movimiento
         const movement = {
-            id:       Date.now(),
-            amount:   parseFloat(amountValue),
-            category: categoryValue,
-            type:     document.querySelector('input[name="type"]:checked')?.value || 'income',
-            date:     new Date().toISOString().split('T')[0]
+            id:          Date.now(),
+            amount:      parseFloat(amountValue),
+            category:    categoryValue,
+            type:        document.querySelector('input[name="type"]:checked')?.value || 'income',
+            description: descriptionInput?.value.trim() || '',
+            date:        new Date().toISOString().split('T')[0]
         };
 
-        // Persistencia y re-renderizado
         saveMovement(movement);
         renderMetrics();
         renderRecentMovements();
         renderAlerts();
 
-        // Limpiar formulario
         form.reset();
+
+        incomeOptgroup.removeAttribute('hidden');
+        expenseOptgroup.setAttribute('hidden', '');
+        categorySelect.value = 'salario';
+        descriptionGroup.setAttribute('hidden', '');
+        if (descriptionInput) descriptionInput.value = '';
+
         amountInput.focus();
     });
 }

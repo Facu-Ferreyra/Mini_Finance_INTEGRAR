@@ -291,6 +291,14 @@
         background: var(--color-surface-2);
     }
 
+    .movement-description {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--color-text-muted);
+        font-weight: 400;
+        margin-top: 0.15rem;
+    }
+
 
 
 

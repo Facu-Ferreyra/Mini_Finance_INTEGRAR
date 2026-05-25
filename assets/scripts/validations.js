@@ -19,7 +19,7 @@ export function validateAmount(value) {
 }
 
 export function validateCategory(value) {
-    const allowed = ['vivienda', 'comida', 'transporte'];
+    const allowed = ['salario', 'ingreso-extra', 'otros-ingreso', 'vivienda', 'servicios', 'transporte', 'educacion', 'alimentos', 'delivery', 'indumentaria', 'otros-gasto'];
 
     if (!value || value === '') {
         return { valid: false, error: 'Seleccioná una categoría.' };

@@ -78,11 +78,29 @@
                     <div class="form-group">
                         <label for="category">Categoría:</label>
                         <select id="category" required aria-required="true">
-                            <option value="vivienda">Vivienda</option>
-                            <option value="comida">Alimentos</option>
-                            <option value="transporte">Transporte</option>
+                            <optgroup label="Ingresos" class="optgroup-income">
+                                <option value="salario">Salario</option>
+                                <option value="ingreso-extra">Ingreso Extra</option>
+                                <option value="otros-ingreso">Otros</option>
+                            </optgroup>
+                            <optgroup label="Gastos" class="optgroup-expense">
+                                <option value="vivienda">Vivienda</option>
+                                <option value="servicios">Servicios Básicos</option>
+                                <option value="transporte">Transporte</option>
+                                <option value="educacion">Educación</option>
+                                <option value="alimentos">Alimentos</option>
+                                <option value="delivery">Restaurant / Delivery</option>
+                                <option value="indumentaria">Indumentaria / Personal</option>
+                                <option value="otros-gasto">Otros</option>
+                            </optgroup>
                         </select>
                     </div>
+
+                    <p class="form-group" id="description-group" hidden>
+                        <label for="description">Descripción:</label>
+                        <input type="text" id="description" placeholder="Ej: Sueldo de mayo" aria-describedby="description-hint">
+                        <span id="description-hint" class="error-message" role="status" aria-live="polite"></span>
+                    </p>
 
                     <button type="submit" class="btn-primary btn-block">Registrar Transacción</button>
                 </form>

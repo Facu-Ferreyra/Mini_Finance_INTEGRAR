@@ -57,6 +57,65 @@ export function renderRecentMovements() {
     });
 }
 
+// --- Historial completo (resumen.html) ---
+
+export function renderHistory(movements) {
+    const tbody = document.getElementById('history-body');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    if (movements.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="3" class="empty-state">No hay movimientos para esta categoría.</td>
+            </tr>`;
+        return;
+    }
+
+    movements.forEach(m => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><time datetime="${m.date}">${formatDate(m.date)}</time></td>
+        <td>
+            ${escapeHTML(capitalizeFirst(m.category))}
+            ${m.description 
+                ? `<small class="movement-description">${escapeHTML(m.description)}</small>` 
+                : ''}
+        </td>
+        <td class="${m.type === 'income' ? 'amount-income' : 'amount-expense'}">
+            ${m.type === 'income' ? '+' : '-'}${formatCurrency(m.amount)}
+        </td>
+    `;
+    tbody.appendChild(tr);
+    });
+}
+
+// --- Barra de progreso (resumen.html) ---
+
+export function renderGoalProgress(goalName, goalAmount) {
+    const nameEl   = document.getElementById('goal-name');
+    const statusEl = document.getElementById('goal-status');
+    const fillEl   = document.getElementById('goal-progress');
+    const barEl    = fillEl?.parentElement;
+
+    if (!nameEl || !statusEl || !fillEl) return;
+
+    const balance    = calcBalance();
+    const percentage = goalAmount > 0 ? Math.min((balance / goalAmount) * 100, 100) : 0;
+    const remaining  = Math.max(goalAmount - balance, 0);
+
+    nameEl.textContent   = goalName;
+    fillEl.style.width   = `${percentage.toFixed(1)}%`;
+    statusEl.textContent = remaining > 0
+        ? `Faltan ${formatCurrency(remaining)} para completar tu objetivo.`
+        : '¡Objetivo alcanzado!';
+
+    if (barEl) barEl.setAttribute('aria-valuenow', percentage.toFixed(1));
+}
+
+
+
 // --- Alertas ---
 
 export function renderAlerts() {
@@ -111,57 +170,6 @@ export function clearAllErrors() {
     clearFieldError('category');
 }
 
-// --- Historial completo (resumen.html) ---
-
-export function renderHistory(movements) {
-    const tbody = document.getElementById('history-body');
-    if (!tbody) return;
-
-    tbody.innerHTML = '';
-
-    if (movements.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="3" class="empty-state">No hay movimientos para esta categoría.</td>
-            </tr>`;
-        return;
-    }
-
-    movements.forEach(m => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td><time datetime="${m.date}">${formatDate(m.date)}</time></td>
-            <td>${escapeHTML(m.category)}</td>
-            <td class="${m.type === 'income' ? 'amount-income' : 'amount-expense'}">
-                ${m.type === 'income' ? '+' : '-'}${formatCurrency(m.amount)}
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-// --- Barra de progreso (resumen.html) ---
-
-export function renderGoalProgress(goalName, goalAmount) {
-    const nameEl   = document.getElementById('goal-name');
-    const statusEl = document.getElementById('goal-status');
-    const fillEl   = document.getElementById('goal-progress');
-    const barEl    = fillEl?.parentElement;
-
-    if (!nameEl || !statusEl || !fillEl) return;
-
-    const balance    = calcBalance();
-    const percentage = goalAmount > 0 ? Math.min((balance / goalAmount) * 100, 100) : 0;
-    const remaining  = Math.max(goalAmount - balance, 0);
-
-    nameEl.textContent   = goalName;
-    fillEl.style.width   = `${percentage.toFixed(1)}%`;
-    statusEl.textContent = remaining > 0
-        ? `Faltan ${formatCurrency(remaining)} para completar tu objetivo.`
-        : '¡Objetivo alcanzado!';
-
-    if (barEl) barEl.setAttribute('aria-valuenow', percentage.toFixed(1));
-}
 
 // --- Filtro de categorías (resumen.html) ---
 
