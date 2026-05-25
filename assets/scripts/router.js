@@ -124,6 +124,7 @@ function initResumen() {
     const nameInput   = document.getElementById('goal-name-input');
     const amountInput = document.getElementById('goal-amount-input');
     const prioritySel = document.getElementById('goal-priority');
+    const descInput   = document.getElementById('goal-description');
 
     // Función unificada para procesar el guardado de la meta
     const ejecutarGuardado = (e) => {
@@ -154,7 +155,8 @@ function initResumen() {
             id: Date.now(),
             name,
             amount,
-            priority
+            priority,
+            description: descInput ? descInput.value.trim() : ''
         };
 
         saveGoal(newGoal);

@@ -54,13 +54,16 @@ export function renderHistory(movements) {
     if (!tbody) return;
     tbody.innerHTML = '';
     if (movements.length === 0) {
-        tbody.innerHTML = '<tr><td colspan=\"3\" class=\"empty-state\">No hay movimientos para esta categoria.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan=\"4\" class=\"empty-state\">No hay movimientos para esta categoria.</td></tr>';
         return;
     }
     movements.forEach(function(m) {
         var tr = document.createElement('tr');
+        var typeLabel = m.type === 'income' ? 'Ingreso' : 'Gasto';
+        var typeClass = m.type === 'income' ? 'income' : 'expense';
         var descHtml = m.description ? '<small class=\"movement-description\">' + escapeHTML(m.description) + '</small>' : '';
         tr.innerHTML = '<td><time datetime=\"' + m.date + '\">' + formatDate(m.date) + '</time></td>'
+            + '<td><span class=\"type-badge ' + typeClass + '\">' + typeLabel + '</span></td>'
             + '<td>' + escapeHTML(capitalizeFirst(m.category)) + descHtml + '</td>'
             + '<td class=\"' + (m.type === 'income' ? 'amount-income' : 'amount-expense') + '\">'
             + (m.type === 'income' ? '+' : '-') + formatCurrency(m.amount) + '</td>';
@@ -131,7 +134,7 @@ export function renderGoals(goals) {
             + '<h3>' + escapeHTML(goal.name) + '</h3>'
             + '<span class="priority-badge ' + goal.priority + '">' + priorityLabel + '</span>'
             + '</div>'
-            + '<p class="goal-card-description">Fondo de ahorro personalizado controlado por tus balances.</p>'
+            + '<p class="goal-card-description">' + (goal.description ? escapeHTML(goal.description) : 'Fondo de ahorro personalizado controlado por tus balances.') + '</p>'
             + '<div class="progress-row">'
             + '<div class="progress-bar-bg"><div class="progress-fill ' + (goal.priority || 'medium') + '" style="width: ' + pct.toFixed(1) + '%;"></div></div>'
             + '<span class="percentage-text">' + pct.toFixed(0) + '%</span>'

@@ -678,4 +678,28 @@
     gap: 1.5rem;
     justify-content: space-between;
 }
+
+/* --- Type Badge for History Table --- */
+.type-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+}
+
+.type-badge.income {
+    background: rgba(16, 185, 129, 0.12);
+    color: var(--color-success);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.type-badge.expense {
+    background: rgba(239, 68, 68, 0.12);
+    color: var(--color-alert);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+}
 }
