@@ -1,4 +1,4 @@
-import { calcBalance, calcIncome, calcExpenses, isBalanceCritical, isExpenseLimitExceeded, isGoalUnreached, getRecentMovements, getGoalProgress, getGoalsSummary } from './finance.js';
+import { calcBalance, calcIncome, calcExpenses, isBalanceCritical, isExpenseLimitExceeded, isGoalUnreached, getRecentMovements, getGoalProgress, getGoalsSummary, getActiveGoals, getCompletedGoals } from './finance.js';
 import { getGoals, deleteGoal } from './storage.js';
 
 const GOAL_ICONS = {
@@ -106,22 +106,80 @@ export function renderGoalsFooterBanner() {
         + '</div>';
 }
 
-export function renderGoals(goals) {
-    const container = document.getElementById('goals-list-container');
+export function renderGoalsFilterToggle() {
+    var container = document.getElementById('goals-filter-toggle');
     if (!container) return;
+
+    var showingCompleted = window._goalsShowCompleted || false;
+
+    container.innerHTML = '<button type="button" id="goals-filter-btn" class="btn-filter-toggle">'
+        + '<span class="btn-icon-span">'
+        + (showingCompleted
+            ? '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'
+            : '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>')
+        + '</span> '
+        + (showingCompleted ? 'Ver activas' : 'Ver completadas')
+        + '</button>';
+}
+
+export function renderGoals(goals) {
+    var container = document.getElementById('goals-list-container');
+    if (!container) return;
+
+    var showingCompleted = window._goalsShowCompleted || false;
+
     if (goals.length === 0) {
-        container.innerHTML = '<p class="empty-state">No tenes metas financieras configuradas en este momento.</p>';
+        container.innerHTML = showingCompleted
+            ? '<p class="empty-state">No hay metas completadas aun. Debes completar una para verla aqui.</p>'
+            : '<p class="empty-state">No tenes metas financieras configuradas en este momento.</p>';
         return;
     }
+
+    var priorityLabels = { high: 'Alta', medium: 'Media', low: 'Baja' };
+
     container.innerHTML = goals.map(function(goal) {
         var progress = getGoalProgress(goal);
         var pct = progress.percentage;
-        var remaining = progress.remaining;
         var saved = progress.saved;
         var target = progress.target;
         var iconHtml = GOAL_ICONS[goal.icon] || GOAL_ICONS.target;
-        var priorityLabel = { high: 'Alta', medium: 'Media', low: 'Baja' }[goal.priority] || goal.priority;
+        var priorityLabel = priorityLabels[goal.priority] || goal.priority;
 
+        if (showingCompleted) {
+            var doneDate = goal.completedAt ? formatDate(goal.completedAt) : '—';
+            return '<article class="goal-card completed-card" data-id="' + goal.id + '">'
+                + '<div class="goal-card-main">'
+                + '<div class="goal-icon-avatar completed-icon" aria-hidden="true">'
+                + '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'
+                + '</div>'
+                + '<div class="goal-info-body">'
+                + '<div class="goal-title-wrapper">'
+                + '<h3>' + escapeHTML(goal.name) + '</h3>'
+                + '<span class="priority-badge completed" style="background: rgba(16,185,129,0.15); color: var(--color-success);">Completada</span>'
+                + '</div>'
+                + '<p class="goal-card-description">' + (goal.description ? escapeHTML(goal.description) : '') + '</p>'
+                + '<div class="completed-date-row">'
+                + '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>'
+                + '<span>Completada el ' + doneDate + '</span>'
+                + '</div>'
+                + '</div>'
+                + '</div>'
+                + '<div class="goal-card-actions-panel">'
+                + '<div class="goal-remaining-status">'
+                + '<span class="status-achieved" style="color: var(--color-success); font-weight: 700;">'
+                + formatCurrency(target) + ' alcanzados'
+                + '</span>'
+                + '</div>'
+                + '<div class="action-buttons-stack">'
+                + '<button type="button" class="btn-action-delete delete-goal-btn" data-id="' + goal.id + '" data-action="delete">'
+                + '<span class="btn-icon-span"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span> Eliminar'
+                + '</button>'
+                + '</div>'
+                + '</div>'
+                + '</article>';
+        }
+
+        var remaining = progress.remaining;
         var remainingHtml = remaining > 0
             ? '<span class="remaining-lbl">Faltan</span><span class="remaining-money">' + formatCurrency(remaining) + '</span><span class="remaining-lbl-sub">para completar tu objetivo</span>'
             : '<span class="status-achieved" style="color: #2ecc71; font-weight: bold; font-size: 0.95rem;">META ALCANZADA!</span>';

@@ -97,4 +97,69 @@
     .type-options {
         flex-wrap: wrap;
     }
+
+    /* --- Resumen / Summary Responsive --- */
+    @media (max-width: 767px) {
+        .goals-grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        .page-goals .goal-card {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .goal-card-main {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 1rem;
+        }
+
+        .goal-card-actions-panel {
+            flex-direction: column;
+            gap: 0.75rem;
+            padding: 1rem;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .action-buttons-stack {
+            flex-direction: row;
+            width: 100%;
+        }
+
+        .action-buttons-stack .btn-action-assign,
+        .action-buttons-stack .btn-action-delete {
+            flex: 1;
+        }
+
+        .goals-header-badges {
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .hero-header-flex {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .goals-header-row {
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .history-table {
+            font-size: 0.85rem;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 0.6rem 0.5rem;
+        }
+
+        .goals-count-badge {
+            font-size: 0.75rem;
+            padding: 0.3rem 0.6rem;
+        }
+    }
 }

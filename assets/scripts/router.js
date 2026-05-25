@@ -1,5 +1,5 @@
 import { saveMovement, getMovements, getGoals, saveGoal, deleteGoal, getGoalById } from './storage.js';
-import { getUniqueCategories, getMovementsByCategory, assignFundsToGoal } from './finance.js';
+import { getUniqueCategories, getMovementsByCategory, assignFundsToGoal, getActiveGoals, getCompletedGoals } from './finance.js';
 import { validateForm } from './validations.js';
 import { 
     renderMetrics, 
@@ -11,6 +11,7 @@ import {
     renderGoalsHeader,
     renderPriorityLegend,
     renderGoalsFooterBanner,
+    renderGoalsFilterToggle,
     populateCategoryFilter, 
     showFieldError, 
     clearFieldError,
@@ -115,7 +116,8 @@ function initResumen() {
     renderGoalsHeader();
     renderPriorityLegend();
     renderGoalsFooterBanner();
-    renderGoals(getGoals()); 
+    renderGoalsFilterToggle();
+    renderGoals(getActiveGoals()); 
     populateCategoryFilter(getUniqueCategories());
     renderHistory(getMovements());
 
@@ -244,6 +246,25 @@ function initResumen() {
             }
         });
     }
+
+    // Toggle: Ver activas / Ver completadas
+    window._goalsShowCompleted = false;
+
+    var filterBtn = document.getElementById('goals-filter-btn');
+    function setupFilterToggle() {
+        filterBtn = document.getElementById('goals-filter-btn');
+        if (filterBtn) {
+            filterBtn.addEventListener('click', function() {
+                window._goalsShowCompleted = !window._goalsShowCompleted;
+                var goals = window._goalsShowCompleted ? getCompletedGoals() : getActiveGoals();
+                renderGoalsFilterToggle();
+                renderGoals(goals);
+                renderGoalsHeader();
+                setupFilterToggle();
+            });
+        }
+    }
+    setupFilterToggle();
 
     const filterSelect = document.getElementById('filter-category');
     if (filterSelect) {

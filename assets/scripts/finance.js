@@ -56,6 +56,14 @@ export function getGoalProgress(goal) {
     return { percentage, remaining, saved, target };
 }
 
+export function getActiveGoals() {
+    return getGoals().filter(function(g) { return (g.saved || 0) < (g.amount || 0); });
+}
+
+export function getCompletedGoals() {
+    return getGoals().filter(function(g) { return (g.saved || 0) >= (g.amount || 0) && g.amount > 0; });
+}
+
 export function assignFundsToGoal(goalId, amount) {
     const goals = getGoals();
     const goal = goals.find(g => g.id === goalId);
@@ -66,14 +74,20 @@ export function assignFundsToGoal(goalId, amount) {
     if (assignAmount <= 0) return false;
 
     const newSaved = (goal.saved || 0) + assignAmount;
-    updateGoal(goalId, { saved: newSaved });
+    var updates = { saved: newSaved };
+
+    if (newSaved >= (goal.amount || 0) && !goal.completedAt) {
+        updates.completedAt = new Date().toISOString().split('T')[0];
+    }
+
+    updateGoal(goalId, updates);
 
     saveMovement({
         id: Date.now() + 1,
         amount: assignAmount,
         category: 'ahorro',
         type: 'expense',
-        description: `Asignacion a meta: ${goal.name}`,
+        description: 'Asignacion a meta: ' + goal.name,
         date: new Date().toISOString().split('T')[0]
     });
 
@@ -81,10 +95,10 @@ export function assignFundsToGoal(goalId, amount) {
 }
 
 export function getGoalsSummary() {
-    const goals = getGoals();
+    const goals = getActiveGoals();
+    const totalAssigned = goals.reduce(function(sum, g) { return sum + (g.saved || 0); }, 0);
+    const totalTarget = goals.reduce(function(sum, g) { return sum + (g.amount || 0); }, 0);
     const active = goals.length;
-    const totalAssigned = goals.reduce((sum, g) => sum + (g.saved || 0), 0);
-    const totalTarget = goals.reduce((sum, g) => sum + (g.amount || 0), 0);
     const avgProgress = totalTarget > 0
         ? Math.min((totalAssigned / totalTarget) * 100, 100)
         : 0;

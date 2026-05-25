@@ -23,7 +23,7 @@ export function getGoals() {
 
 export function saveGoal(goal) {
     const goals = getGoals();
-    goal = { saved: 0, icon: 'target', description: '', ...goal };
+    goal = { saved: 0, icon: 'target', description: '', completedAt: null, ...goal };
     goals.push(goal);
     localStorage.setItem(GOALS_KEY, JSON.stringify(goals));
 }
