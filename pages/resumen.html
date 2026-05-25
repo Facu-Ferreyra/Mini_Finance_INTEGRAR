@@ -3,81 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Mini Finance - Resumen</title>
+
     <link rel="stylesheet" href="../assets/src/main.css">
 </head>
+
 <body data-page="resumen">
-    
     <header class="main-navbar">
         <div class="navbar-container">
             <a href="../index.html" class="logo" aria-label="Mini Finance - Volver al inicio">
                 <span aria-hidden="true">💼</span>
-                <strong>Mini <span class="accent-text">Finance</span></strong>
+                <strong>Mini
+                    <span class="accent-text">Finance</span>
+                </strong>
             </a>
             <nav aria-label="Navegación principal">
                 <ul class="nav-links">
-                    <li><a href="../index.html" class="nav-link-home"><span aria-hidden="true">🏠</span>Inicio</a></li>
-                    <li><a href="dashboard.html" class="btn-secondary">Dashboard</a></li>
                     <li>
-                        <button id="theme-toggle" class="btn-theme-toggle" aria-label="Cambiar tema">
-                            🌙
-                        </button>
+                        <a href="../index.html" class="nav-link-home">
+                            <span aria-hidden="true">🏠</span>
+                            Inicio
+                        </a>
+                    </li>
+                    <li>
+                        <a href="dashboard.html" class="btn-secondary">Dashboard</a>
+                    </li>
+                    <li>
+                        <button id="theme-toggle" class="btn-theme-toggle" aria-label="Cambiar tema">🌙</button>
                     </li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <main>
-        <section class="goal-container">
-            <h2>Meta: <span id="goal-name">Cargando...</span></h2>
-            <div class="progress-bar-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                <div id="goal-progress" class="progress-fill"></div>
-            </div>
-            <p id="goal-status">Faltan $0 para completar tu objetivo.</p>
+    <main class="summary-layout">
+        
+        <section id="alerts-container" aria-live="polite"></section>
+        <section class="summary-hero section-card">
+            <h1>Mis Metas Financieras</h1>
+            <p>Organiza, prioriza y controla tus objetivos financieros.</p>
+        </section>   
+        <section class="goals-grid">
+            <section class="section-card goal-form-section" aria-labelledby="goal-form-title">
+                <h2 id="goal-form-title">Crear Nueva Meta</h2>
+
+                <div class="form-group">
+                    <label for="goal-name-input">Nombre de la meta</label>
+                    <input
+                        type="text"
+                        id="goal-name-input"
+                        placeholder="Ej: Viaje 2026"
+                        aria-describedby="goal-name-error"
+                    >
+
+                    <span id="goal-name-error" class="error-message" role="status" aria-live="polite"></span>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="goal-amount-input">Monto objetivo ($)</label>
+
+                    <input 
+                        type="number"
+                        id="goal-amount-input"
+                        min="1"
+                        step="0.01"
+                        placeholder="0.00"
+                        aria-describedby="goal-amount-error"
+                    >
+
+                    <span id="goal-amount-error" class="error-message" role="status" aria-live="polite">
+                    </span>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="goal-priority">Prioridad</label>
+                    <select id="goal-priority">
+                        <option value="high">Alta</option>
+                        <option value="medium">Media</option>
+                        <option value="low">Baja</option>
+                    </select>
+
+                </div>
+
+                <div class="goal-actions">
+                    <button type="button" id="save-goal-btn" class="btn-primary btn-block">Guardar Meta</button>
+                </div>
+
+            </section>
+
+            <section class="section-card goals-list-section" aria-label="Lista de metas">
+                <div class="goals-header">
+                    <h2>Mis Objetivos</h2>
+                    <p>Organizados por prioridad</p>
+                </div>
+
+                <div id="goals-list-container">
+                    <article class="goal-card">
+                        <div class="goal-card-header">
+                            <h3>Viaje a Japón</h3>
+                            <span class="priority-badge high">Alta</span>
+                        </div>
+
+                        <!-- PROGRESS -->
+                        <div
+                            class="progress-bar-bg"
+                            role="progressbar"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                            aria-valuenow="65"
+                        >
+
+                            <div
+                                class="progress-fill"
+                                style="width: 65%;"
+                            >
+                            </div>
+
+                        </div>
+
+                        <!-- STATUS -->
+                        <p class="goal-status">
+
+                            Faltan
+                            <strong>$35.000</strong>
+                            para completar tu objetivo
+
+                        </p>
+
+                        <!-- ACTIONS -->
+                        <div class="goal-card-actions">
+
+                            <button
+                                class="btn-add-funds"
+                                aria-label="Agregar fondos"
+                            >
+                                +
+                            </button>
+
+                            <button
+                                class="btn-danger"
+                                aria-label="Eliminar meta"
+                            >
+                                🗑️
+                            </button>
+
+                        </div>
+
+                    </article>
+
+                    <!-- GOAL CARD -->
+                    <article class="goal-card">
+
+                        <div class="goal-card-header">
+
+                            <h3>
+                                Notebook Nueva
+                            </h3>
+
+                            <span class="priority-badge medium">
+                                Media
+                            </span>
+
+                        </div>
+
+                        <div
+                            class="progress-bar-bg"
+                            role="progressbar"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                            aria-valuenow="30"
+                        >
+
+                            <div
+                                class="progress-fill"
+                                style="width: 30%;"
+                            >
+                            </div>
+
+                        </div>
+
+                        <p class="goal-status">
+
+                            Faltan
+                            <strong>$70.000</strong>
+
+                        </p>
+
+                        <div class="goal-card-actions">
+
+                            <button
+                                class="btn-add-funds"
+                            >
+                                +
+                            </button>
+
+                            <button
+                                class="btn-danger"
+                            >
+                                🗑️
+                            </button>
+
+                        </div>
+
+                    </article>
+
+                </div>
+            </section>
         </section>
 
-        <section class="section-card" aria-labelledby="goal-form-title">
-            <h2 id="goal-form-title">Configurar Meta</h2>
-            <div class="form-group">
-                <label for="goal-name-input">Nombre de la meta:</label>
-                <input type="text" id="goal-name-input" placeholder="Ej: Viaje 2026"
-                    aria-describedby="goal-name-error">
-                <span id="goal-name-error" class="error-message" 
-                    role="status" aria-live="polite"></span>
-            </div>
-            <div class="form-group">
-                <label for="goal-amount-input">Monto objetivo ($):</label>
-                <input type="number" id="goal-amount-input" min="1" step="0.01"
-                    placeholder="0.00" aria-describedby="goal-amount-error">
-                <span id="goal-amount-error" class="error-message" 
-                    role="status" aria-live="polite"></span>
-            </div>
-            <div class="goal-actions">
-                <button type="button" id="save-goal-btn" class="btn-primary btn-block">
-                    Guardar Meta
-                </button>
-                <button type="button" id="delete-goal-btn" class="btn-danger btn-block">
-                    Eliminar Meta
-                </button>
-            </div>
-        </section>
 
         <section class="metrics-grid" aria-label="Métricas de ahorro">
             <article class="metric-card card-balance">
                 <h3>Balance Neto</h3>
-                <p id="balance-total" class="card-value">$0.00</p>
+                <p id="balance-total" class="card-value">$1.026.937,00</p>
             </article>
             <article class="metric-card card-income">
                 <h3>Ingresos</h3>
-                <p id="income-total" class="card-value">$0.00</p>
+                <p id="income-total" class="card-value">$1.027.060,00</p>
             </article>
             <article class="metric-card card-savings">
                 <h3>Porcentaje de Ahorro</h3>
-                <p id="savings-rate" class="card-value">0%</p>
+                <p id="savings-rate"class="card-value">100%</p>
             </article>
         </section>
-
 
         <section class="section-card history-container">
             <h2>Historial Completo</h2>
@@ -87,7 +238,6 @@
                     <option value="all">Todas las categorías</option>
                 </select>
             </div>
-            
             <div class="movements-list-wrapper" role="region" aria-label="Historial de movimientos">
                 <table class="history-table">
                     <caption class="visually-hidden">Historial completo de movimientos financieros</caption>
@@ -104,7 +254,7 @@
             </div>
         </section>
     </main>
-            
-    <script type="module" src="../assets/scripts/main.js" defer></script>
+
+    <script type="module" src="../assets/scripts/main.js"defer></script>
 </body>
 </html>
