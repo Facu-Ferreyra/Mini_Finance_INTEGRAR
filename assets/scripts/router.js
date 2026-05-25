@@ -1,5 +1,5 @@
-import { saveMovement, getMovements, getGoals, saveGoal, deleteGoal } from './storage.js';
-import { getUniqueCategories, getMovementsByCategory } from './finance.js';
+import { saveMovement, getMovements, getGoals, saveGoal, deleteGoal, getGoalById } from './storage.js';
+import { getUniqueCategories, getMovementsByCategory, assignFundsToGoal } from './finance.js';
 import { validateForm } from './validations.js';
 import { 
     renderMetrics, 
@@ -8,10 +8,15 @@ import {
     renderHistory, 
     renderGoals, 
     renderSavingsRate,
+    renderGoalsHeader,
+    renderPriorityLegend,
+    renderGoalsFooterBanner,
     populateCategoryFilter, 
     showFieldError, 
     clearFieldError,
-    clearAllErrors, 
+    clearAllErrors,
+    openAssignModal,
+    closeAssignModal,
 } from './ui.js';
 
 // --- Inicializador de Dashboard ---
@@ -107,6 +112,9 @@ function initDashboard() {
 function initResumen() {
     renderMetrics();
     renderSavingsRate();
+    renderGoalsHeader();
+    renderPriorityLegend();
+    renderGoalsFooterBanner();
     renderGoals(getGoals()); 
     populateCategoryFilter(getUniqueCategories());
     renderHistory(getMovements());
@@ -169,17 +177,68 @@ function initResumen() {
         saveGoalBtn.addEventListener('click', ejecutarGuardado);
     }
 
-    // Delegación de eventos en el contenedor de metas (Eliminar)
+    // Delegación de eventos en el contenedor de metas (Asignar / Eliminar)
     const goalsContainer = document.getElementById('goals-list-container');
     if (goalsContainer) {
         goalsContainer.addEventListener('click', (e) => {
-            const deleteBtn = e.target.closest('.delete-goal-btn');
-            if (deleteBtn) {
-                const goalId = parseInt(deleteBtn.dataset.id, 10);
+            var btn = e.target.closest('[data-action]');
+            if (!btn) return;
+            var goalId = parseInt(btn.dataset.id, 10);
+            if (btn.dataset.action === 'delete') {
                 deleteGoal(goalId);
                 renderGoals(getGoals());
+                renderGoalsHeader();
                 renderSavingsRate();
                 renderAlerts();
+            } else if (btn.dataset.action === 'assign') {
+                var goal = getGoalById(goalId);
+                if (goal) openAssignModal(goal);
+            }
+        });
+    }
+
+    // Modal: Confirmar asignación
+    var confirmBtn = document.getElementById('assign-confirm');
+    var cancelBtn = document.getElementById('assign-cancel');
+    var modalOverlay = document.getElementById('assign-modal');
+
+    if (confirmBtn) {
+        confirmBtn.addEventListener('click', function() {
+            var modal = document.getElementById('assign-modal');
+            var goalId = parseInt(modal.dataset.goalId, 10);
+            var amountInput = document.getElementById('assign-amount');
+            var errorEl = document.getElementById('assign-error');
+            var amount = parseFloat(amountInput.value);
+
+            if (!amount || amount <= 0) {
+                errorEl.textContent = 'Ingresa un monto valido mayor a cero.';
+                return;
+            }
+
+            var result = assignFundsToGoal(goalId, amount);
+            if (result) {
+                closeAssignModal();
+                renderGoals(getGoals());
+                renderGoalsHeader();
+                renderMetrics();
+                renderSavingsRate();
+                renderAlerts();
+            } else {
+                errorEl.textContent = 'No hay suficiente balance disponible.';
+            }
+        });
+    }
+
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', function() {
+            closeAssignModal();
+        });
+    }
+
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                closeAssignModal();
             }
         });
     }
