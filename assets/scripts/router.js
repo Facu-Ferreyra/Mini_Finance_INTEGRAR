@@ -13,12 +13,21 @@ import {
     renderGoalsFooterBanner,
     renderGoalsFilterToggle,
     populateCategoryFilter, 
-    showFieldError, 
-    clearFieldError,
+    setFieldError, 
     clearAllErrors,
     openAssignModal,
     closeAssignModal,
 } from './ui.js';
+
+// --- Refrescar toda la UI de metas despues de una mutacion ---
+function refreshGoalsUI() {
+    var goals = window._goalsShowCompleted ? getCompletedGoals() : getActiveGoals();
+    renderGoals(goals);
+    renderGoalsHeader();
+    renderSavingsRate();
+    renderAlerts();
+    renderMetrics();
+}
 
 // --- Inicializador de Dashboard ---
 function initDashboard() {
@@ -87,8 +96,8 @@ function initDashboard() {
         const { valid, errors } = validateForm(amountValue, categoryValue);
 
         if (!valid) {
-            if (errors.amount)   showFieldError('amount', errors.amount);
-            if (errors.category) showFieldError('category', errors.category);
+            if (errors.amount)   setFieldError('amount', errors.amount);
+            if (errors.category) setFieldError('category', errors.category);
             return;
         }
 
@@ -135,8 +144,8 @@ function initResumen() {
     const ejecutarGuardado = (e) => {
         if (e) e.preventDefault(); 
         
-        clearFieldError('goal-name');
-        clearFieldError('goal-amount');
+        setFieldError('goal-name');
+        setFieldError('goal-amount');
 
         const name = nameInput?.value.trim();
         const amountAttr = amountInput?.value.trim();
@@ -146,11 +155,11 @@ function initResumen() {
         let hasError = false;
 
         if (!name) {
-            showFieldError('goal-name', 'Ingresá un nombre para la meta.');
+            setFieldError('goal-name', 'Ingresá un nombre para la meta.');
             hasError = true;
         }
         if (!amountAttr || isNaN(amount) || amount <= 0) {
-            showFieldError('goal-amount', 'Ingresá un monto válido mayor a cero.');
+            setFieldError('goal-amount', 'Ingresá un monto válido mayor a cero.');
             hasError = true;
         }
 
@@ -165,9 +174,7 @@ function initResumen() {
         };
 
         saveGoal(newGoal);
-        renderGoals(getGoals()); 
-        renderSavingsRate();
-        renderAlerts();
+        refreshGoalsUI();
 
         if (goalForm) {
             goalForm.reset();
@@ -193,10 +200,7 @@ function initResumen() {
             var goalId = parseInt(btn.dataset.id, 10);
             if (btn.dataset.action === 'delete') {
                 deleteGoal(goalId);
-                renderGoals(getGoals());
-                renderGoalsHeader();
-                renderSavingsRate();
-                renderAlerts();
+                refreshGoalsUI();
             } else if (btn.dataset.action === 'assign') {
                 var goal = getGoalById(goalId);
                 if (goal) openAssignModal(goal);
@@ -225,11 +229,7 @@ function initResumen() {
             var result = assignFundsToGoal(goalId, amount);
             if (result) {
                 closeAssignModal();
-                renderGoals(getGoals());
-                renderGoalsHeader();
-                renderMetrics();
-                renderSavingsRate();
-                renderAlerts();
+                refreshGoalsUI();
             } else {
                 errorEl.textContent = 'No hay suficiente balance disponible.';
             }

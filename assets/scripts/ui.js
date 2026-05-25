@@ -1,5 +1,5 @@
-import { calcBalance, calcIncome, calcExpenses, isBalanceCritical, isExpenseLimitExceeded, isGoalUnreached, getRecentMovements, getGoalProgress, getGoalsSummary, getActiveGoals, getCompletedGoals } from './finance.js';
-import { getGoals, deleteGoal } from './storage.js';
+import { calcBalance, calcIncome, calcExpenses, isBalanceCritical, isExpenseLimitExceeded, isGoalUnreached, getRecentMovements, getGoalProgress, getGoalsSummary } from './finance.js';
+import { getGoals } from './storage.js';
 
 // --- Iconos SVG por categoria de meta ---
 const GOAL_ICONS = {
@@ -81,8 +81,8 @@ export function renderGoalsHeader() {
     const headerEl = document.getElementById('goals-header-info');
     if (!headerEl) return;
     var summary = getGoalsSummary();
-    var targetSvg = '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/></svg>';
-    var moneySvg = '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 1v22\"/><path d=\"M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6\"/></svg>';
+    var targetSvg = GOAL_ICONS.target.replace('width=\"22\"', 'width=\"16\"').replace('height=\"22\"', 'height=\"16\"');
+    var moneySvg = GOAL_ICONS.piggy.replace('width=\"22\"', 'width=\"16\"').replace('height=\"22\"', 'height=\"16\"');
     var chartSvg = '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 12h-4l-3 9L9 3l-3 9H2\"/></svg>';
     headerEl.innerHTML = '<div class=\"goals-count-badge\">' + targetSvg + '<span>' + summary.active + ' metas activas</span></div>'
         + '<div class=\"goals-count-badge\">' + moneySvg + '<span>' + formatCurrency(summary.totalAssigned) + ' Asignado</span></div>'
@@ -258,28 +258,23 @@ function createAlert(message, type) {
     return el;
 }
 
-// --- Mostrar error en un campo del formulario ---
-export function showFieldError(fieldId, message) {
+// --- Mostrar o limpiar error en un campo del formulario ---
+export function setFieldError(fieldId, message) {
     var errorEl = document.getElementById(fieldId + '-error');
     var inputEl = document.getElementById(fieldId) || document.getElementById(fieldId + '-input');
-    if (errorEl) errorEl.textContent = message;
-    if (inputEl) inputEl.setAttribute('aria-invalid', 'true');
-}
-
-// --- Limpiar error de un campo ---
-export function clearFieldError(fieldId) {
-    var errorEl = document.getElementById(fieldId + '-error');
-    var inputEl = document.getElementById(fieldId) || document.getElementById(fieldId + '-input');
-    if (errorEl) errorEl.textContent = '';
-    if (inputEl) inputEl.removeAttribute('aria-invalid');
+    if (errorEl) errorEl.textContent = message || '';
+    if (inputEl) {
+        if (message) inputEl.setAttribute('aria-invalid', 'true');
+        else inputEl.removeAttribute('aria-invalid');
+    }
 }
 
 // --- Limpiar todos los errores de formularios ---
 export function clearAllErrors() {
-    clearFieldError('amount');
-    clearFieldError('category');
-    clearFieldError('goal-name');
-    clearFieldError('goal-amount');
+    setFieldError('amount');
+    setFieldError('category');
+    setFieldError('goal-name');
+    setFieldError('goal-amount');
 }
 
 // --- Poblar filtro de categorias en el historial ---
@@ -333,10 +328,10 @@ function capitalizeFirst(str) {
 }
 
 // --- Escapar HTML para evitar XSS ---
+var _escapeDiv = document.createElement('div');
 function escapeHTML(str) {
-    var div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
+    _escapeDiv.textContent = str;
+    return _escapeDiv.innerHTML;
 }
 
 export { formatCurrency, formatDate, capitalizeFirst, escapeHTML };

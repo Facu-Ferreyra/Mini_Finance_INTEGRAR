@@ -1,17 +1,19 @@
 import { getMovements, getGoals, updateGoal, saveMovement } from './storage.js';
 
+function calcByType(type) {
+    return getMovements()
+        .filter(m => m.type === type)
+        .reduce((total, m) => total + m.amount, 0);
+}
+
 // --- Calculo de ingresos totales ---
 export function calcIncome() {
-    return getMovements()
-        .filter(m => m.type === 'income')
-        .reduce((total, m) => total + m.amount, 0);
+    return calcByType('income');
 }
 
 // --- Calculo de gastos totales ---
 export function calcExpenses() {
-    return getMovements()
-        .filter(m => m.type === 'expense')
-        .reduce((total, m) => total + m.amount, 0);
+    return calcByType('expense');
 }
 
 // --- Balance neto (ingresos - gastos) ---
