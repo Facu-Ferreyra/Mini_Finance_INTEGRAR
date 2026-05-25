@@ -253,22 +253,18 @@ function initResumen() {
     // --- Toggle entre metas activas y completadas ---
     window._goalsShowCompleted = false;
 
-    var filterBtn = document.getElementById('goals-filter-btn');
-    // --- Configurar evento del boton de filtro ---
-    function setupFilterToggle() {
-        filterBtn = document.getElementById('goals-filter-btn');
-        if (filterBtn) {
-            filterBtn.addEventListener('click', function() {
-                window._goalsShowCompleted = !window._goalsShowCompleted;
-                var goals = window._goalsShowCompleted ? getCompletedGoals() : getActiveGoals();
-                renderGoalsFilterToggle();
-                renderGoals(goals);
-                renderGoalsHeader();
-                setupFilterToggle();
-            });
-        }
+    function handleFilterToggle() {
+        window._goalsShowCompleted = !window._goalsShowCompleted;
+        var goals = window._goalsShowCompleted ? getCompletedGoals() : getActiveGoals();
+        renderGoalsFilterToggle();
+        renderGoals(goals);
+        renderGoalsHeader();
     }
-    setupFilterToggle();
+
+    var filterBtn = document.getElementById('goals-filter-btn');
+    if (filterBtn) {
+        filterBtn.addEventListener('click', handleFilterToggle);
+    }
 
     // --- Filtro de historial por categoria ---
     const filterSelect = document.getElementById('filter-category');

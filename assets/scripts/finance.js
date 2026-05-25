@@ -59,6 +59,7 @@ export function isGoalUnreached() {
 
 // --- Progreso individual de una meta ---
 export function getGoalProgress(goal) {
+    if (!goal) return { percentage: 0, remaining: 0, saved: 0, target: 0 };
     const saved = goal.saved || 0;
     const target = goal.amount || 0;
     const percentage = target > 0 ? Math.min((saved / target) * 100, 100) : 0;

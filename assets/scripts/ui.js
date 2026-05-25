@@ -321,7 +321,10 @@ function formatCurrency(amount) {
 
 // --- Formatear fecha ISO a DD/MM/AAAA ---
 function formatDate(isoDate) {
-    return new Intl.DateTimeFormat('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(isoDate + 'T00:00:00'));
+    if (!isoDate) return '—';
+    const d = new Date(isoDate + 'T00:00:00');
+    if (isNaN(d.getTime())) return '—';
+    return new Intl.DateTimeFormat('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(d);
 }
 
 // --- Capitalizar primera letra ---
