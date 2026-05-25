@@ -189,21 +189,4 @@
         font-size: 0.85rem;
     }
 
-    /* ===================================================
-       NUEVAS ADICIONES DE LAYOUT (Media Queries Responsivas)
-       =================================================== */
-    @media (max-width: 992px) {
-        .dashboard-grid,
-        .dashboard-content {
-            grid-template-columns: 1fr; /* El formulario pasa arriba y la lista abajo */
-        }
-
-        .hero {
-            grid-template-columns: 1fr;
-            gap: 2rem;
-            min-height: auto;
-            padding: 3rem 0;
-        }
-    }
-
 }
