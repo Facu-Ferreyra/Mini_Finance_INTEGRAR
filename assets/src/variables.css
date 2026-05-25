@@ -14,6 +14,20 @@
     --gap-base: 1rem;
     --radius-lg: 12px;
     --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+    --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --priority-high: #f87171;
+    --priority-medium: #facc15;
+    --priority-low: #60a5fa;
+
+    --priority-high-bg: rgba(239, 68, 68, 0.15);
+    --priority-medium-bg: rgba(234, 179, 8, 0.15);
+    --priority-low-bg: rgba(59, 130, 246, 0.15);
+
+    --shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.2);
+
+    --transition-fast: 0.2s ease;
+    --transition-smooth: 0.35s ease;
 }
 
 [data-theme="light"] {
