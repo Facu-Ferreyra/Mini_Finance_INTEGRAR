@@ -261,9 +261,13 @@ function initResumen() {
         renderGoalsHeader();
     }
 
-    var filterBtn = document.getElementById('goals-filter-btn');
-    if (filterBtn) {
-        filterBtn.addEventListener('click', handleFilterToggle);
+    var toggleContainer = document.getElementById('goals-filter-toggle');
+    if (toggleContainer) {
+        toggleContainer.addEventListener('click', function(e) {
+            if (e.target.closest('#goals-filter-btn')) {
+                handleFilterToggle();
+            }
+        });
     }
 
     // --- Filtro de historial por categoria ---

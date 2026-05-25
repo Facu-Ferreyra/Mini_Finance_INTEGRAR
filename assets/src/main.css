@@ -8,3 +8,4 @@
 @import url("reset.css") layer(reset);
 @import url("responsive.css") layer(responsive);
 @import url("cards.css") layer(components);
+@import url("navbar-hero.css") layer(components);
