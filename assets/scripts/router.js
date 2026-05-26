@@ -1,4 +1,4 @@
-import { saveMovement, getMovements, getGoals, saveGoal, deleteGoal, getGoalById } from './storage.js';
+import { saveMovement, getMovements, getGoals, saveGoal, deleteGoal, getGoalById, updateGoal} from './storage.js';
 import { getUniqueCategories, getMovementsByCategory, assignFundsToGoal, getActiveGoals, getCompletedGoals } from './finance.js';
 import { validateForm } from './validations.js';
 import { 
@@ -17,6 +17,10 @@ import {
     clearAllErrors,
     openAssignModal,
     closeAssignModal,
+    openEditModal,
+    closeEditModal,
+    openConfirmModal,
+    closeConfirmModal
 } from './ui.js';
 
 let goalsShowCompleted = false;
@@ -133,7 +137,7 @@ function initResumen() {
     renderGoalsFilterToggle();
     renderGoals(getActiveGoals()); 
     populateCategoryFilter(getUniqueCategories());
-    renderHistory(getMovements());
+    /*renderHistory(getMovements());*/
 
     const goalForm    = document.getElementById('goal-form');
     const saveGoalBtn = document.getElementById('save-goal-btn'); 
@@ -142,6 +146,14 @@ function initResumen() {
     const prioritySel = document.getElementById('goal-priority');
     const descInput   = document.getElementById('goal-description');
 
+    /*
+    if (nameInput) {
+        nameInput.addEventListener('input', () => setFieldError('goal-name'));
+    }
+    if (amountInput) {
+        amountInput.addEventListener('input', () => setFieldError('goal-amount'));
+    }
+    */
     // --- Guardar nueva meta ---
     const ejecutarGuardado = (e) => {
         if (e) e.preventDefault(); 
@@ -197,15 +209,18 @@ function initResumen() {
     const goalsContainer = document.getElementById('goals-list-container');
     if (goalsContainer) {
         goalsContainer.addEventListener('click', (e) => {
-            var btn = e.target.closest('[data-action]');
+            const btn = e.target.closest('[data-action]');
             if (!btn) return;
-            var goalId = parseInt(btn.dataset.id, 10);
+            const goalId = parseInt(btn.dataset.id, 10);
             if (btn.dataset.action === 'delete') {
-                deleteGoal(goalId);
-                refreshGoalsUI();
+                const goalToConfirm = getGoalById(goalId);
+                if (goalToConfirm) openConfirmModal(goalId, goalToConfirm.name);
             } else if (btn.dataset.action === 'assign') {
-                var goal = getGoalById(goalId);
+                const goal = getGoalById(goalId);
                 if (goal) openAssignModal(goal);
+            } else if (btn.dataset.action === 'edit') {
+                const goalToEdit = getGoalById(goalId);
+                if (goalToEdit) openEditModal(goalToEdit);
             }
         });
     }
@@ -252,6 +267,74 @@ function initResumen() {
         });
     }
 
+
+    // --- Modal de edición: confirmar/cancelar ---
+    const editConfirmBtn = document.getElementById('edit-confirm');
+    const editCancelBtn = document.getElementById('edit-cancel');
+    const editModalOverlay = document.getElementById('edit-modal');
+
+    if (editConfirmBtn) {
+        editConfirmBtn.addEventListener('click', function() {
+            const modal = document.getElementById('edit-modal');
+            const goalId = parseInt(modal.dataset.goalId, 10);
+            const amountInput = document.getElementById('edit-goal-amount');
+            const errorEl = document.getElementById('edit-error');
+            const amount = parseFloat(amountInput.value);
+
+            if (!amount || amount <= 0) {
+                errorEl.textContent = 'Ingresá un monto válido mayor a cero.';
+                return;
+            }
+
+            updateGoal(goalId, { amount });
+            closeEditModal();
+            refreshGoalsUI();
+        });
+    }
+
+    if (editCancelBtn) {
+        editCancelBtn.addEventListener('click', function() {
+            closeEditModal();
+        });
+    }
+
+    if (editModalOverlay) {
+        editModalOverlay.addEventListener('click', function(e) {
+            if (e.target === editModalOverlay) {
+                closeEditModal();
+            }
+        });
+    }
+
+    // --- Modal de confirmación de eliminación ---
+    const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+    const confirmCancelBtn = document.getElementById('confirm-cancel-btn');
+    const confirmModalOverlay = document.getElementById('confirm-modal');
+
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener('click', function() {
+            const modal = document.getElementById('confirm-modal');
+            const goalId = parseInt(modal.dataset.goalId, 10);
+            deleteGoal(goalId);
+            closeConfirmModal();
+            refreshGoalsUI();
+        });
+    }
+
+    if (confirmCancelBtn) {
+        confirmCancelBtn.addEventListener('click', function() {
+            closeConfirmModal();
+        });
+    }
+
+    if (confirmModalOverlay) {
+        confirmModalOverlay.addEventListener('click', function(e) {
+            if (e.target === confirmModalOverlay) {
+                closeConfirmModal();
+            }
+        });
+    }
+
     // --- Toggle entre metas activas y completadas ---
     goalsShowCompleted = false;
 
@@ -273,17 +356,53 @@ function initResumen() {
     }
 
     // --- Filtro de historial por categoria ---
+    // --- Filtro de historial por categoria ---
+    // --- Filtro de historial por categoria ---
     const filterSelect = document.getElementById('filter-category');
-    if (filterSelect) {
-        filterSelect.addEventListener('change', () => {
-            renderHistory(getMovementsByCategory(filterSelect.value));
+    let historySortAsc = false; // false = más reciente primero (DESC)
+
+    function getSortedMovements(movements) {
+        return [...movements].sort((a, b) => {
+            if (historySortAsc) return a.date.localeCompare(b.date);
+            return b.date.localeCompare(a.date);
         });
     }
-}
 
-// --- Orquestador de Rutas ---
-export function handleRouting() {
-    const page = document.body.dataset.page;
-    if (page === 'dashboard') initDashboard();
-    if (page === 'resumen')   initResumen();
+    function refreshHistory() {
+        const filterSelect = document.getElementById('filter-category');
+        const category = filterSelect ? filterSelect.value : 'all';
+        const movements = getMovementsByCategory(category);
+        renderHistory(getSortedMovements(movements));
+    }
+
+    if (filterSelect) {
+        filterSelect.addEventListener('change', () => {
+        refreshHistory();});
+    }
+
+    const sortDateBtn = document.getElementById('sort-date-btn');
+    if (sortDateBtn) {
+        sortDateBtn.addEventListener('click', () => {
+            historySortAsc = !historySortAsc;
+            sortDateBtn.setAttribute('aria-sort', historySortAsc ? 'ascending' : 'descending');
+            const icon = sortDateBtn.querySelector('.sort-icon');
+            if (icon) icon.textContent = historySortAsc ? '▲' : '▼';
+            refreshHistory();
+        });
+        sortDateBtn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                sortDateBtn.click();
+            }
+        });
+    }
+
+    refreshHistory();
+    }
+
+    // --- Orquestador de Rutas ---
+    export function handleRouting() {
+        const page = document.body.dataset.page;
+        if (page === 'dashboard') initDashboard();
+        if (page === 'resumen')   initResumen();
 }

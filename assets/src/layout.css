@@ -3,9 +3,10 @@
     body {
         display: grid;
         grid-template-rows: auto 1fr auto; 
-        min-height: 100vh;
+        min-height: 100dvh;
         /*background-color: var(--color-bg, #0f172a); */
         background: var(--gradient-bg);
+        background-attachment: fixed;
         color: var(--color-white);
         margin: 0;
         font-family: 'Inter', sans-serif;
@@ -156,14 +157,16 @@
         font-size: 0.9rem;
     }
 
+    /*
     #goals-list-container {
         display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    width: 100%;
-    max-width: 800px; /* Controla el ancho total para que se asemeje a la foto */
-    margin: 0 auto;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
     }
+    */
 
     #alerts-container {
         display: flex;

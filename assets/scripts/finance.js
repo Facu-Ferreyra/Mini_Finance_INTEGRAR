@@ -56,7 +56,7 @@ export function getUniqueCategories() {
 export function isGoalUnreached() {
     const goals = getGoals();
     const balance = calcBalance();
-    return goals.some(goal => goal.amount > 0 && balance < goal.amount);
+    return goals.some(goal => goal.amount > 0 && (goal.saved || 0) < goal.amount && balance < goal.amount);
 }
 
 // --- Progreso individual de una meta ---

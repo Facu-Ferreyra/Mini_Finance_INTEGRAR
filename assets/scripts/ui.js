@@ -28,9 +28,10 @@ export function renderSavingsRate() {
     const el = document.getElementById('savings-rate');
     if (!el) return;
     const income = calcIncome();
-    const balance = calcBalance();
-    if (income <= 0 || balance <= 0) { el.textContent = '0%'; return; }
-    el.textContent = ((balance / income) * 100).toFixed(1) + '%';
+    const expenses = calcExpenses();
+    if (income <= 0) { el.textContent = '0%'; return; }
+    const rate = Math.max(0, ((income - expenses) / income) * 100);
+    el.textContent = rate.toFixed(1) + '%';
 }
 
 // --- Renderizar actividad reciente ---
@@ -216,9 +217,22 @@ export function renderGoals(goals) {
             + '</div>'
             + '<div class="goal-card-actions-panel">'
             + '<div class="goal-remaining-status">' + remainingHtml + '</div>'
+            
+            /*+ '<div class="action-buttons-stack">'
+            + '<button type="button" class="btn-action-assign" data-id="' + goal.id + '" data-action="assign">'
+            + '<span class="btn-icon-span"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span> Asignar'
+            + '</button>'
+            + '<button type="button" class="btn-action-delete delete-goal-btn" data-id="' + goal.id + '" data-action="delete">'
+            + '<span class="btn-icon-span"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span> Eliminar'
+            + '</button>'
+            + '</div>'
+            */
             + '<div class="action-buttons-stack">'
             + '<button type="button" class="btn-action-assign" data-id="' + goal.id + '" data-action="assign">'
             + '<span class="btn-icon-span"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span> Asignar'
+            + '</button>'
+            + '<button type="button" class="btn-action-edit" data-id="' + goal.id + '" data-action="edit">'
+            + '<span class="btn-icon-span"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span> Editar'
             + '</button>'
             + '<button type="button" class="btn-action-delete delete-goal-btn" data-id="' + goal.id + '" data-action="delete">'
             + '<span class="btn-icon-span"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span> Eliminar'
@@ -240,9 +254,9 @@ export function renderAlerts() {
         container.appendChild(createAlert('Has superado el 80% de tu limite de gastos previsto.', 'warning'));
     }
     if (isGoalUnreached()) {
-        var goals = getGoals();
-        var balance = calcBalance();
-        var unreached = goals.find(function(g) { return g.amount > 0 && balance < g.amount; });
+        const goals = getGoals();
+        const balance = calcBalance();
+        const unreached = goals.find(function(g) { return g.amount > 0 && (g.saved || 0) < g.amount && balance < g.amount;});
         if (unreached) {
             container.appendChild(createAlert('Te faltan ' + formatCurrency(unreached.amount - balance) + ' para alcanzar tu meta "' + unreached.name + '".', 'warning'));
         }
@@ -261,12 +275,25 @@ function createAlert(message, type) {
 // --- Mostrar o limpiar error en un campo del formulario ---
 export function setFieldError(fieldId, message) {
     var errorEl = document.getElementById(fieldId + '-error');
-    var inputEl = document.getElementById(fieldId) || document.getElementById(fieldId + '-input');
+    var inputEl = document.getElementById(fieldId) || document.getElementById(fieldId + 'adadadadadadadadad');
     if (errorEl) errorEl.textContent = message || '';
+    
     if (inputEl) {
         if (message) inputEl.setAttribute('aria-invalid', 'true');
         else inputEl.removeAttribute('aria-invalid');
     }
+    
+   /*
+   if (inputEl) {
+        if (message) {
+            inputEl.setAttribute('aria-invalid', 'true');
+            inputEl.setCustomValidity(message); 
+        } else {
+            inputEl.removeAttribute('aria-invalid');
+            inputEl.setCustomValidity('');
+        }
+    }
+    */
 }
 
 // --- Limpiar todos los errores de formularios ---
@@ -309,6 +336,41 @@ export function closeAssignModal() {
     modal.classList.remove('open');
 }
 
+// --- Abrir modal de edición de monto ---
+export function openEditModal(goal) {
+    var modal = document.getElementById('edit-modal');
+    if (!modal) return;
+    modal.dataset.goalId = goal.id;
+    document.getElementById('edit-goal-name').textContent = goal.name;
+    document.getElementById('edit-goal-amount').value = goal.amount || '';
+    document.getElementById('edit-error').textContent = '';
+    modal.classList.add('open');
+}
+
+// --- Cerrar modal de edición ---
+export function closeEditModal() {
+    var modal = document.getElementById('edit-modal');
+    if (!modal) return;
+    modal.classList.remove('open');
+}
+
+// --- Abrir modal de confirmación de eliminación ---
+export function openConfirmModal(goalId, goalName) {
+    var modal = document.getElementById('confirm-modal');
+    if (!modal) return;
+    modal.dataset.goalId = goalId;
+    var textEl = document.getElementById('confirm-modal-text');
+    if (textEl) textEl.textContent = '¿Seguro que querés eliminar "' + goalName + '"? Esta acción no se puede deshacer.';
+    modal.classList.add('open');
+}
+
+// --- Cerrar modal de confirmación ---
+export function closeConfirmModal() {
+    var modal = document.getElementById('confirm-modal');
+    if (!modal) return;
+    modal.classList.remove('open');
+}
+
 // --- Formatear monto en ARS ---
 function formatCurrency(amount) {
     return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 2 }).format(amount);
@@ -333,5 +395,6 @@ function escapeHTML(str) {
     _escapeDiv.textContent = str;
     return _escapeDiv.innerHTML;
 }
+
 
 export { formatCurrency, formatDate, capitalizeFirst, escapeHTML };

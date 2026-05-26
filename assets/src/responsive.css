@@ -105,6 +105,18 @@
         padding: 0.3rem 0.6rem;
     }
 
+    .summary-layout {
+        padding: 0;
+    }
+
+    .summary-layout .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #goals-list-container {
+        max-width: 100%;
+    }
+
     /* --- Desktop (>= 768px) --- */
     @media (min-width: 768px) {
 
@@ -197,6 +209,10 @@
         .goals-count-badge {
             font-size: 0.8rem;
             padding: 0.4rem 0.85rem;
+        }
+
+        .summary-layout .dashboard-grid {
+            grid-template-columns: 1fr 1.5fr;
         }
     }
 }
