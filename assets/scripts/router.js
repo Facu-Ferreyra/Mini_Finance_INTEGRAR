@@ -19,9 +19,11 @@ import {
     closeAssignModal,
 } from './ui.js';
 
+let goalsShowCompleted = false;
+
 // --- Refrescar toda la UI de metas despues de una mutacion ---
 function refreshGoalsUI() {
-    var goals = window._goalsShowCompleted ? getCompletedGoals() : getActiveGoals();
+    const goals = goalsShowCompleted ? getCompletedGoals() : getActiveGoals();
     renderGoals(goals);
     renderGoalsHeader();
     renderSavingsRate();
@@ -209,24 +211,24 @@ function initResumen() {
     }
 
     // --- Modal de asignacion: confirmar/cancelar ---
-    var confirmBtn = document.getElementById('assign-confirm');
-    var cancelBtn = document.getElementById('assign-cancel');
-    var modalOverlay = document.getElementById('assign-modal');
+    const confirmBtn = document.getElementById('assign-confirm');
+    const cancelBtn = document.getElementById('assign-cancel');
+    const modalOverlay = document.getElementById('assign-modal');
 
     if (confirmBtn) {
         confirmBtn.addEventListener('click', function() {
-            var modal = document.getElementById('assign-modal');
-            var goalId = parseInt(modal.dataset.goalId, 10);
-            var amountInput = document.getElementById('assign-amount');
-            var errorEl = document.getElementById('assign-error');
-            var amount = parseFloat(amountInput.value);
+            const modal = document.getElementById('assign-modal');
+            const goalId = parseInt(modal.dataset.goalId, 10);
+            const amountInput = document.getElementById('assign-amount');
+            const errorEl = document.getElementById('assign-error');
+            const amount = parseFloat(amountInput.value);
 
             if (!amount || amount <= 0) {
                 errorEl.textContent = 'Ingresa un monto valido mayor a cero.';
                 return;
             }
 
-            var result = assignFundsToGoal(goalId, amount);
+            const result = assignFundsToGoal(goalId, amount);
             if (result) {
                 closeAssignModal();
                 refreshGoalsUI();
@@ -251,17 +253,17 @@ function initResumen() {
     }
 
     // --- Toggle entre metas activas y completadas ---
-    window._goalsShowCompleted = false;
+    goalsShowCompleted = false;
 
     function handleFilterToggle() {
-        window._goalsShowCompleted = !window._goalsShowCompleted;
-        var goals = window._goalsShowCompleted ? getCompletedGoals() : getActiveGoals();
+        goalsShowCompleted = !goalsShowCompleted;
+        const goals = goalsShowCompleted ? getCompletedGoals() : getActiveGoals();
         renderGoalsFilterToggle();
         renderGoals(goals);
         renderGoalsHeader();
     }
 
-    var toggleContainer = document.getElementById('goals-filter-toggle');
+    const toggleContainer = document.getElementById('goals-filter-toggle');
     if (toggleContainer) {
         toggleContainer.addEventListener('click', function(e) {
             if (e.target.closest('#goals-filter-btn')) {

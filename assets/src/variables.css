@@ -10,6 +10,7 @@
     --color-action: #4f46e5;    /* Violeta para botones y enlaces */
     --color-white: #ffffff;
     --color-text-muted: #94a3b8;
+    --gradient-bg: radial-gradient(ellipse at top left, #3b0764 0%, #0f172a 50%, #082f49 100%);
     
     --font-main: system-ui, -apple-system, sans-serif;
     --gap-base: 1rem;
