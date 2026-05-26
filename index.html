@@ -3,70 +3,143 @@
 <head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Mini Finance is a simple financial management tool.">
-    
+    <meta name="description" content="Mini Finance - Simulador de presupuesto personal.">
     <title>Mini Finance</title>
-    
-    <link rel="stylesheet" href="assets/src/main.css">    
+    <link rel="stylesheet" href="assets/src/main.css">
 </head>
-    <body>
-        
-        <!-- Navbar principal -->
-        <header class="main-navbar">
-    <div class="navbar-container">
-        <a href="index.html" class="logo" aria-label="Mini Finance - Inicio">
-            <span aria-hidden="true">💼</span>
-            <strong>Mini <span class="accent-text">Finance</span></strong>
-        </a>
-        <nav aria-label="Navegación principal">
-            <ul class="nav-links"> 
-                <!-- Añadidas las clases requeridas por components.css y layout.css -->
-                <li><a href="index.html" class="nav-link-home" aria-current="page"><span aria-hidden="true">🏠</span>Inicio</a></li>
-                <li><a href="pages/dashboard.html" class="btn-secondary">Ir al Dashboard</a></li>
-                <li>
-                    <button id="theme-toggle" class="btn-theme-toggle" aria-label="Cambiar tema">
-                        🌙
-                    </button>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</header>
-            <!-- Hero y carrusel de presentacion -->
-            <main class="main-home">
-                <section class="hero" aria-labelledby="hero-title">
-                    <article class="hero-content">
-                        <p class="hero-tag">Tus finanzas, bajo control</p>
-                        <h1 id="hero-title">Tu Control <span class="accent-text">Financiero.</span><br>Sin Esfuerzo.</h1>
-                        <p class="hero-description">Registra ingresos, controla tus gastos mensuales y alcanza tus metas de ahorro en un solo lugar.</p>
-                        <a href="pages/dashboard.html" class="btn-primary">Comenzá GRATIS →</a>
-                    </article>
+<body>
 
-                    <figure class="hero-carousel" aria-hidden="false">
-                         <img src="assets/img/image1.png" alt="" class="carousel-slide active">
-                         <img src="assets/img/image2.png" alt="" class="carousel-slide">
-                         <img src="assets/img/image3.png" alt="" class="carousel-slide">
-                            <!-- Flechas -->
-                        <button class="carousel-btn prev" aria-label="Imagen anterior">❮</button>
-                        <button class="carousel-btn next" aria-label="Siguiente imagen">❯</button>
-                            <!-- Dots -->
-                        <figcaption class="carousel-dots">
-                            <button class="dot active" data-slide="0" aria-label="Ir a imagen 1"></button>
-                            <button class="dot" data-slide="1" aria-label="Ir a imagen 2"></button>
-                            <button class="dot" data-slide="2" aria-label="Ir a imagen 3"></button>
-                        </figcaption>
-                    </figure>
+    <!-- Navbar principal -->
+    <header class="main-navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="logo" aria-label="Mini Finance - Inicio">
+                <span aria-hidden="true">💼</span>
+                <strong>Mini <span class="accent-text">Finance</span></strong>
+            </a>
+            <nav aria-label="Navegación principal">
+                <ul class="nav-links">
+                    <li><a href="index.html" class="nav-link-home" aria-current="page"><span aria-hidden="true">🏠</span>Inicio</a></li>
+                    <li id="nav-dashboard-item" hidden>
+                        <a href="pages/dashboard.html" class="btn-secondary">Ir al Dashboard</a>
+                    </li>
+                    <li>
+                        <button id="nav-account-btn" class="btn-theme-toggle" aria-label="Mi cuenta" aria-expanded="false">
+                            👤 <span id="nav-username"></span>
+                        </button>
+                    </li>
+                    <li>
+                        <button id="theme-toggle" class="btn-theme-toggle" aria-label="Cambiar tema">🌙</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero y carrusel -->
+    <main class="main-home">
+        <section class="hero" aria-labelledby="hero-title">
+            <article class="hero-content">
+                <p class="hero-tag">Tus finanzas, bajo control</p>
+                <h1 id="hero-title">Tu Control <span class="accent-text">Financiero.</span><br>Sin Esfuerzo.</h1>
+                <p class="hero-description">Registra ingresos, controla tus gastos mensuales y alcanza tus metas de ahorro en un solo lugar.</p>
+                <button id="hero-cta" class="btn-primary">Comenzá GRATIS →</button>
+            </article>
+
+            <figure class="hero-carousel" aria-hidden="false">
+                <img src="assets/img/image1.png" alt="" class="carousel-slide active">
+                <img src="assets/img/image2.png" alt="" class="carousel-slide">
+                <img src="assets/img/image3.png" alt="" class="carousel-slide">
+                <button class="carousel-btn prev" aria-label="Imagen anterior">❮</button>
+                <button class="carousel-btn next" aria-label="Siguiente imagen">❯</button>
+                <figcaption class="carousel-dots">
+                    <button class="dot active" data-slide="0" aria-label="Ir a imagen 1"></button>
+                    <button class="dot" data-slide="1" aria-label="Ir a imagen 2"></button>
+                    <button class="dot" data-slide="2" aria-label="Ir a imagen 3"></button>
+                </figcaption>
+            </figure>
+        </section>
+    </main>
+
+    <!-- OVERLAY DE AUTENTICACIÓN -->
+    <div id="auth-overlay" class="auth-overlay" role="dialog" aria-modal="true" aria-labelledby="auth-overlay-title">
+        <article class="auth-card">
+
+            <!-- Selector de modo: Login / Registro -->
+            <nav class="auth-tabs" aria-label="Modo de acceso">
+                <button class="auth-tab active" data-tab="login" aria-selected="true">Iniciar sesión</button>
+                <button class="auth-tab" data-tab="register" aria-selected="false">Crear cuenta</button>
+            </nav>
+
+            <!-- Form de Login -->
+            <section id="auth-login" class="auth-form-panel" aria-labelledby="login-title">
+                <h2 id="login-title" class="auth-form-title">Bienvenido de vuelta</h2>
+                <p class="auth-form-subtitle">Ingresá con tu cuenta para continuar.</p>
+
+                <form id="login-form" novalidate>
+                    <div class="form-group">
+                        <label for="login-username">Usuario</label>
+                        <input type="text" id="login-username" placeholder="Tu nombre de usuario" autocomplete="username">
+                        <span id="login-username-error" class="error-message" role="status" aria-live="polite"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Contraseña</label>
+                        <input type="password" id="login-password" placeholder="Tu contraseña" autocomplete="current-password">
+                        <span id="login-password-error" class="error-message" role="status" aria-live="polite"></span>
+                    </div>
+                    <span id="login-general-error" class="error-message auth-general-error" role="alert" aria-live="assertive"></span>
+                    <button type="submit" class="btn-primary btn-block">Ingresar</button>
+                </form>
+
+                <!-- Lista de cuentas existentes -->
+                <section id="accounts-list-section" aria-labelledby="accounts-list-title">
+                    <h3 id="accounts-list-title" class="accounts-list-title">Cuentas guardadas</h3>
+                    <ul id="accounts-list" class="accounts-list" aria-label="Lista de cuentas"></ul>
                 </section>
-            </main>
+            </section>
 
-        <script  type="module" src="assets/scripts/main.js" defer></script>
+            <!-- Form de Registro -->
+            <section id="auth-register" class="auth-form-panel" hidden aria-labelledby="register-title">
+                <h2 id="register-title" class="auth-form-title">Crear cuenta</h2>
+                <p class="auth-form-subtitle">Registrá tu cuenta para guardar tus finanzas.</p>
 
-        <!-- Enlace al repositorio en GitHub -->
-        <a href="https://github.com/Facu-Ferreyra/Mini_Finance_INTEGRAR" class="github-fab" target="_blank" rel="noopener noreferrer" aria-label="Ver repositorio en GitHub">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
-            </svg>
-            <span> Repo GitHub</span>
-        </a>
-    </body>
+                <form id="register-form" novalidate>
+                    <div class="form-group">
+                        <label for="register-username">Usuario</label>
+                        <input type="text" id="register-username" placeholder="Mínimo 3 caracteres" autocomplete="username">
+                        <span id="register-username-error" class="error-message" role="status" aria-live="polite"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Contraseña</label>
+                        <input type="password" id="register-password" placeholder="Mínimo 4 caracteres" autocomplete="new-password">
+                        <span id="register-password-error" class="error-message" role="status" aria-live="polite"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password2">Confirmar contraseña</label>
+                        <input type="password" id="register-password2" placeholder="Repetí tu contraseña" autocomplete="new-password">
+                        <span id="register-password2-error" class="error-message" role="status" aria-live="polite"></span>
+                    </div>
+                    <span id="register-general-error" class="error-message auth-general-error" role="alert" aria-live="assertive"></span>
+                    <button type="submit" class="btn-primary btn-block">Crear cuenta</button>
+                </form>
+            </section>
+
+        </article>
+    </div>
+
+    <!-- Menú de cuenta (dropdown) -->
+    <div id="account-menu" class="account-menu" hidden aria-label="Menú de cuenta">
+        <p class="account-menu-name">Cuenta: <strong id="account-menu-username"></strong></p>
+        <button type="button" id="logout-btn" class="btn-danger">Cerrar sesión</button>
+    </div>
+
+    <!-- REPO en GitHub -->
+    <a href="https://github.com/Facu-Ferreyra/Mini_Finance_INTEGRAR" class="github-fab" target="_blank" rel="noopener noreferrer" aria-label="Ver repositorio en GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+        <span>Repo GitHub</span>
+    </a>
+
+    <script type="module" src="assets/scripts/main.js" defer></script>
+</body>
 </html>

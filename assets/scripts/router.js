@@ -22,6 +22,7 @@ import {
     openConfirmModal,
     closeConfirmModal
 } from './ui.js';
+import {isLoggedIn} from './accounts.js';
 
 let goalsShowCompleted = false;
 
@@ -37,6 +38,17 @@ function refreshGoalsUI() {
 
 // --- Inicializador de Dashboard ---
 function initDashboard() {
+    const logoutPageBtn = document.getElementById('logout-page-btn');
+    if (logoutPageBtn) {
+        logoutPageBtn.addEventListener('click', function() {
+            import('./accounts.js').then(function(m) {
+                m.logoutAccount();
+                window.location.replace('../index.html');
+            });
+        });
+    }
+    
+    
     renderMetrics();
     renderRecentMovements();
     renderAlerts();
@@ -129,6 +141,17 @@ function initDashboard() {
 
 // --- Inicializador de Resumen (Listado de Metas) ---
 function initResumen() {
+    const logoutPageBtn = document.getElementById('logout-page-btn');
+    if (logoutPageBtn) {
+        logoutPageBtn.addEventListener('click', function() {
+            import('./accounts.js').then(function(m) {
+                m.logoutAccount();
+                window.location.replace('../index.html');
+            });
+        });
+    }
+    
+    
     renderMetrics();
     renderSavingsRate();
     renderGoalsHeader();
@@ -400,9 +423,16 @@ function initResumen() {
     refreshHistory();
     }
 
-    // --- Orquestador de Rutas ---
+    // Orquestador de Rutas
     export function handleRouting() {
         const page = document.body.dataset.page;
+
+        // Redirigir si no hay sesión activa
+        if ((page === 'dashboard' || page === 'resumen') && !isLoggedIn()) {
+            // replace no queda en el historial (asi, cuando se vuelva atras no marque error, lo que si sucede con href)
+            window.location.replace('../index.html');
+            return;
+        }
         if (page === 'dashboard') initDashboard();
         if (page === 'resumen')   initResumen();
 }
