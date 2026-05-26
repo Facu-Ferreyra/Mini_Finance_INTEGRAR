@@ -83,10 +83,10 @@
 
         .hero-carousel {
             aspect-ratio: auto;
-            max-height: 380px;
-            max-width: 520px;
+            max-height: 340px;
+            max-width: 460px;
             order: 0;
-            justify-self: auto;
+            justify-self: end;
         }
 
         .hero-content {

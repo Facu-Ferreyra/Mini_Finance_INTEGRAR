@@ -35,7 +35,7 @@
     <main class="summary-layout page-goals">
         
         <!-- Contenedor de alertas financieras -->
-        <div id="alerts-container" aria-live="polite"></div>
+        <section id="alerts-container" role="alert" aria-live="assertive"></section>
 
         <!-- Header de metas -->
         <header class="summary-hero section-card">
@@ -145,18 +145,18 @@
 
         <!-- Metricas de ahorro -->
         <section class="metrics-grid" aria-label="Métricas de ahorro">
-            <div class="metric-card card-balance">
+            <article class="metric-card card-balance">
                 <h3>Balance Neto</h3>
                 <p id="balance-total" class="card-value">$0.00</p>
-            </div>
-            <div class="metric-card card-income">
+            </article>
+            <article class="metric-card card-income">
                 <h3>Ingresos</h3>
                 <p id="income-total" class="card-value">$0.00</p>
-            </div>
-            <div class="metric-card card-savings">
+            </article>
+            <article class="metric-card card-savings">
                 <h3>Porcentaje de Ahorro</h3>
                 <p id="savings-rate" class="card-value">0%</p>
-            </div>
+            </article>
         </section>
 
         <!-- Historial completo de movimientos -->
