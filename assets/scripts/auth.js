@@ -45,7 +45,7 @@ export function initAuth() {
             // Sin sesión: ocultar nav de cuenta/dashboard, ajustar CTA
             // El overlay NO se abre automáticamente
             navDashboard.setAttribute('hidden', '');
-            
+            navUsername.textContent = '';
             heroCta.textContent = 'Comenzá GRATIS →';
             heroCta.onclick = function() { openAuthOverlay(); };
         }
