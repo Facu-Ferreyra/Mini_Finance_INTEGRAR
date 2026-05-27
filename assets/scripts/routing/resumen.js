@@ -1,20 +1,17 @@
-import { saveMovement, getMovements, getGoals, saveGoal, deleteGoal, getGoalById, updateGoal} from './storage.js';
-import { getUniqueCategories, getMovementsByCategory, assignFundsToGoal, getActiveGoals, getCompletedGoals } from './finance.js';
-import { validateForm } from './validations.js';
-import { 
-    renderMetrics, 
-    renderRecentMovements, 
-    renderAlerts, 
-    renderDashboardGoalsPanel,
-    renderHistory, 
-    renderGoals, 
+import { getMovements, getGoals, saveGoal, deleteGoal, getGoalById, updateGoal } from '../core/storage.js';
+import { getUniqueCategories, getMovementsByCategory, assignFundsToGoal, getActiveGoals, getCompletedGoals } from '../core/finance.js';
+import {
+    renderMetrics,
+    renderAlerts,
+    renderGoals,
     renderSavingsRate,
     renderGoalsHeader,
     renderPriorityLegend,
     renderGoalsFooterBanner,
     renderGoalsFilterToggle,
-    populateCategoryFilter, 
-    setFieldError, 
+    populateCategoryFilter,
+    renderHistory,
+    setFieldError,
     clearAllErrors,
     openAssignModal,
     closeAssignModal,
@@ -22,12 +19,10 @@ import {
     closeEditModal,
     openConfirmModal,
     closeConfirmModal
-} from './ui.js';
-import {isLoggedIn} from './accounts.js';
+} from '../ui/ui.js';
 
 let goalsShowCompleted = false;
 
-// --- Refrescar toda la UI de metas despues de una mutacion ---
 function refreshGoalsUI() {
     const goals = goalsShowCompleted ? getCompletedGoals() : getActiveGoals();
     renderGoals(goals);
@@ -37,117 +32,11 @@ function refreshGoalsUI() {
     renderMetrics();
 }
 
-// --- Inicializador de Dashboard ---
-function initDashboard() {
+export function initResumen() {
     const logoutPageBtn = document.getElementById('logout-page-btn');
     if (logoutPageBtn) {
         logoutPageBtn.addEventListener('click', function() {
-            import('./accounts.js').then(function(m) {
-                m.logoutAccount();
-                window.location.replace('../index.html');
-            });
-        });
-    }
-    
-    
-    renderMetrics();
-    renderRecentMovements();
-    renderAlerts();
-    renderDashboardGoalsPanel();
-
-    const form = document.getElementById('finance-form');
-    if (!form) return;
-
-    const categorySelect    = document.getElementById('category');
-    const descriptionGroup  = document.getElementById('description-group');
-    const descriptionInput  = document.getElementById('description');
-    const incomeOptgroup    = categorySelect.querySelector('.optgroup-income');
-    const expenseOptgroup   = categorySelect.querySelector('.optgroup-expense');
-
-    const requiresDescription = ['ingreso-extra', 'servicios', 'otros-ingreso', 'otros-gasto'];
-
-    // --- Actualizar opciones de categoria segun tipo ---
-    function updateCategoryOptions(type) {
-        if (type === 'income') {
-            incomeOptgroup.removeAttribute('hidden');
-            expenseOptgroup.setAttribute('hidden', '');
-            categorySelect.value = 'salario';
-        } else {
-            incomeOptgroup.setAttribute('hidden', '');
-            expenseOptgroup.removeAttribute('hidden');
-            categorySelect.value = 'vivienda';
-        }
-        updateDescriptionVisibility(categorySelect.value);
-    }
-
-    // --- Mostrar/ocultar campo de descripcion segun categoria ---
-    function updateDescriptionVisibility(category) {
-        if (requiresDescription.includes(category)) {
-            descriptionGroup.removeAttribute('hidden');
-        } else {
-            descriptionGroup.setAttribute('hidden', '');
-            if (descriptionInput) descriptionInput.value = '';
-        }
-    }
-
-    document.querySelectorAll('input[name="type"]').forEach(radio => {
-        radio.addEventListener('change', (e) => {
-            updateCategoryOptions(e.target.value);
-        });
-    });
-
-    categorySelect.addEventListener('change', () => {
-        updateDescriptionVisibility(categorySelect.value);
-    });
-
-    updateCategoryOptions('income');
-
-    // --- Guardar nuevo movimiento ---
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        clearAllErrors();
-
-        const amountInput   = document.getElementById('amount');
-        const categoryInput = document.getElementById('category');
-
-        const amountValue   = amountInput.value.trim();
-        const categoryValue = categoryInput.value;
-
-        const { valid, errors } = validateForm(amountValue, categoryValue);
-
-        if (!valid) {
-            if (errors.amount)   setFieldError('amount', errors.amount);
-            if (errors.category) setFieldError('category', errors.category);
-            return;
-        }
-
-        const movement = {
-            id:          Date.now(),
-            amount:      parseFloat(amountValue),
-            category:    categoryValue,
-            type:        document.querySelector('input[name="type"]:checked')?.value || 'income',
-            description: descriptionInput?.value.trim() || '',
-            date:        new Date().toISOString().split('T')[0]
-        };
-
-        saveMovement(movement);
-        renderMetrics();
-        renderRecentMovements();
-        renderAlerts();
-
-        form.reset();
-        renderDashboardGoalsPanel();
-        updateCategoryOptions('income');
-        amountInput.focus();
-    });
-}
-
-// --- Inicializador de Resumen (Listado de Metas) ---
-function initResumen() {
-    const logoutPageBtn = document.getElementById('logout-page-btn');
-    if (logoutPageBtn) {
-        logoutPageBtn.addEventListener('click', function() {
-            import('./accounts.js').then(function(m) {
+            import('../core/accounts.js').then(function(m) {
                 m.logoutAccount();
                 window.location.replace('../index.html');
             });
@@ -180,7 +69,6 @@ function initResumen() {
         amountInput.addEventListener('input', () => setFieldError('goal-amount'));
     }
     */
-    // --- Guardar nueva meta ---
     const ejecutarGuardado = (e) => {
         if (e) e.preventDefault(); 
         
@@ -224,14 +112,12 @@ function initResumen() {
         }
     };
 
-    // Soportar tanto estructura de <form> como de <button> suelto
     if (goalForm) {
         goalForm.addEventListener('submit', ejecutarGuardado);
     } else if (saveGoalBtn) {
         saveGoalBtn.addEventListener('click', ejecutarGuardado);
     }
 
-    // --- Eliminar o asignar fondos a una meta ---
     const goalsContainer = document.getElementById('goals-list-container');
     if (goalsContainer) {
         goalsContainer.addEventListener('click', (e) => {
@@ -251,7 +137,6 @@ function initResumen() {
         });
     }
 
-    // --- Modal de asignacion: confirmar/cancelar ---
     const confirmBtn = document.getElementById('assign-confirm');
     const cancelBtn = document.getElementById('assign-cancel');
     const modalOverlay = document.getElementById('assign-modal');
@@ -294,7 +179,6 @@ function initResumen() {
     }
 
 
-    // --- Modal de edición: confirmar/cancelar ---
     const editConfirmBtn = document.getElementById('edit-confirm');
     const editCancelBtn = document.getElementById('edit-cancel');
     const editModalOverlay = document.getElementById('edit-modal');
@@ -334,7 +218,6 @@ function initResumen() {
         });
     }
 
-    // --- Modal de confirmación de eliminación ---
     const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
     const confirmCancelBtn = document.getElementById('confirm-cancel-btn');
     const confirmModalOverlay = document.getElementById('confirm-modal');
@@ -363,7 +246,6 @@ function initResumen() {
         });
     }
 
-    // --- Toggle entre metas activas y completadas ---
     goalsShowCompleted = false;
 
     function handleFilterToggle() {
@@ -383,11 +265,8 @@ function initResumen() {
         });
     }
 
-    // --- Filtro de historial por categoria ---
-    // --- Filtro de historial por categoria ---
-    // --- Filtro de historial por categoria ---
     const filterSelect = document.getElementById('filter-category');
-    let historySortAsc = false; // false = más reciente primero (DESC)
+    let historySortAsc = false;
 
     function getSortedMovements(movements) {
         return [...movements].sort((a, b) => {
@@ -427,17 +306,3 @@ function initResumen() {
 
     refreshHistory();
     }
-
-    // Orquestador de Rutas
-    export function handleRouting() {
-        const page = document.body.dataset.page;
-
-        // Redirigir si no hay sesión activa
-        if ((page === 'dashboard' || page === 'resumen') && !isLoggedIn()) {
-            // replace no queda en el historial (asi, cuando se vuelva atras no marque error, lo que si sucede con href)
-            window.location.replace('../index.html');
-            return;
-        }
-        if (page === 'dashboard') initDashboard();
-        if (page === 'resumen')   initResumen();
-}

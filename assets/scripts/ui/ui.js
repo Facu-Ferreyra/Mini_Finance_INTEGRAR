@@ -1,5 +1,5 @@
-import { calcBalance, calcIncome, calcExpenses, isBalanceCritical, isExpenseLimitExceeded, isGoalUnreached, getRecentMovements, getGoalProgress, getGoalsSummary } from './finance.js';
-import { getGoals } from './storage.js';
+import { calcBalance, calcIncome, calcExpenses, isBalanceCritical, isExpenseLimitExceeded, isGoalUnreached, getRecentMovements, getGoalProgress, getGoalsSummary } from '../core/finance.js';
+import { getGoals } from '../core/storage.js';
 
 // --- Iconos SVG por categoria de meta ---
 const GOAL_ICONS = {

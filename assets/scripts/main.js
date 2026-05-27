@@ -1,8 +1,8 @@
-import { initTheme, setupThemeToggle } from './theme.js';
-import { handleRouting } from './router.js';
-import { initCarousel } from "./carrusel.js";
-import { initAuth } from './auth.js';
-import { initPageTransitions } from './transition.js';
+import { initTheme, setupThemeToggle } from './ui/theme.js';
+import { handleRouting } from './routing/router.js';
+import { initCarousel } from "./ui/carrusel.js";
+import { initAuth } from './ui/auth.js';
+import { initPageTransitions } from './ui/transition.js';
 
 // Inicialización del tema
 initTheme();

@@ -1,5 +1,5 @@
 
-import { registerAccount, loginAccount, logoutAccount, getActiveAccount, isLoggedIn, getAccounts, deleteAccount } from './accounts.js';
+import { registerAccount, loginAccount, logoutAccount, getActiveAccount, isLoggedIn, getAccounts, deleteAccount } from '../core/accounts.js';
 
 // Inicializar sistema de autenticación
 export function initAuth() {
