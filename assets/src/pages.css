@@ -510,4 +510,185 @@
         align-items: center;
     }
 
+    /* DASHBOARD: PANEL MIS METAS */
+
+    .dash-goals-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .dash-goals-header {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+    }
+
+    .dash-goals-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: rgba(79, 70, 229, 0.15);
+        color: var(--color-action);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .dash-goals-header h2 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 700;
+    }
+
+    .dash-goals-subtitle {
+        font-size: 0.8rem;
+        color: var(--color-text-muted);
+        margin: 0;
+    }
+
+    .dash-goals-body {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    /* --- Estadísticas (izquierda): mobile apiladas, desktop en fila --- */
+    .dash-goals-stats {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .dash-goal-stat {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--color-border);
+        border-radius: 10px;
+        padding: 0.85rem 1rem;
+    }
+
+    .dash-goal-stat-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        background: rgba(79, 70, 229, 0.12);
+        color: var(--color-action);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .dash-goal-stat-value {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--color-white);
+        display: block;
+        line-height: 1.2;
+    }
+
+    .dash-goal-stat-label {
+        font-size: 0.75rem;
+        color: var(--color-text-muted);
+        display: block;
+    }
+
+    /* --- Acciones rápidas: mobile apiladas, desktop en fila --- */
+    .dash-goals-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .dash-goal-action-card {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.1rem;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--color-border);
+        border-radius: 10px;
+        text-decoration: none;
+        transition: border-color 0.2s, background 0.2s, transform 0.2s;
+        color: var(--color-white);
+    }
+
+    .dash-goal-action-card:hover {
+        border-color: var(--color-action);
+        background: rgba(79, 70, 229, 0.06);
+        transform: translateY(-2px);
+    }
+
+    .dash-goal-action-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .dash-goal-action-icon--purple {
+        background: rgba(79, 70, 229, 0.15);
+        color: var(--color-action);
+    }
+
+    .dash-goal-action-icon--green {
+        background: rgba(16, 185, 129, 0.15);
+        color: var(--color-success);
+    }
+
+    .dash-goal-action-icon--red {
+        background: rgba(248, 113, 113, 0.15);
+        color: var(--priority-high);
+    }
+
+    .dash-goal-action-label {
+        font-size: 0.9rem;
+        font-weight: 700;
+        display: block;
+        line-height: 1.2;
+    }
+
+    .dash-goal-action-sub {
+        font-size: 0.75rem;
+        color: var(--color-text-muted);
+        display: block;
+    }
+
+    /* --- "Ver todo" en actividad reciente --- */
+    .recent-activity-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .recent-activity-header h2 {
+        margin: 0;
+    }
+
+    .recent-ver-todo {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--color-action);
+        text-decoration: none;
+        padding: 0.3rem 0.6rem;
+        border-radius: 6px;
+        transition: background 0.2s, color 0.2s;
+        white-space: nowrap;
+    }
+
+    .recent-ver-todo:hover {
+        background: rgba(79, 70, 229, 0.1);
+        color: var(--color-white);
+    }
 }

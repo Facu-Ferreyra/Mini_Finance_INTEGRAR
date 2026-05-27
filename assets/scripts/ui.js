@@ -90,6 +90,35 @@ export function renderGoalsHeader() {
         + '<div class=\"goals-count-badge\">' + chartSvg + '<span>' + summary.avgProgress.toFixed(0) + '% Progreso promedio</span></div>';
 }
 
+// Renderizar panel de metas en el DASHBOARD.HTML
+export function renderDashboardGoalsPanel() {
+    const statsEl = document.getElementById('dash-goals-stats');
+    if (!statsEl) return;
+
+    var summary = getGoalsSummary();
+
+    const targetSvg = GOAL_ICONS.target.replace('width="22"', 'width="20"').replace('height="22"', 'height="20"');
+    const piguySvg  = GOAL_ICONS.piggy.replace('width="22"', 'width="20"').replace('height="22"', 'height="20"');
+    const chartSvg  = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>';
+
+    statsEl.innerHTML =
+        '<article class="dash-goal-stat">'
+        + '<span class="dash-goal-stat-icon" aria-hidden="true">' + targetSvg + '</span>'
+        + '<strong class="dash-goal-stat-value">' + summary.active + '</strong>'
+        + '<span class="dash-goal-stat-label">Metas activas</span>'
+        + '</article>'
+        + '<article class="dash-goal-stat">'
+        + '<span class="dash-goal-stat-icon" aria-hidden="true">' + piguySvg + '</span>'
+        + '<strong class="dash-goal-stat-value">' + formatCurrency(summary.totalAssigned) + '</strong>'
+        + '<span class="dash-goal-stat-label">Asignado</span>'
+        + '</article>'
+        + '<article class="dash-goal-stat">'
+        + '<span class="dash-goal-stat-icon" aria-hidden="true">' + chartSvg + '</span>'
+        + '<strong class="dash-goal-stat-value">' + summary.avgProgress.toFixed(0) + '%</strong>'
+        + '<span class="dash-goal-stat-label">Progreso promedio</span>'
+        + '</article>';
+}
+
 // --- Renderizar leyenda de prioridades ---
 export function renderPriorityLegend() {
     const legendEl = document.getElementById('priority-legend');
@@ -331,19 +360,22 @@ export function openAssignModal(goal) {
 
 // --- Cerrar modal de asignacion ---
 export function closeAssignModal() {
-    var modal = document.getElementById('assign-modal');
+    const modal = document.getElementById('assign-modal');
     if (!modal) return;
     modal.classList.remove('open');
 }
 
 // --- Abrir modal de edición de monto ---
 export function openEditModal(goal) {
-    var modal = document.getElementById('edit-modal');
+    const modal = document.getElementById('edit-modal');
     if (!modal) return;
     modal.dataset.goalId = goal.id;
     document.getElementById('edit-goal-name').textContent = goal.name;
     document.getElementById('edit-goal-amount').value = goal.amount || '';
     document.getElementById('edit-error').textContent = '';
+    // Preseleccionar la prioridad actual de la meta
+    const prioritySelect = document.getElementById('edit-goal-priority');
+    if (prioritySelect) prioritySelect.value = goal.priority || 'medium';
     modal.classList.add('open');
 }
 

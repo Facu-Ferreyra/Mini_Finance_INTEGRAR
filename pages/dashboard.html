@@ -112,13 +112,64 @@
 
             <!-- Actividad reciente -->
             <section class="section-card recent-activity" aria-labelledby="activity-title">
-                <h2 id="activity-title">Actividad Reciente</h2>
+                <header class="recent-activity-header">
+                    <h2 id="activity-title">Actividad Reciente</h2>
+                    <a href="resumen.html" class="recent-ver-todo" aria-label="Ver historial completo">
+                        Ver todo
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+                    </a>
+                </header>
                 <div class="movements-list-wrapper" role="region" aria-label="Lista de movimientos recientes">
-                    <ul id="recent-list" aria-live="polite">
-                    </ul>
+                    <ul id="recent-list" aria-live="polite"></ul>
                 </div>
             </section>
         </div>
+
+        <!-- Sección Mis Metas -->
+        <section class="section-card dash-goals-section" aria-labelledby="dash-goals-title">
+            <header class="dash-goals-header">
+                <span class="dash-goals-icon" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                </span>
+                <div>
+                    <h2 id="dash-goals-title">Mis Metas</h2>
+                    <p class="dash-goals-subtitle">Gestioná y controlá tus objetivos financieros</p>
+                </div>
+            </header>
+
+            <div class="dash-goals-body">
+
+                <!-- Estadísticas: renderizadas por JS -->
+                <div id="dash-goals-stats" class="dash-goals-stats" aria-label="Resumen de metas"></div>
+
+                <!-- Acciones rápidas -->
+                <nav class="dash-goals-actions" aria-label="Acciones de metas">
+                    <a href="resumen.html" class="dash-goal-action-card" aria-label="Ver mis metas en resumen">
+                        <span class="dash-goal-action-icon dash-goal-action-icon--purple" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                        </span>
+                        <strong class="dash-goal-action-label">Ver Mis Metas</strong>
+                        <span class="dash-goal-action-sub">Ir a resumen →</span>
+                    </a>
+
+                    <a href="resumen.html#nueva-meta" class="dash-goal-action-card" aria-label="Crear nueva meta">
+                        <span class="dash-goal-action-icon dash-goal-action-icon--green" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </span>
+                        <strong class="dash-goal-action-label">Nueva Meta</strong>
+                        <span class="dash-goal-action-sub">Crear objetivo →</span>
+                    </a>
+
+                    <a href="resumen.html#editar-meta" class="dash-goal-action-card" aria-label="Editar meta principal">
+                        <span class="dash-goal-action-icon dash-goal-action-icon--red" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                        </span>
+                        <strong class="dash-goal-action-label">Editar Meta</strong>
+                        <span class="dash-goal-action-sub">Ajustes rápidos →</span>
+                    </a>
+                </nav>
+            </div>
+        </section>
     </main>
 
 

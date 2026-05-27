@@ -214,5 +214,36 @@
         .summary-layout .dashboard-grid {
             grid-template-columns: 1fr 1.5fr;
         }
+
+        /* Dashboard: panel de metas en desktop — fila completa */
+        .dash-goals-body {
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 2rem;
+        }
+
+        .dash-goals-stats {
+            grid-template-columns: repeat(3, 1fr);
+            flex-shrink: 0;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .dash-goal-stat {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .dash-goals-actions {
+            grid-template-columns: repeat(3, 1fr);
+            flex: 1;
+        }
+
+        .dash-goal-action-card {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
     }
 }

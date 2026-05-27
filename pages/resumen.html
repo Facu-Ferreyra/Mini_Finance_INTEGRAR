@@ -54,7 +54,7 @@
         <div class="dashboard-grid goals-grid">
             
             <!-- Formulario de creacion de meta -->
-            <section class="section-card goal-form-section" aria-labelledby="goal-form-title">
+            <section id="nueva-meta" class="section-card goal-form-section" aria-labelledby="goal-form-title">
                 <form id="goal-form" action="#" method="POST" novalidate>
                     <h2 id="goal-form-title">Crear Nueva Meta</h2>
                     <p class="form-subtitle">Establece objetivos claros para mejorar tu tasa de ahorro.</p>
@@ -108,7 +108,7 @@
             </section>
 
             <!-- Lista de metas activas/completadas -->
-            <section class="section-card goals-list-section" aria-labelledby="goals-list-title">
+            <section id="editar-meta" class="section-card goals-list-section" aria-labelledby="goals-list-title">
                 <div class="goals-header">
                     <div class="goals-header-row">
                         <div>
@@ -155,6 +155,14 @@
                     <label for="edit-goal-amount">Nuevo monto objetivo ($):</label>
                     <input type="number" id="edit-goal-amount" min="1" step="0.01" placeholder="0.00">
                     <span id="edit-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="edit-goal-priority">Prioridad:</label>
+                    <select id="edit-goal-priority">
+                        <option value="high">Alta</option>
+                        <option value="medium">Media</option>
+                        <option value="low">Baja</option>
+                    </select>
                 </div>
                 <div class="modal-actions">
                     <button type="button" id="edit-confirm" class="btn-primary">Confirmar</button>

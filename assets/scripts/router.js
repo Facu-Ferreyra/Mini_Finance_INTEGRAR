@@ -5,6 +5,7 @@ import {
     renderMetrics, 
     renderRecentMovements, 
     renderAlerts, 
+    renderDashboardGoalsPanel,
     renderHistory, 
     renderGoals, 
     renderSavingsRate,
@@ -52,6 +53,7 @@ function initDashboard() {
     renderMetrics();
     renderRecentMovements();
     renderAlerts();
+    renderDashboardGoalsPanel();
 
     const form = document.getElementById('finance-form');
     if (!form) return;
@@ -134,6 +136,7 @@ function initDashboard() {
         renderAlerts();
 
         form.reset();
+        renderDashboardGoalsPanel();
         updateCategoryOptions('income');
         amountInput.focus();
     });
@@ -309,7 +312,9 @@ function initResumen() {
                 return;
             }
 
-            updateGoal(goalId, { amount });
+            const prioritySelect = document.getElementById('edit-goal-priority');
+            const priority = prioritySelect ? prioritySelect.value : 'medium';
+            updateGoal(goalId, { amount, priority });
             closeEditModal();
             refreshGoalsUI();
         });
