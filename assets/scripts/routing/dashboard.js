@@ -3,7 +3,6 @@ import { validateForm } from '../core/validations.js';
 import {
     renderMetrics,
     renderRecentMovements,
-    renderAlerts,
     renderDashboardGoalsPanel,
     setFieldError,
     clearAllErrors
@@ -23,7 +22,6 @@ export function initDashboard() {
     
     renderMetrics();
     renderRecentMovements();
-    renderAlerts();
     renderDashboardGoalsPanel();
 
     const form = document.getElementById('finance-form');
@@ -101,7 +99,6 @@ export function initDashboard() {
         saveMovement(movement);
         renderMetrics();
         renderRecentMovements();
-        renderAlerts();
 
         form.reset();
         renderDashboardGoalsPanel();

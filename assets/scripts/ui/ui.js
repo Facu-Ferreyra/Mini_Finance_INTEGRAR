@@ -1,4 +1,4 @@
-import { calcBalance, calcIncome, calcExpenses, isBalanceCritical, isExpenseLimitExceeded, isGoalUnreached, getRecentMovements, getGoalProgress, getGoalsSummary } from '../core/finance.js';
+import { calcBalance, calcIncome, calcExpenses, getRecentMovements, getGoalProgress, getGoalsSummary } from '../core/finance.js';
 import { getGoals } from '../core/storage.js';
 
 // --- Iconos SVG por categoria de meta ---
@@ -270,35 +270,6 @@ export function renderGoals(goals) {
             + '</div>'
             + '</article>';
     }).join('');
-}
-
-// --- Renderizar alertas financieras ---
-export function renderAlerts() {
-    const container = document.getElementById('alerts-container');
-    if (!container) return;
-    container.innerHTML = '';
-    if (isBalanceCritical()) {
-        container.appendChild(createAlert('Tu balance es negativo. Revisa tus gastos.', 'error'));
-    } else if (isExpenseLimitExceeded()) {
-        container.appendChild(createAlert('Has superado el 80% de tu limite de gastos previsto.', 'warning'));
-    }
-    if (isGoalUnreached()) {
-        const goals = getGoals();
-        const balance = calcBalance();
-        const unreached = goals.find(function(g) { return g.amount > 0 && (g.saved || 0) < g.amount && balance < g.amount;});
-        if (unreached) {
-            container.appendChild(createAlert('Te faltan ' + formatCurrency(unreached.amount - balance) + ' para alcanzar tu meta "' + unreached.name + '".', 'warning'));
-        }
-    }
-}
-
-// --- Crear elemento de alerta ---
-function createAlert(message, type) {
-    var el = document.createElement('div');
-    el.classList.add('alert', 'alert-' + type);
-    el.setAttribute('role', 'alert');
-    el.innerHTML = '<span aria-hidden="true">&#9888;</span> ' + escapeHTML(message);
-    return el;
 }
 
 // --- Mostrar o limpiar error en un campo del formulario ---

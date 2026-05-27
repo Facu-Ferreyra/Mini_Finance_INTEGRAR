@@ -2,7 +2,6 @@ import { getMovements, getGoals, saveGoal, deleteGoal, getGoalById, updateGoal }
 import { getUniqueCategories, getMovementsByCategory, assignFundsToGoal, getActiveGoals, getCompletedGoals } from '../core/finance.js';
 import {
     renderMetrics,
-    renderAlerts,
     renderGoals,
     renderSavingsRate,
     renderGoalsHeader,
@@ -28,7 +27,6 @@ function refreshGoalsUI() {
     renderGoals(goals);
     renderGoalsHeader();
     renderSavingsRate();
-    renderAlerts();
     renderMetrics();
 }
 
