@@ -546,6 +546,12 @@
         flex-shrink: 0;
     }
 
+    .dash-goal-stat-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.1rem;
+    }
+
     .dash-goal-stat-value {
         font-size: 1rem;
         font-weight: 700;
@@ -621,5 +627,11 @@
         font-size: 0.75rem;
         color: var(--color-text-muted);
         display: block;
+    }
+
+    .dash-goal-action-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.1rem;
     }
 }

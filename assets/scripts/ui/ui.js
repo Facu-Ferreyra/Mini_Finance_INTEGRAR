@@ -148,18 +148,24 @@ export function renderDashboardGoalsPanel() {
     statsEl.innerHTML =
         '<article class="dash-goal-stat">'
         + '<span class="dash-goal-stat-icon" aria-hidden="true">' + targetSvg + '</span>'
+        + '<div class="dash-goal-stat-info">'
         + '<strong class="dash-goal-stat-value">' + summary.active + '</strong>'
         + '<span class="dash-goal-stat-label">Metas activas</span>'
+        + '</div>'
         + '</article>'
         + '<article class="dash-goal-stat">'
         + '<span class="dash-goal-stat-icon" aria-hidden="true">' + piguySvg + '</span>'
+        + '<div class="dash-goal-stat-info">'
         + '<strong class="dash-goal-stat-value">' + formatCurrency(summary.totalAssigned) + '</strong>'
         + '<span class="dash-goal-stat-label">Asignado</span>'
+        + '</div>'
         + '</article>'
         + '<article class="dash-goal-stat">'
         + '<span class="dash-goal-stat-icon" aria-hidden="true">' + chartSvg + '</span>'
+        + '<div class="dash-goal-stat-info">'
         + '<strong class="dash-goal-stat-value">' + summary.avgProgress.toFixed(0) + '%</strong>'
         + '<span class="dash-goal-stat-label">Progreso promedio</span>'
+        + '</div>'
         + '</article>';
 }
 
