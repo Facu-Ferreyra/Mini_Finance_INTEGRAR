@@ -101,8 +101,8 @@
     }
 
     .goals-count-badge {
-        font-size: 0.75rem;
-        padding: 0.3rem 0.6rem;
+        font-size: 0.68rem;
+        padding: 0.2rem 0.5rem;
     }
 
     .summary-layout {
@@ -249,8 +249,8 @@
         }
 
         .goals-count-badge {
-            font-size: 0.8rem;
-            padding: 0.4rem 0.85rem;
+            font-size: 0.72rem;
+            padding: 0.25rem 0.6rem;
         }
 
         .summary-layout .dashboard-grid {

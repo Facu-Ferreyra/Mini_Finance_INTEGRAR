@@ -116,9 +116,9 @@ export function renderGoalsHeader() {
     const headerEl = document.getElementById('goals-header-info');
     if (!headerEl) return;
     const summary = getGoalsSummary();
-    const targetSvg = GOAL_ICONS.target.replace('width=\"22\"', 'width=\"16\"').replace('height=\"22\"', 'height=\"16\"');
-    const moneySvg = GOAL_ICONS.piggy.replace('width=\"22\"', 'width=\"16\"').replace('height=\"22\"', 'height=\"16\"');
-    const chartSvg = '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 12h-4l-3 9L9 3l-3 9H2\"/></svg>';
+    const targetSvg = GOAL_ICONS.target.replace('width=\"22\"', 'width=\"14\"').replace('height=\"22\"', 'height=\"14\"');
+    const moneySvg = GOAL_ICONS.piggy.replace('width=\"22\"', 'width=\"14\"').replace('height=\"22\"', 'height=\"14\"');
+    const chartSvg = '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 12h-4l-3 9L9 3l-3 9H2\"/></svg>';
     headerEl.innerHTML = '<div class=\"goals-count-badge\">' + targetSvg + '<span>' + summary.active + ' metas activas</span></div>'
         + '<div class=\"goals-count-badge\">' + moneySvg + '<span>' + formatCurrency(summary.totalAssigned) + ' Asignado</span></div>'
         + '<div class=\"goals-count-badge\">' + chartSvg + '<span>' + summary.avgProgress.toFixed(0) + '% Progreso promedio</span></div>';
