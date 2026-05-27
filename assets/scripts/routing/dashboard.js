@@ -1,11 +1,15 @@
-import { saveMovement } from '../core/storage.js';
+import { saveMovement, getMovementById, updateMovement, deleteMovement } from '../core/storage.js';
 import { validateForm } from '../core/validations.js';
 import {
     renderMetrics,
     renderRecentMovements,
     renderDashboardGoalsPanel,
     setFieldError,
-    clearAllErrors
+    clearAllErrors,
+    openEditMovementModal,
+    closeEditMovementModal,
+    openDeleteMovementConfirm,
+    closeDeleteMovementConfirm
 } from '../ui/ui.js';
 
 export function initDashboard() {
@@ -104,5 +108,75 @@ export function initDashboard() {
         renderDashboardGoalsPanel();
         updateCategoryOptions('income');
         amountInput.focus();
+    });
+
+    // Movement action buttons: edit / delete
+    const recentList = document.getElementById('recent-list');
+    if (recentList) {
+        recentList.addEventListener('click', function(e) {
+            const btn = e.target.closest('[data-action]');
+            if (!btn) return;
+            const id = parseInt(btn.dataset.id, 10);
+
+            if (btn.dataset.action === 'edit-mov') {
+                const movement = getMovementById(id);
+                if (movement) openEditMovementModal(movement);
+            } else if (btn.dataset.action === 'delete-mov') {
+                openDeleteMovementConfirm(id);
+            }
+        });
+    }
+
+    // Edit movement modal confirm
+    document.getElementById('edit-mov-confirm')?.addEventListener('click', function() {
+        const modal = document.getElementById('edit-movement-modal');
+        const id = parseInt(modal.dataset.movementId, 10);
+        const amount = parseFloat(document.getElementById('edit-mov-amount').value);
+        const type = document.querySelector('input[name="edit-mov-type"]:checked')?.value;
+        const category = document.getElementById('edit-mov-category').value;
+        const description = document.getElementById('edit-mov-description').value.trim();
+        const errorEl = document.getElementById('edit-mov-error');
+
+        if (!amount || amount <= 0) {
+            errorEl.textContent = 'Ingresá un monto válido mayor a cero.';
+            return;
+        }
+
+        updateMovement(id, { amount, type, category, description });
+        closeEditMovementModal();
+        renderMetrics();
+        renderRecentMovements();
+        renderDashboardGoalsPanel();
+    });
+
+    // Edit movement modal cancel
+    document.getElementById('edit-mov-cancel')?.addEventListener('click', function() {
+        closeEditMovementModal();
+    });
+
+    // Edit movement modal overlay click
+    document.getElementById('edit-movement-modal')?.addEventListener('click', function(e) {
+        if (e.target === this) closeEditMovementModal();
+    });
+
+    // Delete movement modal confirm
+    document.getElementById('delete-mov-confirm')?.addEventListener('click', function() {
+        const modal = document.getElementById('delete-movement-modal');
+        const id = parseInt(modal.dataset.movementId, 10);
+        deleteMovement(id);
+        closeDeleteMovementConfirm();
+        renderMetrics();
+        renderRecentMovements();
+        renderDashboardGoalsPanel();
+    });
+
+    // Delete movement modal cancel
+    document.getElementById('delete-mov-cancel')?.addEventListener('click', function() {
+        closeDeleteMovementConfirm();
+    });
+
+    // Delete movement modal overlay click
+    document.getElementById('delete-movement-modal')?.addEventListener('click', function(e) {
+        if (e.target === this) closeDeleteMovementConfirm();
     });
 }

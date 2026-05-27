@@ -81,9 +81,19 @@ export function renderRecentMovements() {
     movements.forEach(function(m) {
         const li = document.createElement('li');
         li.classList.add('movement-item', m.type === 'income' ? 'movement-income' : 'movement-expense');
-        li.innerHTML = '<span class=\"movement-category\">' + escapeHTML(capitalizeFirst(m.category)) + '</span>'
+        li.innerHTML = '<div class=\"movement-info\">'
+            + '<span class=\"movement-category\">' + escapeHTML(capitalizeFirst(m.category)) + '</span>'
             + '<span class=\"movement-amount\">' + (m.type === 'income' ? '+' : '-') + formatCurrency(m.amount) + '</span>'
-            + '<time class=\"movement-date\" datetime=\"' + m.date + '\">' + formatDate(m.date) + '</time>';
+            + '<time class=\"movement-date\" datetime=\"' + m.date + '\">' + formatDate(m.date) + '</time>'
+            + '</div>'
+            + '<div class=\"movement-actions\">'
+            + '<button type=\"button\" class=\"movement-btn movement-btn-edit\" data-id=\"' + m.id + '\" data-action=\"edit-mov\" aria-label=\"Editar movimiento\">'
+            + '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7\"/><path d=\"M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z\"/></svg>'
+            + '</button>'
+            + '<button type=\"button\" class=\"movement-btn movement-btn-delete\" data-id=\"' + m.id + '\" data-action=\"delete-mov\" aria-label=\"Eliminar movimiento\">'
+            + '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"3 6 5 6 21 6\"/><path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\"/></svg>'
+            + '</button>'
+            + '</div>';
         list.appendChild(li);
     });
 }
@@ -404,6 +414,45 @@ export function openConfirmModal(goalId, goalName) {
 // --- Cerrar modal de confirmación ---
 export function closeConfirmModal() {
     const modal = document.getElementById('confirm-modal');
+    if (!modal) return;
+    modal.classList.remove('open');
+}
+
+// --- Abrir modal de edición de movimiento ---
+export function openEditMovementModal(movement) {
+    const modal = document.getElementById('edit-movement-modal');
+    if (!modal) return;
+    modal.dataset.movementId = movement.id;
+    document.getElementById('edit-mov-amount').value = movement.amount;
+    document.querySelector('input[name="edit-mov-type"][value="' + movement.type + '"]').checked = true;
+    const catSelect = document.getElementById('edit-mov-category');
+    Array.from(catSelect.options).forEach(function(opt) {
+        opt.hidden = (opt.dataset.type === 'income') !== (movement.type === 'income');
+    });
+    catSelect.value = movement.category;
+    document.getElementById('edit-mov-description').value = movement.description || '';
+    document.getElementById('edit-mov-error').textContent = '';
+    modal.classList.add('open');
+}
+
+// --- Cerrar modal de edición de movimiento ---
+export function closeEditMovementModal() {
+    const modal = document.getElementById('edit-movement-modal');
+    if (!modal) return;
+    modal.classList.remove('open');
+}
+
+// --- Abrir confirmación de eliminación de movimiento ---
+export function openDeleteMovementConfirm(movementId) {
+    const modal = document.getElementById('delete-movement-modal');
+    if (!modal) return;
+    modal.dataset.movementId = movementId;
+    modal.classList.add('open');
+}
+
+// --- Cerrar confirmación de eliminación de movimiento ---
+export function closeDeleteMovementConfirm() {
+    const modal = document.getElementById('delete-movement-modal');
     if (!modal) return;
     modal.classList.remove('open');
 }

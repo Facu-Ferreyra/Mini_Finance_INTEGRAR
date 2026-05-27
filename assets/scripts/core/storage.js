@@ -124,3 +124,21 @@ export function updateGoal(id, changes) {
 export function getGoalById(id) {
     return getGoals().find(g => g.id === id) || null;
 }
+
+export function getMovementById(id) {
+    return getMovements().find(m => m.id === id) || null;
+}
+
+export function updateMovement(id, changes) {
+    const movements = getMovements();
+    const index = movements.findIndex(m => m.id === id);
+    if (index === -1) return false;
+    movements[index] = { ...movements[index], ...changes };
+    saveCollection('mf-movements', movements);
+    return true;
+}
+
+export function deleteMovement(id) {
+    const movements = getMovements();
+    saveCollection('mf-movements', movements.filter(m => m.id !== id));
+}

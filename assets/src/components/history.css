@@ -33,6 +33,48 @@
     .movement-income  .movement-amount { color: var(--color-success); }
     .movement-expense .movement-amount { color: var(--color-alert); }
 
+    .movement-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .movement-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        flex-shrink: 0;
+    }
+
+    .movement-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 6px;
+        background: transparent;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s, color 0.2s;
+        color: var(--color-text-muted);
+        padding: 0;
+    }
+
+    .movement-btn-edit:hover {
+        background: rgba(79, 70, 229, 0.1);
+        border-color: var(--color-action);
+        color: var(--color-action);
+    }
+
+    .movement-btn-delete:hover {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: var(--color-alert);
+        color: var(--color-alert);
+    }
+
     .movement-description {
         display: block;
         font-size: 0.75rem;
