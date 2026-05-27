@@ -157,7 +157,7 @@ export function initResumen() {
                 closeAssignModal();
                 refreshGoalsUI();
             } else {
-                errorEl.textContent = 'No hay suficiente balance disponible.';
+                errorEl.textContent = 'No se pudo asignar. Verificá el monto, el balance o si la meta ya está completa.';
             }
         });
     }

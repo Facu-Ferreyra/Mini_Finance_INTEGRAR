@@ -86,7 +86,8 @@ export function assignFundsToGoal(goalId, amount) {
     if (!goal) return false;
 
     const balance = calcBalance();
-    const assignAmount = Math.min(amount, balance);
+    const remaining = Math.max((goal.amount || 0) - (goal.saved || 0), 0);
+    const assignAmount = Math.min(amount, balance, remaining);
     if (assignAmount <= 0) return false;
 
     const newSaved = (goal.saved || 0) + assignAmount;

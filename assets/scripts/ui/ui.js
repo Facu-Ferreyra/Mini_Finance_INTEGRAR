@@ -367,9 +367,17 @@ export function openAssignModal(goal) {
     if (!modal) return;
     modal.dataset.goalId = goal.id;
     document.getElementById('assign-goal-name').textContent = goal.name;
-    document.getElementById('assign-balance').textContent = formatCurrency(calcBalance());
-    document.getElementById('assign-amount').value = '';
-    document.getElementById('assign-error').textContent = '';
+    const balance = calcBalance();
+    const saved = goal.saved || 0;
+    const remaining = Math.max((goal.amount || 0) - saved, 0);
+    const maxAssign = Math.min(balance, remaining);
+    document.getElementById('assign-balance').textContent = formatCurrency(balance);
+    const assignInput = document.getElementById('assign-amount');
+    assignInput.value = '';
+    assignInput.max = maxAssign;
+    document.getElementById('assign-error').textContent = maxAssign <= 0
+        ? (remaining <= 0 ? 'Esta meta ya está completada.' : 'No hay suficiente balance disponible.')
+        : '';
     modal.classList.add('open');
 }
 
