@@ -264,12 +264,52 @@ export function initResumen() {
     }
 
     const filterSelect = document.getElementById('filter-category');
+    let historySortBy = 'date';
     let historySortAsc = false;
+
+    function updateSortUI(activeBtnId) {
+        ['sort-date-btn', 'sort-amount-btn'].forEach(function(id) {
+            const btn = document.getElementById(id);
+            if (!btn) return;
+            const isActive = id === activeBtnId;
+            const icon = btn.querySelector('.sort-icon');
+            if (isActive) {
+                btn.setAttribute('aria-sort', historySortAsc ? 'ascending' : 'descending');
+                if (icon) icon.textContent = historySortAsc ? '▲' : '▼';
+            } else {
+                btn.setAttribute('aria-sort', 'none');
+                if (icon) icon.textContent = '▼';
+            }
+        });
+    }
 
     function getSortedMovements(movements) {
         return [...movements].sort((a, b) => {
-            if (historySortAsc) return a.date.localeCompare(b.date);
-            return b.date.localeCompare(a.date);
+            const cmp = historySortBy === 'date'
+                ? a.date.localeCompare(b.date)
+                : a.amount - b.amount;
+            return historySortAsc ? cmp : -cmp;
+        });
+    }
+
+    function setupSortButton(btnId, sortBy) {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+        btn.addEventListener('click', function() {
+            if (historySortBy === sortBy) {
+                historySortAsc = !historySortAsc;
+            } else {
+                historySortBy = sortBy;
+                historySortAsc = false;
+            }
+            updateSortUI(btnId);
+            refreshHistory();
+        });
+        btn.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                btn.click();
+            }
         });
     }
 
@@ -281,26 +321,14 @@ export function initResumen() {
     }
 
     if (filterSelect) {
-        filterSelect.addEventListener('change', () => {
-        refreshHistory();});
-    }
-
-    const sortDateBtn = document.getElementById('sort-date-btn');
-    if (sortDateBtn) {
-        sortDateBtn.addEventListener('click', () => {
-            historySortAsc = !historySortAsc;
-            sortDateBtn.setAttribute('aria-sort', historySortAsc ? 'ascending' : 'descending');
-            const icon = sortDateBtn.querySelector('.sort-icon');
-            if (icon) icon.textContent = historySortAsc ? '▲' : '▼';
+        filterSelect.addEventListener('change', function() {
             refreshHistory();
         });
-        sortDateBtn.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                sortDateBtn.click();
-            }
-        });
     }
+
+    setupSortButton('sort-date-btn', 'date');
+    setupSortButton('sort-amount-btn', 'amount');
+    updateSortUI('sort-date-btn');
 
     refreshHistory();
     }
