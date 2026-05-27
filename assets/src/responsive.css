@@ -197,6 +197,48 @@
             gap: 0;
         }
 
+        /* Navbar & Hero desktop overrides */
+        .navbar-container {
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 0;
+            padding: 1rem 0;
+            text-align: left;
+        }
+
+        .nav-links {
+            gap: var(--gap-base, 1.5rem);
+        }
+
+        header a.nav-link-home {
+            padding: 0.5rem 1rem;
+            font-size: 0.95rem;
+        }
+
+        .hero {
+            grid-template-columns: 1fr 1fr;
+            min-height: 85vh;
+            gap: 3rem;
+            padding: 2rem 0;
+        }
+
+        .hero-carousel {
+            aspect-ratio: auto;
+            max-height: 340px;
+            max-width: 460px;
+            order: 0;
+            justify-self: end;
+        }
+
+        .hero-content {
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .hero-description {
+            max-width: 42ch;
+        }
+
         .history-table {
             font-size: 0.95rem;
         }

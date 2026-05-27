@@ -1,0 +1,68 @@
+@layer components {
+    header.main-navbar {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    header a {
+        text-decoration: none;
+        color: var(--color-text-muted);
+        font-weight: 500;
+        transition: color 0.3s, background-color 0.3s;
+        font-size: 0.95rem;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    header a:hover, 
+    header a[aria-current="page"],
+    header a.active {
+        color: var(--color-white);
+        background-color: rgba(255, 255, 255, 0.1); 
+    }
+    
+    header a.nav-link-home {
+        border: 1px dashed var(--color-action);
+        color: var(--color-action);
+    }
+    
+    header a.nav-link-home:hover {
+        background-color: rgba(79, 70, 229, 0.1);
+        color: var(--color-white);
+    }
+
+    .nav-link-github {
+        color: var(--color-text-muted);
+        font-weight: 500;
+    }
+
+    .nav-link-github:hover {
+        color: var(--color-white);
+        background-color: transparent;
+    }
+
+    .navbar-container {
+        flex-direction: column;
+        gap: 1.25rem;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    .nav-links {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    header a.nav-link-home {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+    }
+}

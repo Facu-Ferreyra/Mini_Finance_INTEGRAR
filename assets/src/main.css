@@ -1,18 +1,11 @@
-/* --- Capas CSS en orden de precedencia --- */
 @layer reset, variables, layout, components, pages, responsive;
 
-@import url("components.css") layer(components);
-@import url("layout.css") layer(layout);
-@import url("pages.css") layer(pages);
-@import url("variables.css") layer(variables);
-@import url("reset.css") layer(reset);
+@import url("base/reset.css") layer(reset);
+@import url("base/variables.css") layer(variables);
+@import url("layout/layout.css") layer(layout);
+@import url("components/index.css") layer(components);
+@import url("pages/index.css") layer(pages);
 @import url("responsive.css") layer(responsive);
-@import url("cards.css") layer(components);
-@import url("navbar-hero.css") layer(components);
-
-/* Transcisiones de páginas de prueba*/
-/* Transcisiones de páginas de prueba*/
-/* Transcisiones de páginas de prueba*/
 
 @keyframes pageFadeIn {
     from { opacity: 0; transform: translateY(8px); }

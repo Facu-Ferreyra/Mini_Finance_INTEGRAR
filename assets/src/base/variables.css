@@ -1,17 +1,14 @@
-/* --- Variables globales: colores, sombras, fuentes --- */
 :root {
-    
-    --color-bg: #0f172a;        /* Azul oscuro base */
+    --color-bg: #0f172a;
     --color-surface: #1e293b;
     --color-surface-2: #334155;
     --color-border: #334155;
-    --color-success: #10b981;   /* Verde para Ingresos */
-    --color-alert: #ef4444;     /* Rojo para Gastos y Alertas */
-    --color-action: #4f46e5;    /* Violeta para botones y enlaces */
+    --color-success: #10b981;
+    --color-alert: #ef4444;
+    --color-action: #4f46e5;
     --color-white: #ffffff;
     --color-text-muted: #94a3b8;
     --gradient-bg: radial-gradient(ellipse at top left, #3b0764 0%, #0f172a 50%, #082f49 100%);
-    
     --font-main: system-ui, -apple-system, sans-serif;
     --gap-base: 1rem;
     --radius-lg: 12px;
@@ -19,13 +16,10 @@
     --priority-high: #f87171;
     --priority-medium: #facc15;
     --priority-low: #60a5fa;
-
     --priority-high-bg: rgba(239, 68, 68, 0.15);
     --priority-medium-bg: rgba(234, 179, 8, 0.15);
     --priority-low-bg: rgba(59, 130, 246, 0.15);
-
     --shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.2);
-
     --transition-fast: 0.2s ease;
     --transition-smooth: 0.35s ease;
 }

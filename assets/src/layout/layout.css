@@ -1,10 +1,8 @@
-/* --- Estructura general: navbar, hero, grids, footer --- */
 @layer layout {
     body {
         display: grid;
         grid-template-rows: auto 1fr auto; 
         min-height: 100dvh;
-        /*background-color: var(--color-bg, #0f172a); */
         background: var(--gradient-bg);
         background-attachment: fixed;
         color: var(--color-white);
@@ -18,7 +16,6 @@
         width: 100%;
     }
 
-
     .navbar-container {
         display: flex;
         justify-content: space-between; 
@@ -28,7 +25,6 @@
         margin: 0 auto;
         padding: 1rem 0;
     }
-
 
     .logo {
         display: flex;
@@ -45,7 +41,6 @@
         color: var(--color-action, #4f46e5);
     }
 
-
     nav ul {
         display: flex; 
         align-items: center; 
@@ -54,7 +49,6 @@
         margin: 0;
         padding: 0;
     }
-
 
     .navbar-actions {
         display: flex;
@@ -74,22 +68,6 @@
         font-size: 0.85rem;
     }
 
-    .hero {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        align-items: center;
-        min-height: 85vh;
-        gap: 3rem;
-        padding: 2rem 0;
-    }
-
-    .hero-content {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1.5rem;
-    }
-
     main {
         width: 90%;
         max-width: 1200px;
@@ -106,13 +84,11 @@
         width: 90%;
     }
 
-
     .metrics-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr); 
         gap: var(--gap-base, 1.5rem);
     }
-
 
     .dashboard-grid,
     .dashboard-content {
@@ -157,17 +133,6 @@
         font-size: 0.9rem;
     }
 
-    /*
-    #goals-list-container {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        width: 100%;
-        max-width: 800px;
-        margin: 0 auto;
-    }
-    */
-
     #alerts-container {
         display: flex;
         flex-direction: column;
@@ -191,5 +156,4 @@
         color: #64748b;
         font-size: 0.85rem;
     }
-
 }

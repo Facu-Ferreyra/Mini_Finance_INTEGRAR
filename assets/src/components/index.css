@@ -1,0 +1,16 @@
+/* === Interactive Elements === */
+@import url("buttons.css");
+@import url("forms.css");
+@import url("alerts.css");
+@import url("auth.css");
+
+/* === Content Blocks === */
+@import url("cards.css");
+@import url("goals.css");
+@import url("history.css");
+@import url("modals.css");
+
+/* === Navigation & Hero === */
+@import url("navbar.css");
+@import url("hero.css");
+@import url("carousel.css");
