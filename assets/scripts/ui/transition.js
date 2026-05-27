@@ -4,11 +4,11 @@ export function initPageTransitions() {
 
     document.addEventListener('click', function(e) {
         // Buscar el <a> más cercano al elemento clickeado
-        var link = e.target.closest('a');
+        const link = e.target.closest('a');
 
         if (!link) return;
 
-        var href = link.getAttribute('href');
+        const href = link.getAttribute('href');
 
         // Ignorar: sin href, anclas puras, links externos, nueva pestaña, mailto/tel
         if (

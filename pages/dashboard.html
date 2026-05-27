@@ -34,16 +34,28 @@
         <!-- Metricas: balance, ingresos, gastos -->
         <section class="metrics-grid">
             <article class="metric-card card-balance">
-                <h3>Balance Neto</h3>
-                <p id="balance-total" class="card-value">$0.00</p>
+                <div class="card-content">
+                    <h3>Balance Neto</h3>
+                    <p id="balance-total" class="card-value">$0.00</p>
+                    <span class="trend-badge" id="balance-trend">↑ +0.0%</span>
+                </div>
+                <span class="card-icon" aria-hidden="true">$</span>
             </article>
             <article class="metric-card card-income">
-                <h3>Ingresos</h3>
-                <p id="income-total" class="card-value">$0.00</p>
+                <div class="card-content">
+                    <h3>Ingresos</h3>
+                    <p id="income-total" class="card-value">$0.00</p>
+                    <span class="trend-badge" id="income-trend">↑ +0.0%</span>
+                </div>
+                <span class="card-icon" aria-hidden="true">↗</span>
             </article>
             <article class="metric-card card-expense">
-                <h3>Gastos</h3>
-                <p id="expense-total" class="card-value">$0.00</p>
+                <div class="card-content">
+                    <h3>Gastos</h3>
+                    <p id="expense-total" class="card-value">$0.00</p>
+                    <span class="trend-badge" id="expense-trend">↓ -0.0%</span>
+                </div>
+                <span class="card-icon" aria-hidden="true">↘</span>
             </article>
         </section>
 

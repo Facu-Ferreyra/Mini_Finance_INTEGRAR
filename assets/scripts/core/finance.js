@@ -90,7 +90,7 @@ export function assignFundsToGoal(goalId, amount) {
     if (assignAmount <= 0) return false;
 
     const newSaved = (goal.saved || 0) + assignAmount;
-    var updates = { saved: newSaved };
+    const updates = { saved: newSaved };
 
     if (newSaved >= (goal.amount || 0) && !goal.completedAt) {
         updates.completedAt = new Date().toISOString().split('T')[0];
@@ -108,6 +108,43 @@ export function assignFundsToGoal(goalId, amount) {
     });
 
     return true;
+}
+
+// --- Calcular tendencia mensual para un tipo ---
+function getMonthsCount(type) {
+    const movements = getMovements().filter(function(m) { return m.type === type; });
+    const months = new Set(movements.map(function(m) { return m.date.slice(0, 7); }));
+    return months.size || 1;
+}
+
+export function calcAvgMonthlyIncome() {
+    const count = getMonthsCount('income');
+    return calcIncome() / count;
+}
+
+export function calcAvgMonthlyExpenses() {
+    const count = getMonthsCount('expense');
+    return calcExpenses() / count;
+}
+
+export function calcNetIncomeRate() {
+    const income = calcIncome();
+    if (income <= 0) return 0;
+    return (calcBalance() / income) * 100;
+}
+
+export function calcIncomeShare() {
+    const income = calcIncome();
+    const expenses = calcExpenses();
+    const total = income + expenses;
+    if (total <= 0) return 0;
+    return (income / total) * 100;
+}
+
+export function calcExpenseRate() {
+    const income = calcIncome();
+    if (income <= 0) return 0;
+    return (calcExpenses() / income) * 100;
 }
 
 // --- Resumen de metas activas ---

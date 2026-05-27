@@ -1,5 +1,4 @@
-import { calcBalance, calcIncome, calcExpenses, getRecentMovements, getGoalProgress, getGoalsSummary } from '../core/finance.js';
-import { getGoals } from '../core/storage.js';
+import { calcBalance, calcIncome, calcExpenses, calcNetIncomeRate, calcIncomeShare, calcExpenseRate, getRecentMovements, getGoalProgress, getGoalsSummary } from '../core/finance.js';
 
 // --- Iconos SVG por categoria de meta ---
 const GOAL_ICONS = {
@@ -21,6 +20,41 @@ export function renderMetrics() {
     if (balance) balance.textContent = formatCurrency(calcBalance());
     if (income) income.textContent = formatCurrency(calcIncome());
     if (expense) expense.textContent = formatCurrency(calcExpenses());
+
+    const balanceTrendEl = document.getElementById('balance-trend');
+    if (balanceTrendEl) {
+        const netRate = calcNetIncomeRate();
+        const direction = netRate >= 0 ? 'up' : 'down';
+        const arrow = direction === 'up' ? '↑' : '↓';
+        balanceTrendEl.textContent = arrow + ' ' + Math.abs(netRate).toFixed(1) + '%';
+        balanceTrendEl.className = 'trend-badge trend-' + direction;
+    }
+
+    const incomeTrendEl = document.getElementById('income-trend');
+    if (incomeTrendEl) {
+        const incomeShare = calcIncomeShare();
+        const direction = incomeShare >= 50 ? 'up' : 'down';
+        const arrow = direction === 'up' ? '↑' : '↓';
+        incomeTrendEl.textContent = arrow + ' ' + incomeShare.toFixed(1) + '%';
+        incomeTrendEl.className = 'trend-badge trend-' + direction;
+    }
+
+    const expenseTrendEl = document.getElementById('expense-trend');
+    if (expenseTrendEl) {
+        const expRate = calcExpenseRate();
+        expenseTrendEl.textContent = '↓ ' + expRate.toFixed(1) + '%';
+        expenseTrendEl.className = 'trend-badge trend-down';
+    }
+
+    const savingsEl = document.getElementById('savings-trend');
+    if (savingsEl) {
+        const incomeVal = calcIncome();
+        const expensesVal = calcExpenses();
+        if (incomeVal > 0) {
+            const currentRate = Math.max(0, ((incomeVal - expensesVal) / incomeVal) * 100);
+            savingsEl.textContent = currentRate.toFixed(1) + '% ahorro';
+        }
+    }
 }
 
 // --- Renderizar porcentaje de ahorro ---
@@ -45,7 +79,7 @@ export function renderRecentMovements() {
         return;
     }
     movements.forEach(function(m) {
-        var li = document.createElement('li');
+        const li = document.createElement('li');
         li.classList.add('movement-item', m.type === 'income' ? 'movement-income' : 'movement-expense');
         li.innerHTML = '<span class=\"movement-category\">' + escapeHTML(capitalizeFirst(m.category)) + '</span>'
             + '<span class=\"movement-amount\">' + (m.type === 'income' ? '+' : '-') + formatCurrency(m.amount) + '</span>'
@@ -64,10 +98,10 @@ export function renderHistory(movements) {
         return;
     }
     movements.forEach(function(m) {
-        var tr = document.createElement('tr');
-        var typeLabel = m.type === 'income' ? 'Ingreso' : 'Gasto';
-        var typeClass = m.type === 'income' ? 'income' : 'expense';
-        var descHtml = m.description ? '<small class=\"movement-description\">' + escapeHTML(m.description) + '</small>' : '';
+        const tr = document.createElement('tr');
+        const typeLabel = m.type === 'income' ? 'Ingreso' : 'Gasto';
+        const typeClass = m.type === 'income' ? 'income' : 'expense';
+        const descHtml = m.description ? '<small class=\"movement-description\">' + escapeHTML(m.description) + '</small>' : '';
         tr.innerHTML = '<td><time datetime=\"' + m.date + '\">' + formatDate(m.date) + '</time></td>'
             + '<td><span class=\"type-badge ' + typeClass + '\">' + typeLabel + '</span></td>'
             + '<td>' + escapeHTML(capitalizeFirst(m.category)) + descHtml + '</td>'
@@ -81,10 +115,10 @@ export function renderHistory(movements) {
 export function renderGoalsHeader() {
     const headerEl = document.getElementById('goals-header-info');
     if (!headerEl) return;
-    var summary = getGoalsSummary();
-    var targetSvg = GOAL_ICONS.target.replace('width=\"22\"', 'width=\"16\"').replace('height=\"22\"', 'height=\"16\"');
-    var moneySvg = GOAL_ICONS.piggy.replace('width=\"22\"', 'width=\"16\"').replace('height=\"22\"', 'height=\"16\"');
-    var chartSvg = '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 12h-4l-3 9L9 3l-3 9H2\"/></svg>';
+    const summary = getGoalsSummary();
+    const targetSvg = GOAL_ICONS.target.replace('width=\"22\"', 'width=\"16\"').replace('height=\"22\"', 'height=\"16\"');
+    const moneySvg = GOAL_ICONS.piggy.replace('width=\"22\"', 'width=\"16\"').replace('height=\"22\"', 'height=\"16\"');
+    const chartSvg = '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 12h-4l-3 9L9 3l-3 9H2\"/></svg>';
     headerEl.innerHTML = '<div class=\"goals-count-badge\">' + targetSvg + '<span>' + summary.active + ' metas activas</span></div>'
         + '<div class=\"goals-count-badge\">' + moneySvg + '<span>' + formatCurrency(summary.totalAssigned) + ' Asignado</span></div>'
         + '<div class=\"goals-count-badge\">' + chartSvg + '<span>' + summary.avgProgress.toFixed(0) + '% Progreso promedio</span></div>';
@@ -95,7 +129,7 @@ export function renderDashboardGoalsPanel() {
     const statsEl = document.getElementById('dash-goals-stats');
     if (!statsEl) return;
 
-    var summary = getGoalsSummary();
+    const summary = getGoalsSummary();
 
     const targetSvg = GOAL_ICONS.target.replace('width="22"', 'width="20"').replace('height="22"', 'height="20"');
     const piguySvg  = GOAL_ICONS.piggy.replace('width="22"', 'width="20"').replace('height="22"', 'height="20"');
@@ -146,10 +180,10 @@ export function renderGoalsFooterBanner() {
 
 // --- Renderizar boton de filtro activas/completadas ---
 export function renderGoalsFilterToggle() {
-    var container = document.getElementById('goals-filter-toggle');
+    const container = document.getElementById('goals-filter-toggle');
     if (!container) return;
 
-    var showingCompleted = window._goalsShowCompleted || false;
+    const showingCompleted = window._goalsShowCompleted || false;
 
     container.innerHTML = '<button type="button" id="goals-filter-btn" class="btn-filter-toggle">'
         + '<span class="btn-icon-span">'
@@ -163,10 +197,10 @@ export function renderGoalsFilterToggle() {
 
 // --- Renderizar lista de metas (activas o completadas) ---
 export function renderGoals(goals) {
-    var container = document.getElementById('goals-list-container');
+    const container = document.getElementById('goals-list-container');
     if (!container) return;
 
-    var showingCompleted = window._goalsShowCompleted || false;
+    const showingCompleted = window._goalsShowCompleted || false;
 
     if (goals.length === 0) {
         container.innerHTML = showingCompleted
@@ -175,18 +209,18 @@ export function renderGoals(goals) {
         return;
     }
 
-    var priorityLabels = { high: 'Alta', medium: 'Media', low: 'Baja' };
+    const priorityLabels = { high: 'Alta', medium: 'Media', low: 'Baja' };
 
     container.innerHTML = goals.map(function(goal) {
-        var progress = getGoalProgress(goal);
-        var pct = progress.percentage;
-        var saved = progress.saved;
-        var target = progress.target;
-        var iconHtml = GOAL_ICONS[goal.icon] || GOAL_ICONS.target;
-        var priorityLabel = priorityLabels[goal.priority] || goal.priority;
+        const progress = getGoalProgress(goal);
+        const pct = progress.percentage;
+        const saved = progress.saved;
+        const target = progress.target;
+        const iconHtml = GOAL_ICONS[goal.icon] || GOAL_ICONS.target;
+        const priorityLabel = priorityLabels[goal.priority] || goal.priority;
 
         if (showingCompleted) {
-            var doneDate = goal.completedAt ? formatDate(goal.completedAt) : '—';
+            const doneDate = goal.completedAt ? formatDate(goal.completedAt) : '—';
             return '<article class="goal-card completed-card" data-id="' + goal.id + '">'
                 + '<div class="goal-card-main">'
                 + '<div class="goal-icon-avatar completed-icon" aria-hidden="true">'
@@ -219,8 +253,8 @@ export function renderGoals(goals) {
                 + '</article>';
         }
 
-        var remaining = progress.remaining;
-        var remainingHtml = remaining > 0
+        const remaining = progress.remaining;
+        const remainingHtml = remaining > 0
             ? '<span class="remaining-lbl">Faltan</span><span class="remaining-money">' + formatCurrency(remaining) + '</span><span class="remaining-lbl-sub">para completar tu objetivo</span>'
             : '<span class="status-achieved" style="color: #2ecc71; font-weight: bold; font-size: 0.95rem;">META ALCANZADA!</span>';
 
@@ -274,8 +308,8 @@ export function renderGoals(goals) {
 
 // --- Mostrar o limpiar error en un campo del formulario ---
 export function setFieldError(fieldId, message) {
-    var errorEl = document.getElementById(fieldId + '-error');
-    var inputEl = document.getElementById(fieldId) || document.getElementById(fieldId + 'adadadadadadadadad');
+    const errorEl = document.getElementById(fieldId + '-error');
+    const inputEl = document.getElementById(fieldId) || document.getElementById(fieldId + 'adadadadadadadadad');
     if (errorEl) errorEl.textContent = message || '';
     
     if (inputEl) {
@@ -306,11 +340,11 @@ export function clearAllErrors() {
 
 // --- Poblar filtro de categorias en el historial ---
 export function populateCategoryFilter(categories) {
-    var select = document.getElementById('filter-category');
+    const select = document.getElementById('filter-category');
     if (!select) return;
     select.innerHTML = '<option value="all">Todas las categorias</option>';
     categories.forEach(function(cat) {
-        var opt = document.createElement('option');
+        const opt = document.createElement('option');
         opt.value = cat;
         opt.textContent = capitalizeFirst(cat);
         select.appendChild(opt);
@@ -319,7 +353,7 @@ export function populateCategoryFilter(categories) {
 
 // --- Abrir modal de asignacion de fondos ---
 export function openAssignModal(goal) {
-    var modal = document.getElementById('assign-modal');
+    const modal = document.getElementById('assign-modal');
     if (!modal) return;
     modal.dataset.goalId = goal.id;
     document.getElementById('assign-goal-name').textContent = goal.name;
@@ -352,24 +386,24 @@ export function openEditModal(goal) {
 
 // --- Cerrar modal de edición ---
 export function closeEditModal() {
-    var modal = document.getElementById('edit-modal');
+    const modal = document.getElementById('edit-modal');
     if (!modal) return;
     modal.classList.remove('open');
 }
 
 // --- Abrir modal de confirmación de eliminación ---
 export function openConfirmModal(goalId, goalName) {
-    var modal = document.getElementById('confirm-modal');
+    const modal = document.getElementById('confirm-modal');
     if (!modal) return;
     modal.dataset.goalId = goalId;
-    var textEl = document.getElementById('confirm-modal-text');
+    const textEl = document.getElementById('confirm-modal-text');
     if (textEl) textEl.textContent = '¿Seguro que querés eliminar "' + goalName + '"? Esta acción no se puede deshacer.';
     modal.classList.add('open');
 }
 
 // --- Cerrar modal de confirmación ---
 export function closeConfirmModal() {
-    var modal = document.getElementById('confirm-modal');
+    const modal = document.getElementById('confirm-modal');
     if (!modal) return;
     modal.classList.remove('open');
 }
@@ -393,7 +427,7 @@ function capitalizeFirst(str) {
 }
 
 // --- Escapar HTML para evitar XSS ---
-var _escapeDiv = document.createElement('div');
+const _escapeDiv = document.createElement('div');
 function escapeHTML(str) {
     _escapeDiv.textContent = str;
     return _escapeDiv.innerHTML;

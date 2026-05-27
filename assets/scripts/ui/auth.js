@@ -70,7 +70,7 @@ export function initAuth() {
         list.innerHTML = '';
 
         accounts.forEach(function(acc) {
-            var li = document.createElement('li');
+            const li = document.createElement('li');
             li.classList.add('account-item');
             li.innerHTML =
                 '<button type="button" class="account-item-btn" data-id="' + acc.id + '">'
@@ -164,7 +164,7 @@ export function initAuth() {
     // Helpers de errores
     // Posible abstracción a otra clase helper.
     function setError(id, msg) {
-        var el = document.getElementById(id);
+        const el = document.getElementById(id);
         if (el) el.textContent = msg || '';
     }
 
@@ -175,7 +175,7 @@ export function initAuth() {
     }
 
     // Formulario de Login
-    var loginForm = document.getElementById('login-form');
+    const loginForm = document.getElementById('login-form');
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -184,7 +184,7 @@ export function initAuth() {
             const username = document.getElementById('login-username').value.trim();
             const password = document.getElementById('login-password').value;
 
-            var hasError = false;
+            let hasError = false;
             if (!username) { setError('login-username-error', 'Ingresá tu usuario.'); hasError = true; }
             if (!password) { setError('login-password-error', 'Ingresá tu contraseña.'); hasError = true; }
             if (hasError) return;
@@ -210,7 +210,7 @@ export function initAuth() {
             const password  = document.getElementById('register-password').value;
             const password2 = document.getElementById('register-password2').value;
 
-            var hasError = false;
+            let hasError = false;
             if (!username || username.length < 3) { setError('register-username-error', 'Mínimo 3 caracteres.'); hasError = true; }
             if (!password || password.length < 4)  { setError('register-password-error', 'Mínimo 4 caracteres.'); hasError = true; }
             if (password !== password2)             { setError('register-password2-error', 'Las contraseñas no coinciden.'); hasError = true; }
@@ -285,7 +285,7 @@ export function initAuth() {
 
 // Escape HTML básico
 function escapeHTML(str) {
-    var d = document.createElement('div');
+    const d = document.createElement('div');
     d.textContent = str;
     return d.innerHTML;
 }
