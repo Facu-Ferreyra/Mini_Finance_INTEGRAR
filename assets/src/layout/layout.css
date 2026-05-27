@@ -95,7 +95,7 @@
         display: grid;
         grid-template-columns: 1fr 1.5fr;
         gap: var(--gap-base, 1.5rem);
-        align-items: start;
+        align-items: stretch;
     }
 
     .summary-hero {
