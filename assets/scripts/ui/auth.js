@@ -16,6 +16,12 @@ export function initAuth() {
     if (!overlay) return;
 
     function openAuthOverlay() {
+        const scrollY    = window.scrollY || document.documentElement.scrollTop;
+        const viewHeight = window.innerHeight;
+        // Clampear entre 5vh y 60vh para que nunca quede fuera de pantalla
+        const offset = Math.min(Math.max(scrollY * 0.4, viewHeight * 0.05), viewHeight * 0.6);
+        overlay.style.setProperty('--auth-card-offset', offset + 'px');
+
         overlay.classList.add('open');
         overlay.setAttribute('aria-hidden', 'false');
         // Foco al primer input visible para accesibilidad

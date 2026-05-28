@@ -214,14 +214,14 @@
             padding: 0.5rem 1rem;
             font-size: 0.95rem;
         }
-
+        
+        /*
         .hero {
             grid-template-columns: 1fr 1fr;
             min-height: 85vh;
             gap: 3rem;
             padding: 2rem 0;
         }
-
         .hero-carousel {
             aspect-ratio: auto;
             max-height: 340px;
@@ -234,10 +234,10 @@
             align-items: flex-start;
             text-align: left;
         }
-
         .hero-description {
             max-width: 42ch;
         }
+        */
 
         .history-table {
             font-size: 0.95rem;
@@ -272,6 +272,47 @@
         }
 
         .dash-goals-actions {
+            grid-template-columns: repeat(3, 1fr);
+            flex: 1;
+        }
+
+
+        /* Steps: desktop — mostrar múltiples cards */
+        .step-card {
+            flex: 0 0 calc(33.333% - 0.7rem);   /* 3 cards visibles en desktop */
+        }
+
+        .steps-btn--prev { left: -1.25rem; }
+        .steps-btn--next { right: -1.25rem; }
+
+        /* Hero sin carrusel: centrado en desktop también */
+        .hero.hero-solo {
+            grid-template-columns: 1fr;
+            justify-items: center;
+            text-align: center;
+            min-height: 70vh;
+        }
+
+        .hero.hero-solo .hero-content {
+            align-items: center;
+            text-align: center;
+            max-width: 600px;
+        }
+
+        /* Footer: desktop en fila */
+        .footer-inner {
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 4rem;
+        }
+
+        .footer-brand {
+            max-width: 220px;
+            flex-shrink: 0;
+        }
+
+        .footer-nav {
             grid-template-columns: repeat(3, 1fr);
             flex: 1;
         }

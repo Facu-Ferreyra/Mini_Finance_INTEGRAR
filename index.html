@@ -36,6 +36,7 @@
     </header>
 
     <!-- Hero y carrusel -->
+    <!--
     <main class="main-home">
         <section class="hero" aria-labelledby="hero-title">
             <article class="hero-content">
@@ -59,6 +60,77 @@
             </figure>
         </section>
     </main>
+    -->
+
+    <!-- Hero sin carrusel -->
+    <main class="main-home">
+        <section class="hero hero-solo" aria-labelledby="hero-title">
+            <article class="hero-content">
+                <p class="hero-tag">Tus finanzas, bajo control</p>
+                <h1 id="hero-title">Tu Control <span class="accent-text">Financiero.</span><br>Sin Esfuerzo.</h1>
+                <p class="hero-description">Registra ingresos, controla tus gastos mensuales y alcanza tus metas de ahorro en un solo lugar.</p>
+                <button id="hero-cta" class="btn-primary">Comenzá GRATIS →</button>
+            </article>
+        </section>
+
+        <!-- Sección "Cómo funciona" con carrusel de pasos -->
+        <section class="steps-section" aria-labelledby="steps-title">
+
+            <!-- Imagen de fondo decorativa -->
+            <div class="steps-bg" aria-hidden="true"></div>
+
+            <div class="steps-inner">
+                <header class="steps-header">
+                    <p class="steps-eyebrow">Cómo funciona</p>
+                    <h2 id="steps-title">Comenzá hoy a ordenar<br>tus hábitos financieros</h2>
+                </header>
+
+                <!-- Carrusel de pasos -->
+                <div class="steps-carousel-wrapper" role="region" aria-label="Pasos para usar Mini Finance">
+                    <div class="steps-track" id="steps-track">
+
+                        <article class="step-card">
+                            <p class="step-label">PASO 1</p>
+                            <h3 class="step-title">Creá tu perfil gratis</h3>
+                            <p class="step-desc">Establecé tus objetivos y empezá a tomar el control de tus finanzas desde el primer día.</p>
+                        </article>
+
+                        <article class="step-card">
+                            <p class="step-label">PASO 2</p>
+                            <h3 class="step-title">Armá tu plan</h3>
+                            <p class="step-desc">Cargá tus ingresos, gastos y metas de ahorro para tener una visión clara de tu situación.</p>
+                        </article>
+
+                        <article class="step-card">
+                            <p class="step-label">PASO 3</p>
+                            <h3 class="step-title">Seguí tu progreso</h3>
+                            <p class="step-desc">Visualizá tu balance, controlá tus gastos y avanzá hacia tus metas con alertas inteligentes.</p>
+                        </article>
+
+                        <article class="step-card step-card--highlight">
+                            <p class="step-label">PRÓXIMAMENTE</p>
+                            <h3 class="step-title">Análisis avanzado</h3>
+                            <p class="step-desc">Gráficos de la regla 50/30/20, reportes mensuales y recomendaciones personalizadas.</p>
+                            <span class="step-badge">En desarrollo</span>
+                        </article>
+
+                    </div>
+
+                    <button class="steps-btn steps-btn--prev" id="steps-prev" aria-label="Paso anterior">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+                    </button>
+                    <button class="steps-btn steps-btn--next" id="steps-next" aria-label="Paso siguiente">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                </div>
+
+                <!-- Dots -->
+                <div class="steps-dots" id="steps-dots" aria-label="Indicadores de paso" role="tablist"></div>
+            </div>
+        </section>
+    </main>
+
+
 
     <!-- OVERLAY DE AUTENTICACIÓN -->
     <div id="auth-overlay" class="auth-overlay" role="dialog" aria-modal="true" aria-labelledby="auth-overlay-title">
@@ -132,13 +204,61 @@
         <button type="button" id="logout-btn" class="btn-danger">Cerrar sesión</button>
     </div>
 
-    <!-- REPO en GitHub -->
+    <!-- REPO en GitHub 
     <a href="https://github.com/Facu-Ferreyra/Mini_Finance_INTEGRAR" class="github-fab" target="_blank" rel="noopener noreferrer" aria-label="Ver repositorio en GitHub">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
         </svg>
         <span>Repo GitHub</span>
     </a>
+    -->
+
+        <!-- Footer -->
+    <footer class="main-footer" role="contentinfo">
+        <div class="footer-inner">
+
+            <div class="footer-brand">
+                <a href="index.html" class="logo footer-logo" aria-label="Mini Finance - Inicio">
+                    <span aria-hidden="true">💼</span>
+                    <strong>Mini <span class="accent-text">Finance</span></strong>
+                </a>
+                <p class="footer-tagline">Tomá las riendas<br>de tus finanzas.</p>
+            </div>
+
+            <nav class="footer-nav" aria-label="Links del footer">
+                <section class="footer-col" aria-labelledby="footer-col-1">
+                    <h3 id="footer-col-1">Acceso</h3>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="pages/dashboard.html">Dashboard</a></li>
+                        <li><a href="pages/resumen.html">Resumen</a></li>
+                    </ul>
+                </section>
+
+                <section class="footer-col" aria-labelledby="footer-col-2">
+                    <h3 id="footer-col-2">Proyecto</h3>
+                    <ul>
+                        <li><a href="https://github.com/Facu-Ferreyra/Mini_Finance_INTEGRAR" target="_blank" rel="noopener noreferrer">Repositorio GitHub</a></li>
+                        <li><a href="#como-funciona">Cómo funciona</a></li>
+                    </ul>
+                </section>
+
+                <section class="footer-col" aria-labelledby="footer-col-3">
+                    <h3 id="footer-col-3">Tecnologías</h3>
+                    <ul>
+                        <li><span>· HTML5 ·</span></li>
+                        <li><span>· CSS3 ·</span></li>
+                        <li><span>· JavaScript ES Modules ·</span></li>
+                    </ul>
+                </section>
+            </nav>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 Mini Finance · Proyecto integrador INTEGRAR</p>
+        </div>
+    </footer>
 
     <script type="module" src="assets/scripts/main.js" defer></script>
 </body>

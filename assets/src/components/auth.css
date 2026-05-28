@@ -7,8 +7,9 @@
         backdrop-filter: blur(4px);
         z-index: 200;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
         padding: 1rem;
+        overflow-y: auto;
     }
 
     .auth-overlay.open {
