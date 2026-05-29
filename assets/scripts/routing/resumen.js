@@ -22,14 +22,6 @@ import {
 
 let goalsShowCompleted = false;
 
-function refreshGoalsUI() {
-    const goals = goalsShowCompleted ? getCompletedGoals() : getActiveGoals();
-    renderGoals(goals);
-    renderGoalsHeader();
-    renderSavingsRate();
-    renderMetrics();
-}
-
 export function initResumen() {
     const logoutPageBtn = document.getElementById('logout-page-btn');
     if (logoutPageBtn) {
@@ -245,9 +237,11 @@ export function initResumen() {
     }
 
     goalsShowCompleted = false;
+    window._goalsShowCompleted = false;
 
     function handleFilterToggle() {
         goalsShowCompleted = !goalsShowCompleted;
+        window._goalsShowCompleted = goalsShowCompleted;
         const goals = goalsShowCompleted ? getCompletedGoals() : getActiveGoals();
         renderGoalsFilterToggle();
         renderGoals(goals);
@@ -313,6 +307,13 @@ export function initResumen() {
         });
     }
 
+    if (filterSelect) {
+        filterSelect.addEventListener('change', function() {
+            refreshHistory();
+        });
+    }
+
+    
     function refreshHistory() {
         const filterSelect = document.getElementById('filter-category');
         const category = filterSelect ? filterSelect.value : 'all';
@@ -320,15 +321,21 @@ export function initResumen() {
         renderHistory(getSortedMovements(movements));
     }
 
-    if (filterSelect) {
-        filterSelect.addEventListener('change', function() {
-            refreshHistory();
-        });
+    function refreshGoalsUI() {
+        const goals = goalsShowCompleted ? getCompletedGoals() : getActiveGoals();
+        renderGoals(goals);
+        populateCategoryFilter(getUniqueCategories());
+        refreshHistory();
+        renderGoalsHeader();
+        renderSavingsRate();
+        renderMetrics();
     }
-
+    
     setupSortButton('sort-date-btn', 'date');
     setupSortButton('sort-amount-btn', 'amount');
     updateSortUI('sort-date-btn');
 
+
+
     refreshHistory();
-    }
+}

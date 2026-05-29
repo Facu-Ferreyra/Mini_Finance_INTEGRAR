@@ -19,8 +19,13 @@
                 <span aria-hidden="true">💼</span>
                 <strong>Mini <span class="accent-text">Finance</span></strong>
             </a>
-            <nav aria-label="Navegación del panel">
-                <ul class="nav-links">
+            <button class="menu-toggle" id="mobile-menu" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="primary-nav">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <nav id="primary-nav" aria-label="Navegación del panel">
+                <ul class="nav-links no-search">
                     <li><a href="../index.html" class="nav-link-home"><span aria-hidden="true">🏠</span>Inicio</a></li>
                     <li><a href="resumen.html" class="btn-secondary">Ver Resumen</a></li>
                     <li>
@@ -216,6 +221,7 @@
                     <select id="edit-mov-category">
                         <option value="salario" data-type="income">Salario</option>
                         <option value="ingreso-extra" data-type="income">Ingreso Extra</option>
+                        <option value="ahorro" data-type="expense">Ahorro</option>
                         <option value="otros-ingreso" data-type="income">Otros</option>
                         <option value="vivienda" data-type="expense">Vivienda</option>
                         <option value="servicios" data-type="expense">Servicios Básicos</option>

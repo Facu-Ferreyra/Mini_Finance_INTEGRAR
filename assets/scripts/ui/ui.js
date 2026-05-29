@@ -325,7 +325,7 @@ export function renderGoals(goals) {
 // --- Mostrar o limpiar error en un campo del formulario ---
 export function setFieldError(fieldId, message) {
     const errorEl = document.getElementById(fieldId + '-error');
-    const inputEl = document.getElementById(fieldId) || document.getElementById(fieldId + 'adadadadadadadadad');
+    const inputEl = document.getElementById(fieldId);
     if (errorEl) errorEl.textContent = message || '';
     
     if (inputEl) {

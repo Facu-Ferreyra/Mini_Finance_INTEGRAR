@@ -92,7 +92,8 @@ export function initAuth() {
 
         // --------------- Listener de evento ------------------
         // Click en cuenta: pre-rellenar el username en el login
-        list.addEventListener('click', function(e) {
+        if (!list.dataset.listenerReady) {
+            list.addEventListener('click', function(e) {
             const loginBtn = e.target.closest('.account-item-btn');
             const deleteBtn = e.target.closest('.account-item-delete');
 
@@ -109,7 +110,10 @@ export function initAuth() {
                 const accName = deleteBtn.closest('li').querySelector('.account-item-name')?.textContent || 'esta cuenta';
                 showConfirmDelete(accId, accName);
             }
-        });
+            });
+            list.dataset.listenerReady = 'true';
+        }
+        
     }
 
     // Confirm delete mini-UI (DOM, sin alert())

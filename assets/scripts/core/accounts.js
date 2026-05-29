@@ -98,5 +98,7 @@ export function deleteAccount(accountId) {
     // Limpiar datos propios de esa cuenta
     localStorage.removeItem('mf-movements-' + accountId);
     localStorage.removeItem('mf-goals-' + accountId);
-    localStorage.removeItem(SESSION_KEY);
+    if (localStorage.getItem(SESSION_KEY) === accountId) {
+        localStorage.removeItem(SESSION_KEY);
+    }
 }
