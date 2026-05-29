@@ -117,6 +117,17 @@
         max-width: 100%;
     }
 
+    .footer-inner {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 2rem 5%;
+    }
+
+    .footer-nav {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
     /* --- Desktop (>= 768px) --- */
     @media (min-width: 768px) {
 
@@ -305,6 +316,7 @@
             align-items: flex-start;
             justify-content: space-between;
             gap: 4rem;
+            padding: 3rem 5% 2rem;
         }
 
         .footer-brand {
@@ -314,7 +326,6 @@
 
         .footer-nav {
             grid-template-columns: repeat(3, 1fr);
-            flex: 1;
         }
     }
 }

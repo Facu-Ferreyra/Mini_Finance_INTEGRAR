@@ -37,6 +37,11 @@ input, button, textarea, select {
     border: 0;
 }
 
+input, select, textarea, button {
+    font-size: max(16px, 1em);
+}
+
 [hidden] {
     display: none !important;
 }
+

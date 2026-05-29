@@ -1,4 +1,26 @@
 :root {
+    --font-main: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+    /* --- Espaciado y forma --- */
+    --gap-base: 1rem;
+    --radius-lg: 12px;
+    --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.12);
+    --shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.2);
+    --transition-fast: 0.2s ease;
+    --transition-smooth: 0.35s ease;
+
+    /* --- Prioridades (invariantes entre temas) --- */
+    --priority-high: #f87171;
+    --priority-medium: #facc15;
+    --priority-low: #60a5fa;
+    --priority-high-bg: rgba(239, 68, 68, 0.15);
+    --priority-medium-bg: rgba(234, 179, 8, 0.15);
+    --priority-low-bg: rgba(59, 130, 246, 0.15);
+    --shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+/*
+:root {
     --color-bg: #0f172a;
     --color-surface: #1e293b;
     --color-surface-2: #334155;
@@ -23,7 +45,6 @@
     --transition-fast: 0.2s ease;
     --transition-smooth: 0.35s ease;
 }
-
 [data-theme="light"] {
     --color-bg: #f1f5f9;
     --color-surface: #ffffff;
@@ -43,3 +64,39 @@
     --color-text-muted: #94a3b8;
     --gradient-bg: radial-gradient(ellipse at top left, #3b0764 0%, #0f172a 50%, #082f49 100%);
 }
+*/
+
+
+    
+:root,
+[data-theme="dark"] {
+    /*
+    --color-bg:        #626560;
+    */
+    --color-bg:#2A7B9B;
+    --color-surface:   #70726d;
+    --color-surface-2: #787a75;
+    --color-border:    #929590;
+    --color-white:     #f3f5f0;
+    --color-text-muted: #d1d4ce;
+    --color-action:    #a7e691;
+    --color-success:   #73ea98;
+    --color-alert:     #ffc3b1;
+    --gradient-bg: linear-gradient(340deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%);
+}
+
+/* ===== TEMA CLARO ===== */
+[data-theme="light"] {
+    --color-bg:         #f3f6f0;
+    --color-surface:    #ecefe9;
+    --color-surface-2:  #e4e7e0;
+    --color-border:     #dfe2dc;
+    --color-white:      #61635e;
+    --color-text-muted: #8e918b;
+    --color-action:     #5c9746;
+    --color-success:    #1ea051;
+    --color-alert:      #b77d6b;
+    --gradient-bg: radial-gradient(ellipse at top left, #dde8d8 0%, #f3f6f0 55%, #d8ece3 100%);
+}
+
+

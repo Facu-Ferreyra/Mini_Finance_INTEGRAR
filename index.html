@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Mini Finance - Simulador de presupuesto personal.">
     <title>Mini Finance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="assets/src/main.css">
 </head>
 <body>
@@ -87,33 +90,35 @@
 
                 <!-- Carrusel de pasos -->
                 <div class="steps-carousel-wrapper" role="region" aria-label="Pasos para usar Mini Finance">
-                    <div class="steps-track" id="steps-track">
+                    <div class="steps-track-mask">
+                        <div class="steps-track" id="steps-track">
 
-                        <article class="step-card">
-                            <p class="step-label">PASO 1</p>
-                            <h3 class="step-title">Creá tu perfil gratis</h3>
-                            <p class="step-desc">Establecé tus objetivos y empezá a tomar el control de tus finanzas desde el primer día.</p>
-                        </article>
+                            <article class="step-card">
+                                <p class="step-label">PASO 1</p>
+                                <h3 class="step-title">Creá tu perfil gratis</h3>
+                                <p class="step-desc">Establecé tus objetivos y empezá a tomar el control de tus finanzas desde el primer día.</p>
+                            </article>
 
-                        <article class="step-card">
-                            <p class="step-label">PASO 2</p>
-                            <h3 class="step-title">Armá tu plan</h3>
-                            <p class="step-desc">Cargá tus ingresos, gastos y metas de ahorro para tener una visión clara de tu situación.</p>
-                        </article>
+                            <article class="step-card">
+                                <p class="step-label">PASO 2</p>
+                                <h3 class="step-title">Armá tu plan</h3>
+                                <p class="step-desc">Cargá tus ingresos, gastos y metas de ahorro para tener una visión clara de tu situación.</p>
+                            </article>
 
-                        <article class="step-card">
-                            <p class="step-label">PASO 3</p>
-                            <h3 class="step-title">Seguí tu progreso</h3>
-                            <p class="step-desc">Visualizá tu balance, controlá tus gastos y avanzá hacia tus metas con alertas inteligentes.</p>
-                        </article>
+                            <article class="step-card">
+                                <p class="step-label">PASO 3</p>
+                                <h3 class="step-title">Seguí tu progreso</h3>
+                                <p class="step-desc">Visualizá tu balance, controlá tus gastos y avanzá hacia tus metas con alertas inteligentes.</p>
+                            </article>
 
-                        <article class="step-card step-card--highlight">
-                            <p class="step-label">PRÓXIMAMENTE</p>
-                            <h3 class="step-title">Análisis avanzado</h3>
-                            <p class="step-desc">Gráficos de la regla 50/30/20, reportes mensuales y recomendaciones personalizadas.</p>
-                            <span class="step-badge">En desarrollo</span>
-                        </article>
+                            <article class="step-card step-card--highlight">
+                                <p class="step-label">PRÓXIMAMENTE</p>
+                                <h3 class="step-title">Análisis avanzado</h3>
+                                <p class="step-desc">Gráficos de la regla 50/30/20, reportes mensuales y recomendaciones personalizadas.</p>
+                                <span class="step-badge">En desarrollo</span>
+                            </article>
 
+                        </div>
                     </div>
 
                     <button class="steps-btn steps-btn--prev" id="steps-prev" aria-label="Paso anterior">
