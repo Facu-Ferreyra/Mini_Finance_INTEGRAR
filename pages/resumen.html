@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mini Finance - Resumen</title>
-    
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
@@ -15,7 +15,7 @@
     <header class="main-navbar">
         <div class="navbar-container">
             <a href="../index.html" class="logo" aria-label="Mini Finance - Volver al inicio">
-                <span aria-hidden="true">💼</span>
+                <img class="brand-mark" src="../assets/img/logo-mini-finance.png" alt="" aria-hidden="true">
                 <strong>Mini <span class="accent-text">Finance</span></strong>
             </a>
             <button class="menu-toggle" id="mobile-menu" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="primary-nav">
@@ -47,15 +47,15 @@
     <main class="summary-layout page-goals">
         
         <!-- Header de metas -->
-        <header class="summary-hero section-card">
+        <section class="summary-hero" aria-labelledby="summary-title">
             <div class="hero-header-flex">
                 <div>
-                    <h1>Mis Metas de Ahorro</h1>
+                    <h1 id="summary-title">Mis Metas de Ahorro</h1>
                     <p>Administra y organiza tus objetivos financieros.</p>
                 </div>
                 <div id="goals-header-info" class="goals-header-badges"></div>
             </div>
-        </header>   
+        </section>   
 
         <div class="dashboard-grid goals-grid">
             
@@ -247,6 +247,14 @@
             </div>
         </section>
     </main>
+
+    <nav class="mobile-bottom-nav" aria-label="Navegación inferior">
+        <ul>
+            <li><a href="../index.html"><span aria-hidden="true">⌂</span>Home</a></li>
+            <li><a href="dashboard.html"><span aria-hidden="true">▦</span>Panel</a></li>
+            <li><a href="resumen.html" aria-current="page"><span aria-hidden="true">◎</span>Resumen</a></li>
+        </ul>
+    </nav>
 
     <script type="module" src="../assets/scripts/main.js" defer></script>
 </body>

@@ -96,7 +96,7 @@ export function initStepsCarousel() {
 
     // --- Generar dots dinámicamente ---
     cards.forEach(function(_, i) {
-        var btn = document.createElement('button');
+        const btn = document.createElement('button');
         btn.classList.add('steps-dot');
         if (i === 0) btn.classList.add('active');
         btn.setAttribute('aria-label', 'Ir al paso ' + (i + 1));
@@ -105,7 +105,7 @@ export function initStepsCarousel() {
         dotsContainer.appendChild(btn);
     });
 
-    var dots = Array.from(dotsContainer.querySelectorAll('.steps-dot'));
+    const dots = Array.from(dotsContainer.querySelectorAll('.steps-dot'));
 
     function goTo(index) {
         current = (index + cards.length) % cards.length;

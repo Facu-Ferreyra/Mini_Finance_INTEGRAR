@@ -333,17 +333,6 @@ export function setFieldError(fieldId, message) {
         else inputEl.removeAttribute('aria-invalid');
     }
     
-   /*
-   if (inputEl) {
-        if (message) {
-            inputEl.setAttribute('aria-invalid', 'true');
-            inputEl.setCustomValidity(message); 
-        } else {
-            inputEl.removeAttribute('aria-invalid');
-            inputEl.setCustomValidity('');
-        }
-    }
-    */
 }
 
 // --- Limpiar todos los errores de formularios ---
@@ -385,6 +374,7 @@ export function openAssignModal(goal) {
         ? (remaining <= 0 ? 'Esta meta ya está completada.' : 'No hay suficiente balance disponible.')
         : '';
     modal.classList.add('open');
+    document.body.classList.add('modal-open');
 }
 
 // --- Cerrar modal de asignacion ---
@@ -392,6 +382,7 @@ export function closeAssignModal() {
     const modal = document.getElementById('assign-modal');
     if (!modal) return;
     modal.classList.remove('open');
+    document.body.classList.remove('modal-open');
 }
 
 // --- Abrir modal de edición de monto ---
@@ -406,6 +397,7 @@ export function openEditModal(goal) {
     const prioritySelect = document.getElementById('edit-goal-priority');
     if (prioritySelect) prioritySelect.value = goal.priority || 'medium';
     modal.classList.add('open');
+    document.body.classList.add('modal-open');
 }
 
 // --- Cerrar modal de edición ---
@@ -413,6 +405,7 @@ export function closeEditModal() {
     const modal = document.getElementById('edit-modal');
     if (!modal) return;
     modal.classList.remove('open');
+    document.body.classList.remove('modal-open');
 }
 
 // --- Abrir modal de confirmación de eliminación ---
@@ -423,6 +416,7 @@ export function openConfirmModal(goalId, goalName) {
     const textEl = document.getElementById('confirm-modal-text');
     if (textEl) textEl.textContent = '¿Seguro que querés eliminar "' + goalName + '"? Esta acción no se puede deshacer.';
     modal.classList.add('open');
+    document.body.classList.add('modal-open');
 }
 
 // --- Cerrar modal de confirmación ---
@@ -430,6 +424,7 @@ export function closeConfirmModal() {
     const modal = document.getElementById('confirm-modal');
     if (!modal) return;
     modal.classList.remove('open');
+    document.body.classList.remove('modal-open');
 }
 
 // --- Abrir modal de edición de movimiento ---
@@ -447,6 +442,7 @@ export function openEditMovementModal(movement) {
     document.getElementById('edit-mov-description').value = movement.description || '';
     document.getElementById('edit-mov-error').textContent = '';
     modal.classList.add('open');
+    document.body.classList.add('modal-open');
 }
 
 // --- Cerrar modal de edición de movimiento ---
@@ -454,6 +450,7 @@ export function closeEditMovementModal() {
     const modal = document.getElementById('edit-movement-modal');
     if (!modal) return;
     modal.classList.remove('open');
+    document.body.classList.remove('modal-open');
 }
 
 // --- Abrir confirmación de eliminación de movimiento ---
@@ -462,6 +459,7 @@ export function openDeleteMovementConfirm(movementId) {
     if (!modal) return;
     modal.dataset.movementId = movementId;
     modal.classList.add('open');
+    document.body.classList.add('modal-open');
 }
 
 // --- Cerrar confirmación de eliminación de movimiento ---
@@ -469,6 +467,7 @@ export function closeDeleteMovementConfirm() {
     const modal = document.getElementById('delete-movement-modal');
     if (!modal) return;
     modal.classList.remove('open');
+    document.body.classList.remove('modal-open');
 }
 
 // --- Formatear monto en ARS ---

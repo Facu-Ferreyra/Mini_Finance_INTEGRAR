@@ -68,33 +68,6 @@ export function saveMovement(movement) {
     saveCollection('mf-movements', movements);
 }
 
-/*
-// --- Metas de ahorro ---
-export function getGoals() {
-    return getCollection(GOALS_KEY);
-}
-
-export function saveGoal(goal) {
-    const goals = getGoals();
-    goal = { saved: 0, icon: 'target', description: '', completedAt: null, ...goal };
-    goals.push(goal);
-    saveCollection(GOALS_KEY, goals);
-}
-
-export function deleteGoal(id) {
-    const goals = getGoals();
-    const updatedGoals = goals.filter(g => g.id !== id);
-    saveCollection(GOALS_KEY, updatedGoals);
-}
-
-export function updateGoal(id, changes) {
-    const goals = getGoals();
-    const index = goals.findIndex(g => g.id === id);
-    if (index === -1) return;
-    goals[index] = { ...goals[index], ...changes };
-    saveCollection(GOALS_KEY, goals);
-}
-*/
 
 // Metas de ahorro
 export function getGoals() {

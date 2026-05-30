@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Mini Finance - Simulador de presupuesto personal.">
     <title>Mini Finance</title>
+    <link rel="icon" type="image/png" href="assets/img/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
@@ -16,7 +17,7 @@
     <header class="main-navbar">
         <div class="navbar-container">
             <a href="index.html" class="logo" aria-label="Mini Finance - Inicio">
-                <span aria-hidden="true">💼</span>
+                <img class="brand-mark" src="assets/img/logo-mini-finance.png" alt="" aria-hidden="true">
                 <strong>Mini <span class="accent-text">Finance</span></strong>
             </a>
             <button class="menu-toggle" id="mobile-menu" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="primary-nav">
@@ -44,33 +45,6 @@
         </div>
     </header>
 
-    <!-- Hero y carrusel -->
-    <!--
-    <main class="main-home">
-        <section class="hero" aria-labelledby="hero-title">
-            <article class="hero-content">
-                <p class="hero-tag">Tus finanzas, bajo control</p>
-                <h1 id="hero-title">Tu Control <span class="accent-text">Financiero.</span><br>Sin Esfuerzo.</h1>
-                <p class="hero-description">Registra ingresos, controla tus gastos mensuales y alcanza tus metas de ahorro en un solo lugar.</p>
-                <button id="hero-cta" class="btn-primary">Comenzá GRATIS →</button>
-            </article>
-
-            <figure class="hero-carousel" aria-hidden="false">
-                <img src="assets/img/image1.png" alt="" class="carousel-slide active">
-                <img src="assets/img/image2.png" alt="" class="carousel-slide">
-                <img src="assets/img/image3.png" alt="" class="carousel-slide">
-                <button class="carousel-btn prev" aria-label="Imagen anterior">❮</button>
-                <button class="carousel-btn next" aria-label="Siguiente imagen">❯</button>
-                <figcaption class="carousel-dots">
-                    <button class="dot active" data-slide="0" aria-label="Ir a imagen 1"></button>
-                    <button class="dot" data-slide="1" aria-label="Ir a imagen 2"></button>
-                    <button class="dot" data-slide="2" aria-label="Ir a imagen 3"></button>
-                </figcaption>
-            </figure>
-        </section>
-    </main>
-    -->
-
     <!-- Hero sin carrusel -->
     <main class="main-home">
         <section class="hero hero-solo" aria-labelledby="hero-title">
@@ -83,7 +57,7 @@
         </section>
 
         <!-- Sección "Cómo funciona" con carrusel de pasos -->
-        <section class="steps-section" aria-labelledby="steps-title">
+        <section id="como-funciona" class="steps-section" aria-labelledby="steps-title">
 
             <!-- Imagen de fondo decorativa -->
             <div class="steps-bg" aria-hidden="true"></div>
@@ -138,6 +112,73 @@
                 <!-- Dots -->
                 <div class="steps-dots" id="steps-dots" aria-label="Indicadores de paso" role="tablist"></div>
             </div>
+        </section>
+
+        <section class="benefits-section" aria-labelledby="benefits-title">
+            <header class="section-heading">
+                <p class="section-eyebrow">Beneficios</p>
+                <h2 id="benefits-title">Pequeños hábitos, mejores decisiones</h2>
+                <p>Mini Finance te acompaña a entender tu dinero sin vueltas, con pasos simples y visuales.</p>
+            </header>
+
+            <ul class="benefits-list" aria-label="Beneficios principales de Mini Finance">
+                 <li>
+                    <article class="benefit-card">
+                        <figure class="benefit-icon" aria-hidden="true">◎</figure>
+                        <h3>Claridad</h3>
+                        <p>Ves tus ingresos y gastos en un solo lugar, sin perderte entre números.</p>
+                    </article>
+                </li>
+                <li>
+                    <article class="benefit-card">
+                        <figure class="benefit-icon" aria-hidden="true">◌</figure>
+                        <h3>Confianza</h3>
+                        <p>Registrás tus movimientos y entendés mejor qué decisiones te ayudan.</p>
+                    </article>
+                </li>
+                <li>
+                    <article class="benefit-card">
+                        <figure class="benefit-icon" aria-hidden="true">◍</figure>
+                        <h3>Control</h3>
+                        <p>Seguís tu balance, tus gastos y tus metas con información clara.</p>
+                    </article>
+                </li>
+                <li>
+                    <article class="benefit-card">
+                        <figure class="benefit-icon" aria-hidden="true">◉</figure>
+                        <h3>Autonomía</h3>
+                        <p>Aprendés a organizarte a tu ritmo y formar hábitos sostenibles.</p>
+                    </article>
+                </li>    
+            </ul>
+        </section>
+
+        <section class="faq-section" aria-labelledby="faq-title">
+            <header class="section-heading">
+                <p class="section-eyebrow">Preguntas frecuentes</p>
+                <h2 id="faq-title">Si existen dudas, existen respuestas</h2>
+            </header>
+
+            <section class="faq-list" aria-label="Preguntas frecuentes">
+                <details>
+                    <summary>¿Para qué me sirve Mini Finance?</summary>
+                    <p>Para registrar movimientos, ver tu balance y organizar metas de ahorro.</p>
+                </details>
+                <details>
+                    <summary>¿Tiene costo alguno?</summary>
+                    <p>¡Crear tu perfil, registrar ingresos / egresos y gestionar tus metas es totalmente gratuito!</p>
+                    <p>Todo desde un solo lugar, con una experiencia simple y clara.</p>
+                </details>
+                <details>
+                    <summary>¿Qué puede hacer Mini Finance con mis datos? ¿Es seguro?</summary>
+                    <p>Sí, es seguro. En Mini Finance tratamos tu información con la máxima responsabilidad:</p>
+                        <ol>
+                            <p> • Solo pedimos los datos que realmente necesitamos.</p>
+                            <p> • Se mantienen protegidos y en privado, no se sube a ningun servidor en la nube.</p>
+                            <p> • Nunca los compartimos sin tu autorización.</p>
+                        </ol>
+                </details>
+            </section>
         </section>
     </main>
 
@@ -215,6 +256,7 @@
         <button type="button" id="logout-btn" class="btn-danger">Cerrar sesión</button>
     </div>
 
+
     <!-- REPO en GitHub 
     <a href="https://github.com/Facu-Ferreyra/Mini_Finance_INTEGRAR" class="github-fab" target="_blank" rel="noopener noreferrer" aria-label="Ver repositorio en GitHub">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -223,6 +265,21 @@
         <span>Repo GitHub</span>
     </a>
     -->
+
+    <nav class="section-dots" aria-label="Navegación de secciones">
+        <a href="#hero-title" aria-label="Ir al inicio"></a>
+        <a href="#como-funciona" aria-label="Ir a Cómo funciona"></a>
+        <a href="#benefits-title" aria-label="Ir a Beneficios"></a>
+        <a href="#faq-title" aria-label="Ir a Preguntas frecuentes"></a>
+    </nav>
+
+    <nav class="mobile-bottom-nav" aria-label="Navegación inferior">
+        <ul>
+            <li><a href="index.html" aria-current="page"><span aria-hidden="true">⌂</span>Home</a></li>
+            <li><a href="pages/dashboard.html"><span aria-hidden="true">▦</span>Panel</a></li>
+            <li><a href="pages/resumen.html"><span aria-hidden="true">◎</span>Resumen</a></li>
+        </ul>
+    </nav>
 
         <!-- Footer -->
     <footer class="main-footer" role="contentinfo">
@@ -267,7 +324,7 @@
         </div>
 
         <div class="footer-bottom">
-            <p>© 2026 Mini Finance · Proyecto integrador INTEGRAR</p>
+            <p>© 2026 Mini Finance · Proyecto integrador IntegrarTEC</p>
         </div>
     </footer>
 

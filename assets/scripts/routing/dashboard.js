@@ -61,6 +61,44 @@ export function initDashboard() {
         }
     }
 
+    function updateEditDescriptionVisibility(category) {
+        const editDescriptionGroup = document.getElementById('edit-description-group');
+        const editDescriptionInput = document.getElementById('edit-mov-description');
+
+        if (!editDescriptionGroup || !editDescriptionInput) return;
+
+        if (requiresDescription.includes(category)) {
+            editDescriptionGroup.removeAttribute('hidden');
+        } else {
+            editDescriptionGroup.setAttribute('hidden', '');
+            editDescriptionInput.value = '';
+        }
+    }
+
+    document.getElementById('edit-mov-category')?.addEventListener('change', function(e) {
+        updateEditDescriptionVisibility(e.target.value);
+    });
+
+    document.querySelectorAll('input[name="edit-mov-type"]').forEach(function(radio) {
+        radio.addEventListener('change', function(e) {
+            const editCategory = document.getElementById('edit-mov-category');
+            const type = e.target.value;
+
+            Array.from(editCategory.options).forEach(function(option) {
+                option.hidden = option.dataset.type !== type;
+            });
+
+            const firstVisible = Array.from(editCategory.options).find(function(option) {
+                return !option.hidden;
+            });
+
+            if (firstVisible) {
+                editCategory.value = firstVisible.value;
+                updateEditDescriptionVisibility(firstVisible.value);
+            }
+        });
+    });
+
     document.querySelectorAll('input[name="type"]').forEach(radio => {
         radio.addEventListener('change', (e) => {
             updateCategoryOptions(e.target.value);
@@ -120,12 +158,17 @@ export function initDashboard() {
 
             if (btn.dataset.action === 'edit-mov') {
                 const movement = getMovementById(id);
-                if (movement) openEditMovementModal(movement);
+                if (movement) {
+                    openEditMovementModal(movement);
+                    updateEditDescriptionVisibility(movement.category);
+                }
             } else if (btn.dataset.action === 'delete-mov') {
                 openDeleteMovementConfirm(id);
             }
         });
     }
+
+    
 
     // Edit movement modal confirm
     document.getElementById('edit-mov-confirm')?.addEventListener('click', function() {

@@ -61,7 +61,7 @@
     .footer-col li a,
     .footer-col li span {
         font-size: 0.9rem;
-        color: rgba(255, 255, 255, 0.65);
+        color: var(--color-action);
         text-decoration: none;
         transition: color 0.2s;
     }

@@ -6,6 +6,7 @@
 
 html { 
     font-size: 16px; 
+    scroll-behavior: smooth;
 }
 
 body {
@@ -14,6 +15,10 @@ body {
     background-color: var(--color-bg); 
     color: var(--color-white);
     font-family: var(--font-main);
+}
+
+body.modal-open {
+    overflow: hidden;
 }
 
 img, picture, video, canvas, svg {

@@ -54,6 +54,11 @@
         width: fit-content;
     }
 
+    .btn-logout {
+        color: var(--color-alert);
+        border-color: var(--color-alert);
+    }
+
     .btn-danger:hover {
         background-color: rgba(239, 68, 68, 0.1);
     }

@@ -51,14 +51,7 @@ export function initResumen() {
     const prioritySel = document.getElementById('goal-priority');
     const descInput   = document.getElementById('goal-description');
 
-    /*
-    if (nameInput) {
-        nameInput.addEventListener('input', () => setFieldError('goal-name'));
-    }
-    if (amountInput) {
-        amountInput.addEventListener('input', () => setFieldError('goal-amount'));
-    }
-    */
+    
     const ejecutarGuardado = (e) => {
         if (e) e.preventDefault(); 
         
@@ -188,7 +181,16 @@ export function initResumen() {
 
             const prioritySelect = document.getElementById('edit-goal-priority');
             const priority = prioritySelect ? prioritySelect.value : 'medium';
-            updateGoal(goalId, { amount, priority });
+            const currentGoal = getGoals().find((goal) => goal.id === goalId);
+            const changes = { amount, priority };
+
+            if (currentGoal.saved >= amount) {
+                changes.completedAt = currentGoal.completedAt || new Date().toISOString().split('T')[0];
+            } else {
+                changes.completedAt = null;
+            }
+
+            updateGoal(goalId, changes);
             closeEditModal();
             refreshGoalsUI();
         });

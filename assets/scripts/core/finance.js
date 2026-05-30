@@ -101,6 +101,7 @@ export function assignFundsToGoal(goalId, amount) {
 
     saveMovement({
         id: Date.now() + 1,
+        goalId,
         amount: assignAmount,
         category: 'ahorro',
         type: 'expense',

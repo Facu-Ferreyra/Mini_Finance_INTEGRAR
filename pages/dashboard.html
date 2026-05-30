@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Mini Finance Dashboard - Track and manage your personal financial activities, income, and expenses.">
     <title>Mini Finance - Dashboard</title>
-    
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
@@ -16,7 +16,7 @@
     <header class="main-navbar">
         <div class="navbar-container">
             <a href="../index.html" class="logo" aria-label="Mini Finance - Volver al inicio">
-                <span aria-hidden="true">💼</span>
+                <img class="brand-mark" src="../assets/img/logo-mini-finance.png" alt="" aria-hidden="true">
                 <strong>Mini <span class="accent-text">Finance</span></strong>
             </a>
             <button class="menu-toggle" id="mobile-menu" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="primary-nav">
@@ -32,7 +32,7 @@
                         <button id="theme-toggle" class="btn-theme-toggle" aria-label="Cambiar tema">🌙</button>
                     </li>
                     <li>
-                        <button id="logout-page-btn" class="btn-theme-toggle" style="color: var(--color-alert); border-color: var(--color-alert);" aria-label="Cerrar sesión">Salir</button>
+                        <button id="logout-page-btn" class="btn-theme-toggle" aria-label="Cerrar sesión">Salir</button>
                     </li>
                 </ul>
             </nav>
@@ -233,7 +233,7 @@
                         <option value="otros-gasto" data-type="expense">Otros</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="edit-description-group" hidden>
                     <label for="edit-mov-description">Descripción:</label>
                     <input type="text" id="edit-mov-description" placeholder="Detalles...">
                 </div>
@@ -258,6 +258,13 @@
         </div>
     </main>
 
+    <nav class="mobile-bottom-nav" aria-label="Navegación inferior">
+        <ul>
+            <li><a href="../index.html"><span aria-hidden="true">⌂</span>Home</a></li>
+            <li><a href="dashboard.html" aria-current="page"><span aria-hidden="true">▦</span>Panel</a></li>
+            <li><a href="resumen.html"><span aria-hidden="true">◎</span>Resumen</a></li>
+        </ul>
+    </nav>
 
     <script type="module" src="../assets/scripts/main.js" defer></script>
 </body>

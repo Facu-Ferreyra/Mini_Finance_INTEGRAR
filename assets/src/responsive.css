@@ -45,13 +45,29 @@
     }
 
     .nav-links li {
-        width: auto;
+        width: 100%;
     }
 
     .nav-links a,
     .nav-links button {
-        width: auto;
+        width: 100%;
         justify-content: center;
+    }
+
+    .benefits-list {
+        grid-template-columns: 1fr;
+    }
+
+    .faq-section {
+        padding-bottom: 6rem;
+    }
+
+    .mobile-bottom-nav {
+        display: block;
+    }
+
+    body {
+        padding-bottom: 4.75rem;
     }
 
     .metrics-grid,
@@ -187,6 +203,14 @@
             padding: 0;
         }
 
+        .mobile-bottom-nav {
+            display: none;
+        }
+
+        body {
+            padding-bottom: 0;
+        }
+
         .metrics-grid {
             grid-template-columns: repeat(3, 1fr);
             gap: var(--gap-base, 1.5rem);
@@ -304,29 +328,6 @@
             width: auto;
         }
         
-        /*
-        .hero {
-            grid-template-columns: 1fr 1fr;
-            min-height: 85vh;
-            gap: 3rem;
-            padding: 2rem 0;
-        }
-        .hero-carousel {
-            aspect-ratio: auto;
-            max-height: 340px;
-            max-width: 460px;
-            order: 0;
-            justify-self: end;
-        }
-
-        .hero-content {
-            align-items: flex-start;
-            text-align: left;
-        }
-        .hero-description {
-            max-width: 42ch;
-        }
-        */
 
         .history-table {
             font-size: 0.95rem;

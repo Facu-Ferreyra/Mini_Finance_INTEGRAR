@@ -5,7 +5,7 @@
         inset: 0;
         background: rgba(0, 0, 0, 0.82);
         backdrop-filter: blur(4px);
-        z-index: 200;
+        z-index: 1400;
         justify-content: center;
         align-items: flex-start;
         overflow-y: auto;
@@ -201,14 +201,14 @@
 
     .account-menu {
         position: fixed;
-        top: 70px;
-        right: 1.5rem;
+        top: calc(72px + env(safe-area-inset-top));
+        right: 1rem;
+        z-index: 1250;
         background: var(--color-surface);
         border: 1px solid var(--color-border);
         border-radius: var(--radius-lg);
         padding: 1rem 1.25rem;
         box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-        z-index: 150;
         min-width: 200px;
         animation: authCardIn 0.2s ease;
     }
