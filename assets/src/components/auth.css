@@ -201,7 +201,7 @@
 
     .account-menu {
         position: fixed;
-        top: calc(72px + env(safe-area-inset-top));
+        top: calc(var(--navbar-h, 4.5rem) + 0.25rem + env(safe-area-inset-top, 0px));
         right: 1rem;
         z-index: 1250;
         background: var(--color-surface);

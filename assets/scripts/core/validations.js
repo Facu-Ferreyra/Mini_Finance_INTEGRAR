@@ -16,7 +16,7 @@ export function validateAmount(value) {
 
 // --- Validar categoria seleccionada ---
 export function validateCategory(value) {
-    const allowed = ['salario', 'ingreso-extra', 'otros-ingreso', 'vivienda', 'servicios', 'transporte', 'educacion', 'alimentos', 'delivery', 'indumentaria', 'otros-gasto'];
+    const allowed = ['salario', 'ingreso-extra', 'otros-ingreso', 'vivienda', 'servicios', 'transporte', 'educacion', 'alimentos', 'delivery', 'indumentaria', 'otros-gasto', 'ahorro'];
 
     if (!value || value === '') {
         return { valid: false, error: 'Seleccioná una categoría.' };

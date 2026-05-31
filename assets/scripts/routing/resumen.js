@@ -39,8 +39,8 @@ export function initResumen() {
     renderGoalsHeader();
     renderPriorityLegend();
     renderGoalsFooterBanner();
-    renderGoalsFilterToggle();
-    renderGoals(getActiveGoals()); 
+    renderGoalsFilterToggle(false);
+    renderGoals(getActiveGoals(), false);
     populateCategoryFilter(getUniqueCategories());
     /*renderHistory(getMovements());*/
 
@@ -184,6 +184,7 @@ export function initResumen() {
             const currentGoal = getGoals().find((goal) => goal.id === goalId);
             const changes = { amount, priority };
 
+            if (!currentGoal) return;
             if (currentGoal.saved >= amount) {
                 changes.completedAt = currentGoal.completedAt || new Date().toISOString().split('T')[0];
             } else {
@@ -239,14 +240,19 @@ export function initResumen() {
     }
 
     goalsShowCompleted = false;
-    window._goalsShowCompleted = false;
+
+    // Backfill completedAt for goals completed before this field existed
+    getGoals().forEach(function(g) {
+        if ((g.saved || 0) >= (g.amount || 0) && g.amount > 0 && !g.completedAt) {
+            updateGoal(g.id, { completedAt: new Date().toISOString().split('T')[0] });
+        }
+    });
 
     function handleFilterToggle() {
         goalsShowCompleted = !goalsShowCompleted;
-        window._goalsShowCompleted = goalsShowCompleted;
         const goals = goalsShowCompleted ? getCompletedGoals() : getActiveGoals();
-        renderGoalsFilterToggle();
-        renderGoals(goals);
+        renderGoalsFilterToggle(goalsShowCompleted);
+        renderGoals(goals, goalsShowCompleted);
         renderGoalsHeader();
     }
 
@@ -259,7 +265,6 @@ export function initResumen() {
         });
     }
 
-    const filterSelect = document.getElementById('filter-category');
     let historySortBy = 'date';
     let historySortAsc = false;
 
@@ -309,8 +314,9 @@ export function initResumen() {
         });
     }
 
-    if (filterSelect) {
-        filterSelect.addEventListener('change', function() {
+    const filterSelectEl = document.getElementById('filter-category');
+    if (filterSelectEl) {
+        filterSelectEl.addEventListener('change', function() {
             refreshHistory();
         });
     }
@@ -325,7 +331,7 @@ export function initResumen() {
 
     function refreshGoalsUI() {
         const goals = goalsShowCompleted ? getCompletedGoals() : getActiveGoals();
-        renderGoals(goals);
+        renderGoals(goals, goalsShowCompleted);
         populateCategoryFilter(getUniqueCategories());
         refreshHistory();
         renderGoalsHeader();

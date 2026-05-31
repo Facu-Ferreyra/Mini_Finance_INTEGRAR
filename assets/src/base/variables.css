@@ -1,6 +1,9 @@
 :root {
     --font-main: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
 
+    /* --- Altura del navbar fijo --- */
+    --navbar-h: 4.5rem;
+
     /* --- Espaciado y forma --- */
     --gap-base: 1rem;
     --radius-lg: 12px;

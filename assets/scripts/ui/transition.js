@@ -1,3 +1,10 @@
+export function navigateTo(href) {
+    document.body.classList.add('page-leaving');
+    document.body.addEventListener('animationend', function handler() {
+        window.location.href = href;
+    }, { once: true });
+}
+
 export function initPageTransitions() {
 
     // Al cargar, el CSS ya aplica pageFadeIn sobre body
@@ -26,8 +33,9 @@ export function initPageTransitions() {
         // Añadir clase de salida y navegar al terminar la animación
         document.body.classList.add('page-leaving');
 
-        setTimeout(function() {
+        document.body.addEventListener('animationend', function handler() {
+            document.body.removeEventListener('animationend', handler);
             window.location.href = href;
-        }, 260);   // debe coincidir con la duración de pageFadeOut (0.25s + margen)
+        }, { once: true });
     });
 }

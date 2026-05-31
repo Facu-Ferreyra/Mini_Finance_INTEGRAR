@@ -12,7 +12,6 @@ export function initMobileNavbar() {
 
     navLinks.addEventListener('click', function(e) {
         if (!e.target.closest('a, button')) return;
-        if (e.target.closest('#mobile-menu')) return;
 
         navLinks.classList.remove('mobile-nav');
         menuToggle.classList.remove('is-active');

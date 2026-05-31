@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mini Finance - Resumen de metas de ahorro e historial de movimientos financieros.">
     <title>Mini Finance - Resumen</title>
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -132,7 +133,7 @@
         </div>
 
         <!-- Assign Modal -->
-        <div id="assign-modal" class="modal-overlay">
+        <div id="assign-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="assign-mod-title">
             <div class="modal-content">
                 <h3>Asignar fondos</h3>
                 <p class="modal-subtitle">Asignar dinero a: <strong id="assign-goal-name"></strong></p>
@@ -153,9 +154,9 @@
         </div>
 
         <!-- Edit Goal Modal -->
-        <div id="edit-modal" class="modal-overlay">
+        <div id="edit-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="edit-goal-title">
             <div class="modal-content">
-                <h3>Modificar meta</h3>
+                <h3 id="edit-goal-title">Modificar meta</h3>
                 <p class="modal-subtitle">Editando: <strong id="edit-goal-name"></strong></p>
                 <div class="form-group">
                     <label for="edit-goal-amount">Nuevo monto objetivo ($):</label>
@@ -178,7 +179,7 @@
         </div>
 
         <!-- Confirm Delete Modal -->
-        <div id="confirm-modal" class="modal-overlay">
+        <div id="confirm-modal" class="modal-overlay" role="dialog" aria-modal="true">
             <div class="modal-content">
                 <h3>¿Eliminar meta?</h3>
                 <p class="modal-subtitle" id="confirm-modal-text">Esta acción no se puede deshacer.</p>
@@ -256,6 +257,6 @@
         </ul>
     </nav>
 
-    <script type="module" src="../assets/scripts/main.js" defer></script>
+    <script type="module" src="../assets/scripts/main.js" ></script>
 </body>
 </html>

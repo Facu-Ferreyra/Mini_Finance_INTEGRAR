@@ -7,6 +7,7 @@ import {
   getAccounts,
   deleteAccount,
 } from "../core/accounts.js";
+import { navigateTo } from "./transition.js";
 
 // Inicializar sistema de autenticación
 export function initAuth() {
@@ -51,7 +52,7 @@ export function initAuth() {
         accountMenuUsername.textContent = account.username;
       heroCta.textContent = "Ir al Dashboard →";
       heroCta.onclick = function () {
-        window.location.href = "pages/dashboard.html";
+        navigateTo("pages/dashboard.html");
       };
     } else {
       // Sin sesión: ocultar nav de cuenta/dashboard, ajustar CTA

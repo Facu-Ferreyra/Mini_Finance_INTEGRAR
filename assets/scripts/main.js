@@ -9,9 +9,6 @@ import { initMobileNavbar } from './ui/navbar.js';
 initTheme();
 setupThemeToggle();
 
-/*
-initCarousel();
-*/
 initStepsCarousel();
 
 initAuth();

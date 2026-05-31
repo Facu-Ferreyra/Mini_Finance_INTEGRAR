@@ -127,11 +127,16 @@
 
   .mobile-bottom-nav ul {
     display: flex;
-    justify-content: center;
-    grid-template-columns: repeat(3, 1fr);
+    justify-content: space-evenly;
     list-style: none;
     padding: 0;
     margin: 0;
+  }
+
+  .mobile-bottom-nav li {
+    flex: 1;
+    display: flex;
+    justify-content: center;
   }
 
   .mobile-bottom-nav a {
@@ -157,6 +162,7 @@
   .benefits-section:target,
   .faq-section:target {
     animation: section-focus 0.8s ease;
+    scroll-margin-top: 6rem;
   }
 
   @keyframes section-focus {

@@ -1,4 +1,4 @@
-import { getMovements, getGoals, updateGoal, saveMovement } from './storage.js';
+import { getMovements, getGoals, updateGoal, saveMovement, generateId } from './storage.js';
 
 function calcByType(type) {
     return getMovements()
@@ -100,7 +100,7 @@ export function assignFundsToGoal(goalId, amount) {
     updateGoal(goalId, updates);
 
     saveMovement({
-        id: Date.now() + 1,
+        id: generateId(),
         goalId,
         amount: assignAmount,
         category: 'ahorro',

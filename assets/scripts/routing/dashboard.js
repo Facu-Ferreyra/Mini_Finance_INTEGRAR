@@ -22,6 +22,16 @@ export function initDashboard() {
             });
         });
     }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeAssignModal();
+            closeEditModal();
+            closeConfirmModal();
+            closeDeleteMovementConfirm();
+            closeEditMovementModal();
+        }
+    });
     
     
     renderMetrics();

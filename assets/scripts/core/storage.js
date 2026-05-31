@@ -28,34 +28,10 @@ function saveCollection(base, data) {
     localStorage.setItem(key(base), JSON.stringify(data));
 }
 
-
-
-/*
-function getCollection(key) {
-    try {
-        const data = localStorage.getItem(key);
-        return data ? JSON.parse(data) : [];
-    } catch (e) {
-        console.error('Corrupted localStorage data for key:', key, e);
-        return [];
-    }
+// Genera un ID numérico único combinando timestamp y un sufijo aleatorio.
+export function generateId() {
+    return Date.now() + Math.floor(Math.random() * 1000);
 }
-
-function saveCollection(key, data) {
-    localStorage.setItem(key, JSON.stringify(data));
-}
-
-// --- Movimientos ---
-export function getMovements() {
-    return getCollection(STORAGE_KEY);
-}
-
-export function saveMovement(movement) {
-    const movements = getMovements();
-    movements.push(movement);
-    saveCollection(STORAGE_KEY, movements);
-}
-*/
 
 // Movimientos
 export function getMovements() {

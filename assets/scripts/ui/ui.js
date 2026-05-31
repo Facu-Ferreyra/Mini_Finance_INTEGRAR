@@ -195,11 +195,9 @@ export function renderGoalsFooterBanner() {
 }
 
 // --- Renderizar boton de filtro activas/completadas ---
-export function renderGoalsFilterToggle() {
+export function renderGoalsFilterToggle(showingCompleted = false) {
     const container = document.getElementById('goals-filter-toggle');
     if (!container) return;
-
-    const showingCompleted = window._goalsShowCompleted || false;
 
     container.innerHTML = '<button type="button" id="goals-filter-btn" class="btn-filter-toggle">'
         + '<span class="btn-icon-span">'
@@ -212,11 +210,9 @@ export function renderGoalsFilterToggle() {
 }
 
 // --- Renderizar lista de metas (activas o completadas) ---
-export function renderGoals(goals) {
+export function renderGoals(goals, showingCompleted = false) {
     const container = document.getElementById('goals-list-container');
     if (!container) return;
-
-    const showingCompleted = window._goalsShowCompleted || false;
 
     if (goals.length === 0) {
         container.innerHTML = showingCompleted
@@ -274,17 +270,17 @@ export function renderGoals(goals) {
             ? '<span class="remaining-lbl">Faltan</span><span class="remaining-money">' + formatCurrency(remaining) + '</span><span class="remaining-lbl-sub">para completar tu objetivo</span>'
             : '<span class="status-achieved" style="color: #2ecc71; font-weight: bold; font-size: 0.95rem;">META ALCANZADA!</span>';
 
-        return '<article class="goal-card ' + (goal.priority || 'medium') + '" data-id="' + goal.id + '">'
+        return '<article class="goal-card ' + safePriority(goal.priority) + '" data-id="' + goal.id + '">'
             + '<div class="goal-card-main">'
-            + '<div class="goal-icon-avatar ' + goal.priority + '-icon" aria-hidden="true">' + iconHtml + '</div>'
+            + '<div class="goal-icon-avatar ' + safePriority(goal.priority) + '-icon" aria-hidden="true">' + iconHtml + '</div>'
             + '<div class="goal-info-body">'
             + '<div class="goal-title-wrapper">'
             + '<h3>' + escapeHTML(goal.name) + '</h3>'
-            + '<span class="priority-badge ' + goal.priority + '">' + priorityLabel + '</span>'
+            + '<span class="priority-badge ' + safePriority(goal.priority) + '">' + priorityLabel + '</span>'
             + '</div>'
             + '<p class="goal-card-description">' + (goal.description ? escapeHTML(goal.description) : 'Fondo de ahorro personalizado controlado por tus balances.') + '</p>'
             + '<div class="progress-row">'
-            + '<div class="progress-bar-bg"><div class="progress-fill ' + (goal.priority || 'medium') + '" style="width: ' + pct.toFixed(1) + '%;"></div></div>'
+            + '<div class="progress-bar-bg"><div class="progress-fill ' + safePriority(goal.priority) + '" style="width: ' + pct.toFixed(1) + '%;"></div></div>'
             + '<span class="percentage-text">' + pct.toFixed(0) + '%</span>'
             + '</div>'
             + '<div class="goal-values-track">'
@@ -433,7 +429,13 @@ export function openEditMovementModal(movement) {
     if (!modal) return;
     modal.dataset.movementId = movement.id;
     document.getElementById('edit-mov-amount').value = movement.amount;
-    document.querySelector('input[name="edit-mov-type"][value="' + movement.type + '"]').checked = true;
+    const typeInput = document.querySelector('input[name="edit-mov-type"][value="' + movement.type + '"]');
+    if (typeInput) {
+        typeInput.checked = true;
+    } else {
+        const fallback = document.querySelector('input[name="edit-mov-type"][value="income"]');
+        if (fallback) fallback.checked = true;
+    }
     const catSelect = document.getElementById('edit-mov-category');
     Array.from(catSelect.options).forEach(function(opt) {
         opt.hidden = (opt.dataset.type === 'income') !== (movement.type === 'income');
@@ -493,6 +495,11 @@ const _escapeDiv = document.createElement('div');
 function escapeHTML(str) {
     _escapeDiv.textContent = str;
     return _escapeDiv.innerHTML;
+}
+
+function safePriority(priority) {
+    const VALID = ['high', 'medium', 'low'];
+    return VALID.includes(priority) ? priority : 'medium';
 }
 
 

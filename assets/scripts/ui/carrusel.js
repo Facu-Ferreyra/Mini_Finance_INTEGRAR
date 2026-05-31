@@ -1,88 +1,3 @@
-/* TEMPORAL, HASTA TERMINAR DISEÑO DEL INDEX*/ 
-
-/*
-export function initCarousel() {
-
-    const slides = document.querySelectorAll('.carousel-slide');
-    const dots   = document.querySelectorAll('.dot');
-
-    const nextBtn = document.querySelector('.next');
-    const prevBtn = document.querySelector('.prev');
-
-    if (slides.length === 0) return;
-
-    let current  = 0;
-    let interval = null;
-
-    // --- Navegar a un slide especifico ---
-    function goTo(index) {
-
-        slides[current].classList.remove('active');
-        dots[current].classList.remove('active');
-        current = (index + slides.length) % slides.length;
-        slides[current].classList.add('active');
-        dots[current].classList.add('active');
-    }
-
-    // --- Siguiente / Anterior ---
-    function next() {
-        goTo(current + 1);
-    }
-
-    function prev() {
-        goTo(current - 1);
-    }
-
-    // --- Auto-play ---
-    function start() {
-        stop();
-        interval = setInterval(() => {
-            next();
-        }, 6000);
-    }
-
-    function stop() {
-        if (interval) {
-            clearInterval(interval);
-        }
-    }
-
-    function restart() {
-        stop();
-        start();
-    }
-
-    // --- Eventos de botones y dots ---
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            next();
-            restart();
-        });
-    }
-
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            prev();
-            restart();
-        });
-    }
-
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            goTo(index);
-            restart();
-        });
-    });
-
-    // --- Pausar al cambiar de pestaña ---
-    document.addEventListener('visibilitychange', () => {
-        document.hidden
-            ? stop()
-            : start();
-    });
-    start();
-}
-*/
 export function initStepsCarousel() {
     const track   = document.getElementById('steps-track');
     const dotsContainer = document.getElementById('steps-dots');
@@ -110,9 +25,10 @@ export function initStepsCarousel() {
     function goTo(index) {
         current = (index + cards.length) % cards.length;
 
-        // Scroll suave al card activo
         var cardWidth = cards[0].getBoundingClientRect().width;
-        var gap = 16; // gap en px entre cards (coincide con el CSS)
+        var gap = cards.length > 1
+            ? cards[1].getBoundingClientRect().left - cards[0].getBoundingClientRect().right
+            : 0;
         track.style.transform = 'translateX(-' + (current * (cardWidth + gap)) + 'px)';
 
         // Actualizar dots
