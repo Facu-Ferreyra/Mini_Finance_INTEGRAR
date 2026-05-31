@@ -38,6 +38,12 @@
     }
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .modal-content {
+      animation: none;
+    }
+  }
+
   .modal-content h3 {
     font-size: 1.25rem;
     font-weight: 700;

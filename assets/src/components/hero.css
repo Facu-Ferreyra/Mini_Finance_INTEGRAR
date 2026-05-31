@@ -92,8 +92,8 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .hero.hero-solo::before,
-        .hero.hero-solo::after {
+        .hero::before,
+        .hero::after {
             animation: none;
         }
     }

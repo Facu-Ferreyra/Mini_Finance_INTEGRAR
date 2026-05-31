@@ -179,9 +179,9 @@
         </div>
 
         <!-- Confirm Delete Modal -->
-        <div id="confirm-modal" class="modal-overlay" role="dialog" aria-modal="true">
+        <div id="confirm-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
             <div class="modal-content">
-                <h3>¿Eliminar meta?</h3>
+                <h3 id="confirm-modal-title">¿Eliminar meta?</h3>
                 <p class="modal-subtitle" id="confirm-modal-text">Esta acción no se puede deshacer.</p>
                 <div class="modal-actions">
                     <button type="button" id="confirm-delete-btn" class="btn-danger">Sí, eliminar</button>
@@ -232,12 +232,12 @@
                     <caption class="visually-hidden">Historial completo de movimientos financieros</caption>
                     <thead>
                         <tr>
-                            <th scope="col" id="sort-date-btn" class="sortable" aria-sort="descending" tabindex="0">
+                            <th scope="col" id="sort-date-btn" class="sortable" aria-sort="descending" tabindex="0" role="button">
                                 Fecha <em class="sort-icon" aria-hidden="true">▼</em>
                             </th>
                             <th scope="col">Tipo</th>
                             <th scope="col">Categoria</th>
-                            <th scope="col" id="sort-amount-btn" class="sortable" aria-sort="descending" tabindex="0">
+                            <th scope="col" id="sort-amount-btn" class="sortable" aria-sort="descending" tabindex="0" role="button">
                                 Monto <em class="sort-icon" aria-hidden="true">▼</em>
                             </th>
                         </tr>

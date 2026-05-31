@@ -246,9 +246,9 @@
         </div>
 
         <!-- Delete Movement Confirmation Modal -->
-        <div id="delete-movement-modal" class="modal-overlay">
+        <div id="delete-movement-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="delete-mov-title">
             <div class="modal-content">
-                <h3>¿Eliminar movimiento?</h3>
+                <h3 id="delete-mov-title">¿Eliminar movimiento?</h3>
                 <p class="modal-subtitle">Esta acción no se puede deshacer.</p>
                 <div class="modal-actions">
                     <button type="button" id="delete-mov-confirm" class="btn-danger">Sí, eliminar</button>

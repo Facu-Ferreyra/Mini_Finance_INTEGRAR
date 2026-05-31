@@ -9,7 +9,11 @@ import {
     openEditMovementModal,
     closeEditMovementModal,
     openDeleteMovementConfirm,
-    closeDeleteMovementConfirm
+    closeDeleteMovementConfirm,
+    closeAssignModal,
+    closeEditModal,
+    closeConfirmModal
+
 } from '../ui/ui.js';
 
 export function initDashboard() {

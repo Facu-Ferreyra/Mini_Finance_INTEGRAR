@@ -72,6 +72,11 @@ body.page-leaving {
     pointer-events: none;
 }
 html {
-    scroll-behavior: smooth;
     scroll-padding-top: var(--navbar-h, 4.5rem);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
 }

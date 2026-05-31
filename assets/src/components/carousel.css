@@ -73,6 +73,12 @@
         will-change: transform;
     }
 
+    @media (prefers-reduced-motion: reduce) {
+      .steps-track {
+        transition: none;
+      }
+    }
+
     /* Card individual */
     .step-card {
         background: rgba(255, 255, 255, 0.08);

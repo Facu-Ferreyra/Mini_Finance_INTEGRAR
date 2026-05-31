@@ -23,9 +23,12 @@ export function initAuth() {
 
   if (!overlay) return;
 
+  let authLastFocused = null;
+
   function openAuthOverlay() {
     overlay.classList.add("open");
     overlay.setAttribute("aria-hidden", "false");
+    authLastFocused = document.activeElement;
 
     const firstInput = overlay.querySelector("input:not([hidden])");
     if (firstInput)
@@ -37,6 +40,10 @@ export function initAuth() {
   function closeAuthOverlay() {
     overlay.classList.remove("open");
     overlay.setAttribute("aria-hidden", "true");
+    if (authLastFocused) {
+      authLastFocused.focus();
+      authLastFocused = null;
+    }
   }
 
   // ACTUALIZAR UI según estado de sesión
@@ -336,12 +343,32 @@ export function initAuth() {
   // Inicializar estado
   refreshAuthUI();
 
-  // Cerrar overlay al hacer click fuera de la card
-  overlay.addEventListener("click", function (e) {
-    if (e.target === overlay) {
-      closeAuthOverlay();
-    }
-  });
+    // Cerrar overlay al hacer click fuera de la card
+    overlay.addEventListener("click", function (e) {
+        if (e.target === overlay) {
+            closeAuthOverlay();
+        }
+    });
+
+    // Cerrar overlay con Escape + focus trap
+    overlay.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+            closeAuthOverlay();
+            return;
+        }
+        if (e.key !== "Tab") return;
+        const focusable = overlay.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+        }
+    });
 }
 
 // Escape HTML básico

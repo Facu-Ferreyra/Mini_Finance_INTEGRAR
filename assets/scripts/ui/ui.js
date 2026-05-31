@@ -1,5 +1,49 @@
 import { calcBalance, calcIncome, calcExpenses, calcNetIncomeRate, calcIncomeShare, calcExpenseRate, getRecentMovements, getGoalProgress, getGoalsSummary } from '../core/finance.js';
 
+// --- Focus management for modals ---
+let lastFocusedElement = null;
+
+function getFocusableElements(container) {
+  return container.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+}
+
+function focusFirstElement(container) {
+  const els = getFocusableElements(container);
+  if (els.length > 0) {
+    els[0].focus();
+  }
+}
+
+function trapTabKey(e, container) {
+  const els = getFocusableElements(container);
+  if (els.length === 0) return;
+  const first = els[0];
+  const last = els[els.length - 1];
+  if (e.key === 'Tab') {
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+}
+
+function setupFocusTrap(modal) {
+  focusFirstElement(modal);
+  const handler = function (e) { trapTabKey(e, modal); };
+  modal.addEventListener('keydown', handler);
+  modal._focusTrapHandler = handler;
+}
+
+function teardownFocusTrap(modal) {
+  if (modal._focusTrapHandler) {
+    modal.removeEventListener('keydown', modal._focusTrapHandler);
+    delete modal._focusTrapHandler;
+  }
+}
+
 // --- Iconos SVG por categoria de meta ---
 const GOAL_ICONS = {
     plane: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>',
@@ -356,6 +400,7 @@ export function populateCategoryFilter(categories) {
 export function openAssignModal(goal) {
     const modal = document.getElementById('assign-modal');
     if (!modal) return;
+    lastFocusedElement = document.activeElement;
     modal.dataset.goalId = goal.id;
     document.getElementById('assign-goal-name').textContent = goal.name;
     const balance = calcBalance();
@@ -371,62 +416,73 @@ export function openAssignModal(goal) {
         : '';
     modal.classList.add('open');
     document.body.classList.add('modal-open');
+    setupFocusTrap(modal);
 }
 
 // --- Cerrar modal de asignacion ---
 export function closeAssignModal() {
     const modal = document.getElementById('assign-modal');
     if (!modal) return;
+    teardownFocusTrap(modal);
     modal.classList.remove('open');
     document.body.classList.remove('modal-open');
+    if (lastFocusedElement) { lastFocusedElement.focus(); lastFocusedElement = null; }
 }
 
 // --- Abrir modal de edición de monto ---
 export function openEditModal(goal) {
     const modal = document.getElementById('edit-modal');
     if (!modal) return;
+    lastFocusedElement = document.activeElement;
     modal.dataset.goalId = goal.id;
     document.getElementById('edit-goal-name').textContent = goal.name;
     document.getElementById('edit-goal-amount').value = goal.amount || '';
     document.getElementById('edit-error').textContent = '';
-    // Preseleccionar la prioridad actual de la meta
     const prioritySelect = document.getElementById('edit-goal-priority');
     if (prioritySelect) prioritySelect.value = goal.priority || 'medium';
     modal.classList.add('open');
     document.body.classList.add('modal-open');
+    setupFocusTrap(modal);
 }
 
 // --- Cerrar modal de edición ---
 export function closeEditModal() {
     const modal = document.getElementById('edit-modal');
     if (!modal) return;
+    teardownFocusTrap(modal);
     modal.classList.remove('open');
     document.body.classList.remove('modal-open');
+    if (lastFocusedElement) { lastFocusedElement.focus(); lastFocusedElement = null; }
 }
 
 // --- Abrir modal de confirmación de eliminación ---
 export function openConfirmModal(goalId, goalName) {
     const modal = document.getElementById('confirm-modal');
     if (!modal) return;
+    lastFocusedElement = document.activeElement;
     modal.dataset.goalId = goalId;
     const textEl = document.getElementById('confirm-modal-text');
     if (textEl) textEl.textContent = '¿Seguro que querés eliminar "' + goalName + '"? Esta acción no se puede deshacer.';
     modal.classList.add('open');
     document.body.classList.add('modal-open');
+    setupFocusTrap(modal);
 }
 
 // --- Cerrar modal de confirmación ---
 export function closeConfirmModal() {
     const modal = document.getElementById('confirm-modal');
     if (!modal) return;
+    teardownFocusTrap(modal);
     modal.classList.remove('open');
     document.body.classList.remove('modal-open');
+    if (lastFocusedElement) { lastFocusedElement.focus(); lastFocusedElement = null; }
 }
 
 // --- Abrir modal de edición de movimiento ---
 export function openEditMovementModal(movement) {
     const modal = document.getElementById('edit-movement-modal');
     if (!modal) return;
+    lastFocusedElement = document.activeElement;
     modal.dataset.movementId = movement.id;
     document.getElementById('edit-mov-amount').value = movement.amount;
     const typeInput = document.querySelector('input[name="edit-mov-type"][value="' + movement.type + '"]');
@@ -445,31 +501,38 @@ export function openEditMovementModal(movement) {
     document.getElementById('edit-mov-error').textContent = '';
     modal.classList.add('open');
     document.body.classList.add('modal-open');
+    setupFocusTrap(modal);
 }
 
 // --- Cerrar modal de edición de movimiento ---
 export function closeEditMovementModal() {
     const modal = document.getElementById('edit-movement-modal');
     if (!modal) return;
+    teardownFocusTrap(modal);
     modal.classList.remove('open');
     document.body.classList.remove('modal-open');
+    if (lastFocusedElement) { lastFocusedElement.focus(); lastFocusedElement = null; }
 }
 
 // --- Abrir confirmación de eliminación de movimiento ---
 export function openDeleteMovementConfirm(movementId) {
     const modal = document.getElementById('delete-movement-modal');
     if (!modal) return;
+    lastFocusedElement = document.activeElement;
     modal.dataset.movementId = movementId;
     modal.classList.add('open');
     document.body.classList.add('modal-open');
+    setupFocusTrap(modal);
 }
 
 // --- Cerrar confirmación de eliminación de movimiento ---
 export function closeDeleteMovementConfirm() {
     const modal = document.getElementById('delete-movement-modal');
     if (!modal) return;
+    teardownFocusTrap(modal);
     modal.classList.remove('open');
     document.body.classList.remove('modal-open');
+    if (lastFocusedElement) { lastFocusedElement.focus(); lastFocusedElement = null; }
 }
 
 // --- Formatear monto en ARS ---

@@ -34,6 +34,14 @@ export function initResumen() {
     }
     
     
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeAssignModal();
+            closeEditModal();
+            closeConfirmModal();
+        }
+    });
+
     renderMetrics();
     renderSavingsRate();
     renderGoalsHeader();
