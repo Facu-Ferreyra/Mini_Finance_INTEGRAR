@@ -54,12 +54,14 @@
         object-fit: contain;
         flex-shrink: 0;
     }
+    /*
     .navbar-container {
         flex-direction: column;
         gap: 1.25rem;
         padding: 1rem;
         text-align: center;
     }
+    */
 
     .nav-links {
         display: flex;

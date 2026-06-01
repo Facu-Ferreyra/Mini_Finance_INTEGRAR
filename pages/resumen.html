@@ -228,23 +228,25 @@
                 </select>
             </div>
             <div class="movements-list-wrapper" role="region" aria-label="Historial de movimientos">
-                <table class="history-table">
-                    <caption class="visually-hidden">Historial completo de movimientos financieros</caption>
-                    <thead>
-                        <tr>
-                            <th scope="col" id="sort-date-btn" class="sortable" aria-sort="descending" tabindex="0" role="button">
-                                Fecha <em class="sort-icon" aria-hidden="true">▼</em>
-                            </th>
-                            <th scope="col">Tipo</th>
-                            <th scope="col">Categoria</th>
-                            <th scope="col" id="sort-amount-btn" class="sortable" aria-sort="descending" tabindex="0" role="button">
-                                Monto <em class="sort-icon" aria-hidden="true">▼</em>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody id="history-body">
-                    </tbody>
-                </table>
+                <div class="movements-list-wrapper">
+                    <table class="history-table">
+                        <caption class="visually-hidden">Historial completo de movimientos financieros</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col" id="sort-date-btn" class="sortable" aria-sort="descending" tabindex="0" role="button">
+                                    Fecha <em class="sort-icon" aria-hidden="true">▼</em>
+                                </th>
+                                <th scope="col">Tipo</th>
+                                <th scope="col">Categoria</th>
+                                <th scope="col" id="sort-amount-btn" class="sortable" aria-sort="descending" tabindex="0" role="button">
+                                    Monto <em class="sort-icon" aria-hidden="true">▼</em>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-body">
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
     </main>

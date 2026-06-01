@@ -1,328 +1,599 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head> 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Mini Finance - Simulador de presupuesto personal.">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Mini Finance - Simulador de presupuesto personal."
+    />
     <title>Mini Finance</title>
-    <meta property="og:title" content="Mini Finance - Tu Control Financiero">
-    <meta property="og:description" content="Simulador de presupuesto personal. Registrá ingresos, controlá gastos y alcanzá tus metas.">
-    <meta property="og:type" content="website">
-    <link rel="icon" type="image/png" href="assets/img/favicon.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
-    <link rel="stylesheet" href="assets/src/main.css">
-</head>
-<body>
-
+    <meta property="og:title" content="Mini Finance - Tu Control Financiero" />
+    <meta
+      property="og:description"
+      content="Simulador de presupuesto personal. Registrá ingresos, controlá gastos y alcanzá tus metas."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    />
+    <link rel="stylesheet" href="assets/src/main.css" />
+  </head>
+  <body>
     <!-- Navbar principal -->
     <header class="main-navbar">
-        <div class="navbar-container">
-            <a href="index.html" class="logo" aria-label="Mini Finance - Inicio">
-                <img class="brand-mark" src="assets/img/logo-mini-finance.png" alt="" aria-hidden="true">
-                <strong>Mini <span class="accent-text">Finance</span></strong>
-            </a>
-            <button class="menu-toggle" id="mobile-menu" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="primary-nav">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
+      <div class="navbar-container">
+        <a href="index.html" class="logo" aria-label="Mini Finance - Inicio">
+          <img
+            class="brand-mark"
+            src="assets/img/logo-mini-finance.png"
+            alt=""
+            aria-hidden="true"
+          />
+          <strong>Mini <span class="accent-text">Finance</span></strong>
+        </a>
+        <button
+          class="menu-toggle"
+          id="mobile-menu"
+          type="button"
+          aria-label="Abrir menú"
+          aria-expanded="false"
+          aria-controls="primary-nav"
+        >
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
 
-            <nav id= "primary-nav" aria-label="Navegación principal">
-                <ul class="nav-links no-search">
-                    <li><a href="index.html" class="nav-link-home" aria-current="page"><span aria-hidden="true">🏠</span>Inicio</a></li>
-                    <li id="nav-dashboard-item" hidden>
-                        <a href="pages/dashboard.html" class="btn-secondary">Ir al Dashboard</a>
-                    </li>
-                    <li>
-                        <button id="nav-account-btn" class="btn-theme-toggle" aria-label="Mi cuenta" aria-expanded="false">
-                            <span aria-hidden="true">👤</span> <span id="nav-username"></span>
-                        </button>
-                    </li>
-                    <li>
-                        <button id="theme-toggle" class="btn-theme-toggle" aria-label="Cambiar tema"><span aria-hidden="true">🌙</span></button>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+        <nav id="primary-nav" aria-label="Navegación principal">
+          <ul class="nav-links no-search">
+            <li>
+              <a href="index.html" class="nav-link-home" aria-current="page"
+                ><span aria-hidden="true">🏠</span>Inicio</a
+              >
+            </li>
+            <li id="nav-dashboard-item" hidden>
+              <a href="pages/dashboard.html" class="btn-secondary"
+                >Ir al Dashboard</a
+              >
+            </li>
+            <li>
+              <button
+                id="nav-account-btn"
+                class="btn-theme-toggle"
+                aria-label="Mi cuenta"
+                aria-expanded="false"
+              >
+                <span aria-hidden="true">👤</span>
+                <span id="nav-username"></span>
+              </button>
+            </li>
+            <li>
+              <button
+                id="theme-toggle"
+                class="btn-theme-toggle"
+                aria-label="Cambiar tema"
+              >
+                <span aria-hidden="true">🌙</span>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </header>
 
     <!-- Hero sin carrusel -->
     <main class="main-home">
-        <section class="hero hero-index" aria-labelledby="hero-title">
-            <article class="hero-content">
-                <p class="hero-tag">Tus finanzas, bajo control</p>
-                <h1 id="hero-title">Tu Control <span class="accent-text">Financiero.</span><br>Sin Esfuerzo.</h1>
-                <p class="hero-description">Registra ingresos, controla tus gastos mensuales y alcanza tus metas de ahorro en un solo lugar.</p>
-                <button id="hero-cta" class="btn-primary">Comenzá GRATIS →</button>
-            </article>
-        </section>
+      <section class="hero hero-index" aria-labelledby="hero-title">
+        <article class="hero-content">
+          <p class="hero-tag">Tus finanzas, bajo control</p>
+          <h1 id="hero-title">
+            Tu Control <span class="accent-text">Financiero.</span><br />Sin
+            Esfuerzo.
+          </h1>
+          <p class="hero-description">
+            Registra ingresos, controla tus gastos mensuales y alcanza tus metas
+            de ahorro en un solo lugar.
+          </p>
+          <button id="hero-cta" class="btn-primary">Comenzá GRATIS →</button>
+        </article>
+      </section>
 
-        <!-- Sección "Cómo funciona" con carrusel de pasos -->
-        <section id="como-funciona" class="steps-section" aria-labelledby="steps-title">
+      <!-- Sección "Cómo funciona" con carrusel de pasos -->
+      <section
+        id="como-funciona"
+        class="steps-section"
+        aria-labelledby="steps-title"
+      >
+        <!-- Imagen de fondo decorativa -->
+        <div class="steps-bg" aria-hidden="true"></div>
 
-            <!-- Imagen de fondo decorativa -->
-            <div class="steps-bg" aria-hidden="true"></div>
+        <div class="steps-inner">
+          <header class="steps-header">
+            <p class="steps-eyebrow">Cómo funciona</p>
+            <h2 id="steps-title">
+              Comenzá hoy a ordenar<br />tus hábitos financieros
+            </h2>
+          </header>
 
-            <div class="steps-inner">
-                <header class="steps-header">
-                    <p class="steps-eyebrow">Cómo funciona</p>
-                    <h2 id="steps-title">Comenzá hoy a ordenar<br>tus hábitos financieros</h2>
-                </header>
+          <!-- Carrusel de pasos -->
+          <div
+            class="steps-carousel-wrapper"
+            role="region"
+            aria-label="Pasos para usar Mini Finance"
+          >
+            <div class="steps-track-mask">
+              <div class="steps-track" id="steps-track">
+                <article class="step-card">
+                  <p class="step-label">PASO 1</p>
+                  <h3 class="step-title">Creá tu perfil gratis</h3>
+                  <p class="step-desc">
+                    Establecé tus objetivos y empezá a tomar el control de tus
+                    finanzas desde el primer día.
+                  </p>
+                </article>
 
-                <!-- Carrusel de pasos -->
-                <div class="steps-carousel-wrapper" role="region" aria-label="Pasos para usar Mini Finance">
-                    <div class="steps-track-mask">
-                        <div class="steps-track" id="steps-track">
+                <article class="step-card">
+                  <p class="step-label">PASO 2</p>
+                  <h3 class="step-title">Armá tu plan</h3>
+                  <p class="step-desc">
+                    Cargá tus ingresos, gastos y metas de ahorro para tener una
+                    visión clara de tu situación.
+                  </p>
+                </article>
 
-                            <article class="step-card">
-                                <p class="step-label">PASO 1</p>
-                                <h3 class="step-title">Creá tu perfil gratis</h3>
-                                <p class="step-desc">Establecé tus objetivos y empezá a tomar el control de tus finanzas desde el primer día.</p>
-                            </article>
+                <article class="step-card">
+                  <p class="step-label">PASO 3</p>
+                  <h3 class="step-title">Seguí tu progreso</h3>
+                  <p class="step-desc">
+                    Visualizá tu balance, controlá tus gastos y avanzá hacia tus
+                    metas con alertas inteligentes.
+                  </p>
+                </article>
 
-                            <article class="step-card">
-                                <p class="step-label">PASO 2</p>
-                                <h3 class="step-title">Armá tu plan</h3>
-                                <p class="step-desc">Cargá tus ingresos, gastos y metas de ahorro para tener una visión clara de tu situación.</p>
-                            </article>
-
-                            <article class="step-card">
-                                <p class="step-label">PASO 3</p>
-                                <h3 class="step-title">Seguí tu progreso</h3>
-                                <p class="step-desc">Visualizá tu balance, controlá tus gastos y avanzá hacia tus metas con alertas inteligentes.</p>
-                            </article>
-
-                            <article class="step-card step-card--highlight">
-                                <p class="step-label">PRÓXIMAMENTE</p>
-                                <h3 class="step-title">Análisis avanzado</h3>
-                                <p class="step-desc">Gráficos de la regla 50/30/20, reportes mensuales y recomendaciones personalizadas.</p>
-                                <span class="step-badge">En desarrollo</span>
-                            </article>
-
-                        </div>
-                    </div>
-
-                    <button class="steps-btn steps-btn--prev" id="steps-prev" aria-label="Paso anterior">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
-                    </button>
-                    <button class="steps-btn steps-btn--next" id="steps-next" aria-label="Paso siguiente">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-                    </button>
-                </div>
-
-                <!-- Dots -->
-                <div class="steps-dots" id="steps-dots" aria-label="Indicadores de paso" role="tablist"></div>
+                <article class="step-card step-card--highlight">
+                  <p class="step-label">PRÓXIMAMENTE</p>
+                  <h3 class="step-title">Análisis avanzado</h3>
+                  <p class="step-desc">
+                    Gráficos de la regla 50/30/20, reportes mensuales y
+                    recomendaciones personalizadas.
+                  </p>
+                  <span class="step-badge">En desarrollo</span>
+                </article>
+              </div>
             </div>
-        </section>
 
-        <section id= "beneficios" class="benefits-section" aria-labelledby="benefits-title">
-            <header class="section-heading">
-                <p class="section-eyebrow">Beneficios</p>
-                <h2 id="benefits-title">Pequeños hábitos, mejores decisiones</h2>
-                <p>Mini Finance te acompaña a entender tu dinero sin vueltas, con pasos simples y visuales.</p>
-            </header>
+            <button
+              class="steps-btn steps-btn--prev"
+              id="steps-prev"
+              aria-label="Paso anterior"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+            <button
+              class="steps-btn steps-btn--next"
+              id="steps-next"
+              aria-label="Paso siguiente"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
 
-            <ul class="benefits-list" aria-label="Beneficios principales de Mini Finance">
-                 <li>
-                    <article class="benefit-card">
-                        <figure class="benefit-icon" aria-hidden="true">◎</figure>
-                        <h3>Claridad</h3>
-                        <p>Ves tus ingresos y gastos en un solo lugar, sin perderte entre números.</p>
-                    </article>
-                </li>
-                <li>
-                    <article class="benefit-card">
-                        <figure class="benefit-icon" aria-hidden="true">◌</figure>
-                        <h3>Confianza</h3>
-                        <p>Registrás tus movimientos y entendés mejor qué decisiones te ayudan.</p>
-                    </article>
-                </li>
-                <li>
-                    <article class="benefit-card">
-                        <figure class="benefit-icon" aria-hidden="true">◍</figure>
-                        <h3>Control</h3>
-                        <p>Seguís tu balance, tus gastos y tus metas con información clara.</p>
-                    </article>
-                </li>
-                <li>
-                    <article class="benefit-card">
-                        <figure class="benefit-icon" aria-hidden="true">◉</figure>
-                        <h3>Autonomía</h3>
-                        <p>Aprendés a organizarte a tu ritmo y formar hábitos sostenibles.</p>
-                    </article>
-                </li>    
+          <!-- Dots -->
+          <div
+            class="steps-dots"
+            id="steps-dots"
+            aria-label="Indicadores de paso"
+            role="tablist"
+          ></div>
+        </div>
+      </section>
+
+      <section
+        id="beneficios"
+        class="benefits-section"
+        aria-labelledby="benefits-title"
+      >
+        <header class="section-heading">
+          <p class="section-eyebrow">Beneficios</p>
+          <h2 id="benefits-title">Pequeños hábitos, mejores decisiones</h2>
+          <p>
+            Mini Finance te acompaña a entender tu dinero sin vueltas, con pasos
+            simples y visuales.
+          </p>
+        </header>
+
+        <ul
+          class="benefits-list"
+          aria-label="Beneficios principales de Mini Finance"
+        >
+          <li>
+            <article class="benefit-card">
+              <figure class="benefit-icon" aria-hidden="true">◎</figure>
+              <h3>Claridad</h3>
+              <p>
+                Ves tus ingresos y gastos en un solo lugar, sin perderte entre
+                números.
+              </p>
+            </article>
+          </li>
+          <li>
+            <article class="benefit-card">
+              <figure class="benefit-icon" aria-hidden="true">◌</figure>
+              <h3>Confianza</h3>
+              <p>
+                Registrás tus movimientos y entendés mejor qué decisiones te
+                ayudan.
+              </p>
+            </article>
+          </li>
+          <li>
+            <article class="benefit-card">
+              <figure class="benefit-icon" aria-hidden="true">◍</figure>
+              <h3>Control</h3>
+              <p>
+                Seguís tu balance, tus gastos y tus metas con información clara.
+              </p>
+            </article>
+          </li>
+          <li>
+            <article class="benefit-card">
+              <figure class="benefit-icon" aria-hidden="true">◉</figure>
+              <h3>Autonomía</h3>
+              <p>
+                Aprendés a organizarte a tu ritmo y formar hábitos sostenibles.
+              </p>
+            </article>
+          </li>
+        </ul>
+      </section>
+
+      <section id="preguntas" class="faq-section" aria-labelledby="faq-title">
+        <header class="section-heading">
+          <p class="section-eyebrow">Preguntas frecuentes</p>
+          <h2 id="faq-title">Si existen dudas, existen respuestas</h2>
+        </header>
+
+        <section class="faq-list" aria-label="Preguntas frecuentes">
+          <details>
+            <summary>¿Para qué me sirve Mini Finance?</summary>
+            <p>
+              Para registrar movimientos, ver tu balance y organizar metas de
+              ahorro.
+            </p>
+          </details>
+          <details>
+            <summary>¿Tiene costo alguno?</summary>
+            <p>
+              ¡Crear tu perfil, registrar ingresos / egresos y gestionar tus
+              metas es totalmente gratuito!
+            </p>
+            <p>Todo desde un solo lugar, con una experiencia simple y clara.</p>
+          </details>
+          <details>
+            <summary>
+              ¿Qué puede hacer Mini Finance con mis datos? ¿Es seguro?
+            </summary>
+            <p>
+              Sí, es seguro. En Mini Finance tratamos tu información con la
+              máxima responsabilidad:
+            </p>
+            <ul>
+              <li>Solo pedimos los datos que realmente necesitamos.</li>
+              <li>
+                Se mantienen protegidos y en privado, no se sube a ningun
+                servidor en la nube.
+              </li>
+              <li>Nunca los compartimos sin tu autorización.</li>
             </ul>
+          </details>
         </section>
-
-        <section id="preguntas" class="faq-section" aria-labelledby="faq-title">
-            <header class="section-heading">
-                <p class="section-eyebrow">Preguntas frecuentes</p>
-                <h2 id="faq-title">Si existen dudas, existen respuestas</h2>
-            </header>
-
-            <section class="faq-list" aria-label="Preguntas frecuentes">
-                <details>
-                    <summary>¿Para qué me sirve Mini Finance?</summary>
-                    <p>Para registrar movimientos, ver tu balance y organizar metas de ahorro.</p>
-                </details>
-                <details>
-                    <summary>¿Tiene costo alguno?</summary>
-                    <p>¡Crear tu perfil, registrar ingresos / egresos y gestionar tus metas es totalmente gratuito!</p>
-                    <p>Todo desde un solo lugar, con una experiencia simple y clara.</p>
-                </details>
-                <details>
-                    <summary>¿Qué puede hacer Mini Finance con mis datos? ¿Es seguro?</summary>
-                    <p>Sí, es seguro. En Mini Finance tratamos tu información con la máxima responsabilidad:</p>
-                        <ul>
-                            <li>Solo pedimos los datos que realmente necesitamos.</li>
-                            <li>Se mantienen protegidos y en privado, no se sube a ningun servidor en la nube.</li>
-                            <li>Nunca los compartimos sin tu autorización.</li>
-                        </ul>
-                </details>
-            </section>
-        </section>
+      </section>
     </main>
 
-
-
     <!-- OVERLAY DE AUTENTICACIÓN -->
-    <div id="auth-overlay" class="auth-overlay" role="dialog" aria-modal="true" aria-labelledby="auth-overlay-title">
-        <article class="auth-card">
+    <div
+      id="auth-overlay"
+      class="auth-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="auth-overlay-title"
+    >
+      <article class="auth-card">
+        <!-- Selector de modo: Login / Registro -->
+        <div class="auth-tabs" role="tablist" aria-label="Modo de acceso">
+          <button
+            class="auth-tab active"
+            data-tab="login"
+            role="tab"
+            aria-selected="true"
+            aria-controls="auth-login"
+          >
+            Iniciar sesión
+          </button>
+          <button
+            class="auth-tab"
+            data-tab="register"
+            role="tab"
+            aria-selected="false"
+            aria-controls="auth-register"
+          >
+            Crear cuenta
+          </button>
+        </div>
 
-            <!-- Selector de modo: Login / Registro -->
-            <div class="auth-tabs" role="tablist" aria-label="Modo de acceso">
-                <button class="auth-tab active" data-tab="login" role="tab" aria-selected="true" aria-controls="auth-login">Iniciar sesión</button>
-                <button class="auth-tab" data-tab="register" role="tab" aria-selected="false" aria-controls="auth-register">Crear cuenta</button>
+        <!-- Form de Login -->
+        <section
+          id="auth-login"
+          class="auth-form-panel"
+          role="tabpanel"
+          aria-labelledby="login-title"
+        >
+          <h2 id="login-title" class="auth-form-title">Bienvenido de vuelta</h2>
+          <p class="auth-form-subtitle">
+            Ingresá con tu cuenta para continuar.
+          </p>
+
+          <form id="login-form" novalidate>
+            <div class="form-group">
+              <label for="login-username">Usuario</label>
+              <input
+                type="text"
+                id="login-username"
+                placeholder="Tu nombre de usuario"
+                autocomplete="username"
+              />
+              <span
+                id="login-username-error"
+                class="error-message"
+                role="status"
+                aria-live="polite"
+              ></span>
             </div>
+            <div class="form-group">
+              <label for="login-password">Contraseña</label>
+              <input
+                type="password"
+                id="login-password"
+                placeholder="Tu contraseña"
+                autocomplete="current-password"
+              />
+              <span
+                id="login-password-error"
+                class="error-message"
+                role="status"
+                aria-live="polite"
+              ></span>
+            </div>
+            <span
+              id="login-general-error"
+              class="error-message auth-general-error"
+              role="alert"
+              aria-live="assertive"
+            ></span>
+            <button type="submit" class="btn-primary btn-block">
+              Ingresar
+            </button>
+          </form>
 
-            <!-- Form de Login -->
-            <section id="auth-login" class="auth-form-panel" role="tabpanel" aria-labelledby="login-title">
-                <h2 id="login-title" class="auth-form-title">Bienvenido de vuelta</h2>
-                <p class="auth-form-subtitle">Ingresá con tu cuenta para continuar.</p>
+          <!-- Lista de cuentas existentes -->
+          <section
+            id="accounts-list-section"
+            aria-labelledby="accounts-list-title"
+          >
+            <h3 id="accounts-list-title" class="accounts-list-title">
+              Cuentas guardadas
+            </h3>
+            <ul
+              id="accounts-list"
+              class="accounts-list"
+              aria-label="Lista de cuentas"
+            ></ul>
+          </section>
+        </section>
 
-                <form id="login-form" novalidate>
-                    <div class="form-group">
-                        <label for="login-username">Usuario</label>
-                        <input type="text" id="login-username" placeholder="Tu nombre de usuario" autocomplete="username">
-                        <span id="login-username-error" class="error-message" role="status" aria-live="polite"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="login-password">Contraseña</label>
-                        <input type="password" id="login-password" placeholder="Tu contraseña" autocomplete="current-password">
-                        <span id="login-password-error" class="error-message" role="status" aria-live="polite"></span>
-                    </div>
-                    <span id="login-general-error" class="error-message auth-general-error" role="alert" aria-live="assertive"></span>
-                    <button type="submit" class="btn-primary btn-block">Ingresar</button>
-                </form>
+        <!-- Form de Registro -->
+        <section
+          id="auth-register"
+          class="auth-form-panel"
+          role="tabpanel"
+          hidden
+          aria-labelledby="register-title"
+        >
+          <h2 id="register-title" class="auth-form-title">Crear cuenta</h2>
+          <p class="auth-form-subtitle">
+            Registrá tu cuenta para guardar tus finanzas.
+          </p>
 
-                <!-- Lista de cuentas existentes -->
-                <section id="accounts-list-section" aria-labelledby="accounts-list-title">
-                    <h3 id="accounts-list-title" class="accounts-list-title">Cuentas guardadas</h3>
-                    <ul id="accounts-list" class="accounts-list" aria-label="Lista de cuentas"></ul>
-                </section>
-            </section>
-
-            <!-- Form de Registro -->
-            <section id="auth-register" class="auth-form-panel" role="tabpanel" hidden aria-labelledby="register-title">
-                <h2 id="register-title" class="auth-form-title">Crear cuenta</h2>
-                <p class="auth-form-subtitle">Registrá tu cuenta para guardar tus finanzas.</p>
-
-                <form id="register-form" novalidate>
-                    <div class="form-group">
-                        <label for="register-username">Usuario</label>
-                        <input type="text" id="register-username" placeholder="Mínimo 3 caracteres" autocomplete="username">
-                        <span id="register-username-error" class="error-message" role="status" aria-live="polite"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="register-password">Contraseña</label>
-                        <input type="password" id="register-password" placeholder="Mínimo 4 caracteres" autocomplete="new-password">
-                        <span id="register-password-error" class="error-message" role="status" aria-live="polite"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="register-password2">Confirmar contraseña</label>
-                        <input type="password" id="register-password2" placeholder="Repetí tu contraseña" autocomplete="new-password">
-                        <span id="register-password2-error" class="error-message" role="status" aria-live="polite"></span>
-                    </div>
-                    <span id="register-general-error" class="error-message auth-general-error" role="alert" aria-live="assertive"></span>
-                    <button type="submit" class="btn-primary btn-block">Crear cuenta</button>
-                </form>
-            </section>
-
-        </article>
+          <form id="register-form" novalidate>
+            <div class="form-group">
+              <label for="register-username">Usuario</label>
+              <input
+                type="text"
+                id="register-username"
+                placeholder="Mínimo 3 caracteres"
+                autocomplete="username"
+              />
+              <span
+                id="register-username-error"
+                class="error-message"
+                role="status"
+                aria-live="polite"
+              ></span>
+            </div>
+            <div class="form-group">
+              <label for="register-password">Contraseña</label>
+              <input
+                type="password"
+                id="register-password"
+                placeholder="Mínimo 4 caracteres"
+                autocomplete="new-password"
+              />
+              <span
+                id="register-password-error"
+                class="error-message"
+                role="status"
+                aria-live="polite"
+              ></span>
+            </div>
+            <div class="form-group">
+              <label for="register-password2">Confirmar contraseña</label>
+              <input
+                type="password"
+                id="register-password2"
+                placeholder="Repetí tu contraseña"
+                autocomplete="new-password"
+              />
+              <span
+                id="register-password2-error"
+                class="error-message"
+                role="status"
+                aria-live="polite"
+              ></span>
+            </div>
+            <span
+              id="register-general-error"
+              class="error-message auth-general-error"
+              role="alert"
+              aria-live="assertive"
+            ></span>
+            <button type="submit" class="btn-primary btn-block">
+              Crear cuenta
+            </button>
+          </form>
+        </section>
+      </article>
     </div>
 
     <!-- Menú de cuenta (dropdown) -->
-    <div id="account-menu" class="account-menu" role="region" hidden aria-label="Menú de cuenta">
-        <p class="account-menu-name">Cuenta: <strong id="account-menu-username"></strong></p>
-        <button type="button" id="logout-btn" class="btn-danger">Cerrar sesión</button>
+    <div
+      id="account-menu"
+      class="account-menu"
+      role="region"
+      hidden
+      aria-label="Menú de cuenta"
+    >
+      <p class="account-menu-name">
+        Cuenta: <strong id="account-menu-username"></strong>
+      </p>
+      <button type="button" id="logout-btn" class="btn-danger">
+        Cerrar sesión
+      </button>
     </div>
 
-
-
     <nav class="section-dots" aria-label="Navegación de secciones">
-        <a href="#hero-title" aria-label="Ir al inicio"></a>
-        <a href="#como-funciona" aria-label="Ir a Cómo funciona"></a>
-        <a href="#beneficios" aria-label="Ir a Beneficios"></a>
-        <a href="#preguntas" aria-label="Ir a Preguntas frecuentes"></a>
+      <a href="#hero-title" aria-label="Ir al inicio"></a>
+      <a href="#como-funciona" aria-label="Ir a Cómo funciona"></a>
+      <a href="#beneficios" aria-label="Ir a Beneficios"></a>
+      <a href="#preguntas" aria-label="Ir a Preguntas frecuentes"></a>
     </nav>
 
     <nav class="mobile-bottom-nav" aria-label="Navegación inferior">
-        <ul>
-            <li><a href="index.html" aria-current="page"><span aria-hidden="true">⌂</span>Home</a></li>
-            <li><a href="pages/dashboard.html"><span aria-hidden="true">▦</span>Panel</a></li>
-            <li><a href="pages/resumen.html"><span aria-hidden="true">◎</span>Resumen</a></li>
-        </ul>
+      <ul>
+        <li>
+          <a href="index.html" aria-current="page"
+            ><span aria-hidden="true">⌂</span>Home</a
+          >
+        </li>
+        <li>
+          <a href="pages/dashboard.html"
+            ><span aria-hidden="true">▦</span>Panel</a
+          >
+        </li>
+        <li>
+          <a href="pages/resumen.html"
+            ><span aria-hidden="true">◎</span>Resumen</a
+          >
+        </li>
+      </ul>
     </nav>
 
-        <!-- Footer -->
+    <!-- Footer -->
     <footer class="main-footer" role="contentinfo">
-        <div class="footer-inner">
-
-            <div class="footer-brand">
-                <a href="index.html" class="logo footer-logo" aria-label="Mini Finance - Inicio">
-                    <span aria-hidden="true">💼</span>
-                    <strong>Mini <span class="accent-text">Finance</span></strong>
-                </a>
-                <p class="footer-tagline">Tomá las riendas<br>de tus finanzas.</p>
-            </div>
-
-            <nav class="footer-nav" aria-label="Links del footer">
-                <section class="footer-col" aria-labelledby="footer-col-1">
-                    <h3 id="footer-col-1">Acceso</h3>
-                    <ul>
-                        <li><a href="index.html">Inicio</a></li>
-                        <li><a href="pages/dashboard.html">Dashboard</a></li>
-                        <li><a href="pages/resumen.html">Resumen</a></li>
-                    </ul>
-                </section>
-
-                <section class="footer-col" aria-labelledby="footer-col-2">
-                    <h3 id="footer-col-2">Proyecto</h3>
-                    <ul>
-                        <li><a href="https://github.com/Facu-Ferreyra/Mini_Finance_INTEGRAR" target="_blank" rel="noopener noreferrer">Repositorio GitHub</a></li>
-                        <li><a href="#como-funciona">Cómo funciona</a></li>
-                    </ul>
-                </section>
-
-                <section class="footer-col" aria-labelledby="footer-col-3">
-                    <h3 id="footer-col-3">Tecnologías</h3>
-                    <ul>
-                        <li><span>· HTML5 ·</span></li>
-                        <li><span>· CSS3 ·</span></li>
-                        <li><span>· JavaScript ES Modules ·</span></li>
-                    </ul>
-                </section>
-            </nav>
-
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a
+            href="index.html"
+            class="logo footer-logo"
+            aria-label="Mini Finance - Inicio"
+          >
+            <span aria-hidden="true">💼</span>
+            <strong>Mini <span class="accent-text">Finance</span></strong>
+          </a>
+          <p class="footer-tagline">Tomá las riendas<br />de tus finanzas.</p>
         </div>
 
-        <div class="footer-bottom">
-            <p>© 2026 Mini Finance · Proyecto integrador IntegrarTEC</p>
-        </div>
+        <nav class="footer-nav" aria-label="Links del footer">
+          <section class="footer-col" aria-labelledby="footer-col-1">
+            <h3 id="footer-col-1">Acceso</h3>
+            <ul>
+              <li><a href="index.html">Inicio</a></li>
+              <li><a href="pages/dashboard.html">Dashboard</a></li>
+              <li><a href="pages/resumen.html">Resumen</a></li>
+            </ul>
+          </section>
+
+          <section class="footer-col" aria-labelledby="footer-col-2">
+            <h3 id="footer-col-2">Proyecto</h3>
+            <ul>
+              <li>
+                <a
+                  href="https://github.com/Facu-Ferreyra/Mini_Finance_INTEGRAR"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Repositorio GitHub</a
+                >
+              </li>
+              <li><a href="#como-funciona">Cómo funciona</a></li>
+            </ul>
+          </section>
+
+          <section class="footer-col" aria-labelledby="footer-col-3">
+            <h3 id="footer-col-3">Tecnologías</h3>
+            <ul>
+              <li><span>· HTML5 ·</span></li>
+              <li><span>· CSS3 ·</span></li>
+              <li><span>· JavaScript ES Modules ·</span></li>
+            </ul>
+          </section>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 Mini Finance · Proyecto integrador IntegrarTEC</p>
+      </div>
     </footer>
 
     <script type="module" src="assets/scripts/main.js"></script>
-</body>
+  </body>
 </html>
