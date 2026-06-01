@@ -1,0 +1,100 @@
+@layer components {
+    .hero {
+        display: grid;
+        grid-template-columns: 1fr;
+        align-items: center;
+        min-height: auto;
+        gap: 1.5rem;
+        padding: 1.5rem 0;
+        position:relative;
+        isolation: isolate;
+        overflow: hidden;
+    }
+
+    
+    .hero-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1rem;
+        width: min(100%, 760px);
+        margin-inline: auto;
+    }
+    
+
+    .hero.hero-index::before,
+    .hero.hero-index::after {
+        content: "";
+        position: absolute;
+        inset: 0 -50%;
+        z-index: -1;
+        opacity: 0.34;
+        background-image: linear-gradient(
+            -60deg,
+            color-mix(in srgb, var(--color-action) 75%, var(--color-bg)) 50%,
+            color-mix(in srgb, var(--color-success) 70%, var(--color-bg)) 50%
+        );
+        animation: hero-slide 5s ease-in-out infinite alternate;
+    }
+
+    .hero.hero-index::after {
+        opacity: 0.22;
+        animation-direction: alternate-reverse;
+        animation-duration: 7s;
+    }
+
+    .hero.hero-index .hero-content {
+        position: relative;
+        z-index: 1;
+        padding: clamp(2rem, 8vw, 5rem);
+        border-radius: var(--radius-lg);
+        background: color-mix(in srgb, var(--color-surface) 78%, transparent);
+        border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+        box-shadow: var(--shadow-card);
+        backdrop-filter: blur(10px);
+    }
+
+    .hero-tag {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--color-action);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        background: rgba(79, 70, 229, 0.08);
+        padding: 0.35rem 0.85rem;
+        border-radius: 999px;
+        border: 1px solid rgba(79, 70, 229, 0.2);
+    }
+
+    .hero h1 {
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 800;
+        line-height: 1.15;
+        color: var(--color-white);
+    }
+
+    .hero-description {
+        font-size: 1rem;
+        color: var(--color-text-muted);
+        line-height: 1.7;
+        max-width: 100%;
+    }
+
+    @keyframes hero-slide {
+    from {
+        transform: translateX(-18%);
+    }
+
+    to {
+        transform: translateX(18%);
+    }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .hero::before,
+        .hero::after {
+            animation: none;
+        }
+    }
+}

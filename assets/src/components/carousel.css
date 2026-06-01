@@ -1,0 +1,224 @@
+@layer components{
+    .steps-section {
+        position: relative;
+        overflow: hidden;
+        padding: 5rem 0 4rem;
+        margin-top: 0;
+        /*width: 100%;*/
+    }
+
+    /* Imagen de fondo con overlay oscuro */
+    .steps-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        background:
+            linear-gradient(rgba(15, 23, 42, 0.70), rgba(15, 23, 42, 0.82)),
+            url('/assets/img/steps-bg.png') center / cover no-repeat;
+    }
+
+    /* Por si no carga la imagén,el gradiente renderizaria perrrrfecto */
+    .steps-inner {
+        position: relative;
+        z-index: 1;
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+    }
+
+    .steps-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .steps-eyebrow {
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--color-action);
+        margin: 0;
+    }
+
+    .steps-header h2 {
+        font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+        font-weight: 800;
+        color: var(--color-white);
+        line-height: 1.2;
+        margin: 0;
+    }
+
+    /* Carrusel de cards */
+    /* Carrusel de cards */
+    /* Carrusel de cards */
+    .steps-carousel-wrapper {
+        position: relative;
+    }
+
+    .steps-track-mask {
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .steps-track {
+        display: flex;
+        gap: 1rem;
+        transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .steps-track {
+        transition: none;
+      }
+    }
+
+    /* Card individual */
+    .step-card {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: var(--radius-lg);
+        padding: 1.75rem 1.5rem;
+        backdrop-filter: blur(8px);
+        flex: 0 0 calc(100% - 2rem);
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        transition: background 0.2s, border-color 0.2s;
+        min-height: 180px;
+    }
+
+    .step-card:hover {
+        background: rgba(255, 255, 255, 0.13);
+        border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .step-card--highlight {
+        background: rgba(79, 70, 229, 0.18);
+        border-color: rgba(79, 70, 229, 0.4);
+    }
+
+    .step-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--color-action);
+        margin: 0;
+    }
+
+    .step-card--highlight .step-label {
+        color: #a78bfa;
+    }
+
+    .step-title {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--color-white);
+        margin: 0;
+        line-height: 1.3;
+    }
+
+    .step-desc {
+        font-size: 0.88rem;
+        color: rgba(255, 255, 255, 0.75);
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .step-badge {
+        display: inline-block;
+        margin-top: auto;
+        padding: 0.25rem 0.65rem;
+        background: rgba(167, 139, 250, 0.15);
+        border: 1px solid rgba(167, 139, 250, 0.3);
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #a78bfa;
+        letter-spacing: 0.04em;
+        width: fit-content;
+    }
+
+    /* --- Botones de navegación del carrusel --- */
+    .steps-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(6px);
+        color: var(--color-white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s;
+        z-index: 10;
+        flex-shrink: 0;
+        outline: none;
+    }
+
+    .steps-btn:focus-visible {
+        outline: 2px solid var(--color-action);
+        outline-offset: 3px;
+        border-radius: 50%;
+    }
+
+    .steps-btn:hover {
+        background: rgba(79, 70, 229, 0.4);
+        border-color: var(--color-action);
+        transform: translateY(-50%) scale(1.08);
+    }
+
+    .steps-btn:active{
+        transform: translateY(-50%) scale(0.95);
+    }
+
+    /* Mobile-first: botones pegados al borde interior; en desktop salen fuera (responsive.css) */
+    .steps-btn--prev { left: 0.5rem; }
+    .steps-btn--next { right: 0.5rem; }
+
+    /* --- Dots del carrusel de pasos --- */
+    .steps-dots {
+        display: flex;
+        justify-content: center;
+        gap: 0.6rem;
+        margin-top: 0.5rem;
+    }
+
+    .steps-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(255, 255, 255, 0.3);
+        cursor: pointer;
+        transition: background 0.3s, width 0.3s;
+        padding: 0;
+        outline: none;
+    }
+
+    .steps-dot:focus-visible {
+        outline: 2px solid var(--color-action);
+        outline-offset: 2px;
+    }
+
+    .steps-dot.active {
+        background: var(--color-white);
+        width: 22px;
+        border-radius: 4px;
+    }
+
+}

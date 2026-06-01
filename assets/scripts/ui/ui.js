@@ -1,0 +1,569 @@
+import { calcBalance, calcIncome, calcExpenses, calcNetIncomeRate, calcIncomeShare, calcExpenseRate, getRecentMovements, getGoalProgress, getGoalsSummary } from '../core/finance.js';
+
+// --- Focus management for modals ---
+let lastFocusedElement = null;
+
+function getFocusableElements(container) {
+  return container.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+}
+
+function focusFirstElement(container) {
+  const els = getFocusableElements(container);
+  if (els.length > 0) {
+    els[0].focus();
+  }
+}
+
+function trapTabKey(e, container) {
+  const els = getFocusableElements(container);
+  if (els.length === 0) return;
+  const first = els[0];
+  const last = els[els.length - 1];
+  if (e.key === 'Tab') {
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+}
+
+function setupFocusTrap(modal) {
+  focusFirstElement(modal);
+  const handler = function (e) { trapTabKey(e, modal); };
+  modal.addEventListener('keydown', handler);
+  modal._focusTrapHandler = handler;
+}
+
+function teardownFocusTrap(modal) {
+  if (modal._focusTrapHandler) {
+    modal.removeEventListener('keydown', modal._focusTrapHandler);
+    delete modal._focusTrapHandler;
+  }
+}
+
+// --- Iconos SVG por categoria de meta ---
+const GOAL_ICONS = {
+    plane: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>',
+    laptop: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="2" y1="21" x2="22" y2="21"/></svg>',
+    shield: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+    piggy: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.4-1 1.4-1.8"/><path d="M21 9c.6 0 1-.4 1-1s-.4-1-1-1-1 .4-1 1 .4 1 1 1z"/></svg>',
+    car: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.24a2 2 0 0 0-1.8 1.1l-.8 1.63A6 6 0 0 0 2 12.42V16h2"/><circle cx="6.5" cy="16.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg>',
+    education: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 11h6"/><path d="M9 7h6"/><path d="M9 15h4"/></svg>',
+    home: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+    target: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>'
+};
+
+// --- Renderizar metricas del dashboard ---
+export function renderMetrics() {
+    const balance = document.getElementById('balance-total');
+    const income = document.getElementById('income-total');
+    const expense = document.getElementById('expense-total');
+    if (balance) balance.textContent = formatCurrency(calcBalance());
+    if (income) income.textContent = formatCurrency(calcIncome());
+    if (expense) expense.textContent = formatCurrency(calcExpenses());
+
+    const balanceTrendEl = document.getElementById('balance-trend');
+    if (balanceTrendEl) {
+        const netRate = calcNetIncomeRate();
+        const direction = netRate >= 0 ? 'up' : 'down';
+        const arrow = direction === 'up' ? '↑' : '↓';
+        balanceTrendEl.textContent = arrow + ' ' + Math.abs(netRate).toFixed(1) + '%';
+        balanceTrendEl.className = 'trend-badge trend-' + direction;
+    }
+
+    const incomeTrendEl = document.getElementById('income-trend');
+    if (incomeTrendEl) {
+        const incomeShare = calcIncomeShare();
+        const direction = incomeShare >= 50 ? 'up' : 'down';
+        const arrow = direction === 'up' ? '↑' : '↓';
+        incomeTrendEl.textContent = arrow + ' ' + incomeShare.toFixed(1) + '%';
+        incomeTrendEl.className = 'trend-badge trend-' + direction;
+    }
+
+    const expenseTrendEl = document.getElementById('expense-trend');
+    if (expenseTrendEl) {
+        const expRate = calcExpenseRate();
+        expenseTrendEl.textContent = '↓ ' + expRate.toFixed(1) + '%';
+        expenseTrendEl.className = 'trend-badge trend-down';
+    }
+
+    const savingsEl = document.getElementById('savings-trend');
+    if (savingsEl) {
+        const incomeVal = calcIncome();
+        const expensesVal = calcExpenses();
+        if (incomeVal > 0) {
+            const currentRate = Math.max(0, ((incomeVal - expensesVal) / incomeVal) * 100);
+            savingsEl.textContent = currentRate.toFixed(1) + '% ahorro';
+        }
+    }
+}
+
+// --- Renderizar porcentaje de ahorro ---
+export function renderSavingsRate() {
+    const el = document.getElementById('savings-rate');
+    if (!el) return;
+    const income = calcIncome();
+    const expenses = calcExpenses();
+    if (income <= 0) { el.textContent = '0%'; return; }
+    const rate = Math.max(0, ((income - expenses) / income) * 100);
+    el.textContent = rate.toFixed(1) + '%';
+}
+
+// --- Renderizar actividad reciente ---
+export function renderRecentMovements() {
+    const list = document.getElementById('recent-list');
+    if (!list) return;
+    const movements = getRecentMovements(5);
+    list.innerHTML = '';
+    if (movements.length === 0) {
+        list.innerHTML = '<li class=\"empty-state\">No hay movimientos aun.</li>';
+        return;
+    }
+    movements.forEach(function(m) {
+        const li = document.createElement('li');
+        li.classList.add('movement-item', m.type === 'income' ? 'movement-income' : 'movement-expense');
+        li.innerHTML = '<div class=\"movement-info\">'
+            + '<span class=\"movement-category\">' + escapeHTML(capitalizeFirst(m.category)) + '</span>'
+            + '<span class=\"movement-amount\">' + (m.type === 'income' ? '+' : '-') + formatCurrency(m.amount) + '</span>'
+            + '<time class=\"movement-date\" datetime=\"' + m.date + '\">' + formatDate(m.date) + '</time>'
+            + '</div>'
+            + '<div class=\"movement-actions\">'
+            + '<button type=\"button\" class=\"movement-btn movement-btn-edit\" data-id=\"' + m.id + '\" data-action=\"edit-mov\" aria-label=\"Editar movimiento\">'
+            + '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7\"/><path d=\"M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z\"/></svg>'
+            + '</button>'
+            + '<button type=\"button\" class=\"movement-btn movement-btn-delete\" data-id=\"' + m.id + '\" data-action=\"delete-mov\" aria-label=\"Eliminar movimiento\">'
+            + '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"3 6 5 6 21 6\"/><path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\"/></svg>'
+            + '</button>'
+            + '</div>';
+        list.appendChild(li);
+    });
+}
+
+// --- Renderizar historial completo con tipo y categoria ---
+export function renderHistory(movements) {
+    const tbody = document.getElementById('history-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    if (movements.length === 0) {
+        tbody.innerHTML = '<tr><td colspan=\"4\" class=\"empty-state\">No hay movimientos para esta categoria.</td></tr>';
+        return;
+    }
+    movements.forEach(function(m) {
+        const tr = document.createElement('tr');
+        const typeLabel = m.type === 'income' ? 'Ingreso' : 'Gasto';
+        const typeClass = m.type === 'income' ? 'income' : 'expense';
+        const descHtml = m.description ? '<small class=\"movement-description\">' + escapeHTML(m.description) + '</small>' : '';
+        tr.innerHTML = '<td><time datetime=\"' + m.date + '\">' + formatDate(m.date) + '</time></td>'
+            + '<td><span class=\"type-badge ' + typeClass + '\">' + typeLabel + '</span></td>'
+            + '<td>' + escapeHTML(capitalizeFirst(m.category)) + descHtml + '</td>'
+            + '<td class=\"' + (m.type === 'income' ? 'amount-income' : 'amount-expense') + '\">'
+            + (m.type === 'income' ? '+' : '-') + formatCurrency(m.amount) + '</td>';
+        tbody.appendChild(tr);
+    });
+}
+
+// --- Renderizar badges del header de metas ---
+export function renderGoalsHeader() {
+    const headerEl = document.getElementById('goals-header-info');
+    if (!headerEl) return;
+    const summary = getGoalsSummary();
+    const targetSvg = GOAL_ICONS.target.replace('width=\"22\"', 'width=\"14\"').replace('height=\"22\"', 'height=\"14\"');
+    const moneySvg = GOAL_ICONS.piggy.replace('width=\"22\"', 'width=\"14\"').replace('height=\"22\"', 'height=\"14\"');
+    const chartSvg = '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 12h-4l-3 9L9 3l-3 9H2\"/></svg>';
+    headerEl.innerHTML = '<div class=\"goals-count-badge\">' + targetSvg + '<span>' + summary.active + ' metas activas</span></div>'
+        + '<div class=\"goals-count-badge\">' + moneySvg + '<span>' + formatCurrency(summary.totalAssigned) + ' Asignado</span></div>'
+        + '<div class=\"goals-count-badge\">' + chartSvg + '<span>' + summary.avgProgress.toFixed(0) + '% Progreso promedio</span></div>';
+}
+
+// Renderizar panel de metas en el DASHBOARD.HTML
+export function renderDashboardGoalsPanel() {
+    const statsEl = document.getElementById('dash-goals-stats');
+    if (!statsEl) return;
+
+    const summary = getGoalsSummary();
+
+    const targetSvg = GOAL_ICONS.target.replace('width="22"', 'width="20"').replace('height="22"', 'height="20"');
+    const piguySvg  = GOAL_ICONS.piggy.replace('width="22"', 'width="20"').replace('height="22"', 'height="20"');
+    const chartSvg  = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>';
+
+    statsEl.innerHTML =
+        '<article class="dash-goal-stat">'
+        + '<span class="dash-goal-stat-icon" aria-hidden="true">' + targetSvg + '</span>'
+        + '<div class="dash-goal-stat-info">'
+        + '<strong class="dash-goal-stat-value">' + summary.active + '</strong>'
+        + '<span class="dash-goal-stat-label">Metas activas</span>'
+        + '</div>'
+        + '</article>'
+        + '<article class="dash-goal-stat">'
+        + '<span class="dash-goal-stat-icon" aria-hidden="true">' + piguySvg + '</span>'
+        + '<div class="dash-goal-stat-info">'
+        + '<strong class="dash-goal-stat-value">' + formatCurrency(summary.totalAssigned) + '</strong>'
+        + '<span class="dash-goal-stat-label">Asignado</span>'
+        + '</div>'
+        + '</article>'
+        + '<article class="dash-goal-stat">'
+        + '<span class="dash-goal-stat-icon" aria-hidden="true">' + chartSvg + '</span>'
+        + '<div class="dash-goal-stat-info">'
+        + '<strong class="dash-goal-stat-value">' + summary.avgProgress.toFixed(0) + '%</strong>'
+        + '<span class="dash-goal-stat-label">Progreso promedio</span>'
+        + '</div>'
+        + '</article>';
+}
+
+// --- Renderizar leyenda de prioridades ---
+export function renderPriorityLegend() {
+    const legendEl = document.getElementById('priority-legend');
+    if (!legendEl) return;
+    legendEl.innerHTML = '<p class=\"legend-title\">Leyenda de Prioridades</p>'
+        + '<div class=\"legend-items\">'
+        + '<span class=\"legend-item\"><span class=\"priority-dot high\"></span> Alta prioridad</span>'
+        + '<span class=\"legend-item\"><span class=\"priority-dot medium\"></span> Media prioridad</span>'
+        + '<span class=\"legend-item\"><span class=\"priority-dot low\"></span> Baja prioridad</span>'
+        + '</div>';
+}
+
+// --- Renderizar banner de ayuda ---
+export function renderGoalsFooterBanner() {
+    const bannerEl = document.getElementById('goals-footer-banner');
+    if (!bannerEl) return;
+    bannerEl.innerHTML = '<div class=\"banner-info-icon\" aria-hidden=\"true\">'
+        + '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"12\" y1=\"16\" x2=\"12\" y2=\"12\"/><line x1=\"12\" y1=\"8\" x2=\"12.01\" y2=\"8\"/></svg></div>'
+        + '<div class=\"banner-content-text\"><strong>Asigna fondos desde tu balance</strong><p>Usa el boton + para asignar dinero a cada meta. Esto reducira tu balance actual y aumentara el progreso de la meta seleccionada.</p></div>'
+        + '<div class=\"banner-decorations\" aria-hidden=\"true\">'
+        + '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/></svg>'
+        + '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M12 1v22\"/><path d=\"M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6\"/></svg>'
+        + '</div>';
+}
+
+// --- Renderizar boton de filtro activas/completadas ---
+export function renderGoalsFilterToggle(showingCompleted = false) {
+    const container = document.getElementById('goals-filter-toggle');
+    if (!container) return;
+
+    container.innerHTML = '<button type="button" id="goals-filter-btn" class="btn-filter-toggle">'
+        + '<span class="btn-icon-span">'
+        + (showingCompleted
+            ? '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'
+            : '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>')
+        + '</span> '
+        + (showingCompleted ? 'Ver activas' : 'Ver completadas')
+        + '</button>';
+}
+
+// --- Renderizar lista de metas (activas o completadas) ---
+export function renderGoals(goals, showingCompleted = false) {
+    const container = document.getElementById('goals-list-container');
+    if (!container) return;
+
+    if (goals.length === 0) {
+        container.innerHTML = showingCompleted
+            ? '<p class="empty-state">No hay metas completadas aun. Debes completar una para verla aqui.</p>'
+            : '<p class="empty-state">No tenes metas financieras configuradas en este momento.</p>';
+        return;
+    }
+
+    const priorityLabels = { high: 'Alta', medium: 'Media', low: 'Baja' };
+
+    container.innerHTML = goals.map(function(goal) {
+        const progress = getGoalProgress(goal);
+        const pct = progress.percentage;
+        const saved = progress.saved;
+        const target = progress.target;
+        const iconHtml = GOAL_ICONS[goal.icon] || GOAL_ICONS.target;
+        const priorityLabel = priorityLabels[goal.priority] || goal.priority;
+
+        if (showingCompleted) {
+            const doneDate = goal.completedAt ? formatDate(goal.completedAt) : '—';
+            return '<article class="goal-card completed-card" data-id="' + goal.id + '">'
+                + '<div class="goal-card-main">'
+                + '<div class="goal-icon-avatar completed-icon" aria-hidden="true">'
+                + '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'
+                + '</div>'
+                + '<div class="goal-info-body">'
+                + '<div class="goal-title-wrapper">'
+                + '<h3>' + escapeHTML(goal.name) + '</h3>'
+                + '<span class="priority-badge completed" style="background: rgba(16,185,129,0.15); color: var(--color-success);">Completada</span>'
+                + '</div>'
+                + '<p class="goal-card-description">' + (goal.description ? escapeHTML(goal.description) : '') + '</p>'
+                + '<div class="completed-date-row">'
+                + '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>'
+                + '<span>Completada el ' + doneDate + '</span>'
+                + '</div>'
+                + '</div>'
+                + '</div>'
+                + '<div class="goal-card-actions-panel">'
+                + '<div class="goal-remaining-status">'
+                + '<span class="status-achieved" style="color: var(--color-success); font-weight: 700;">'
+                + formatCurrency(target) + ' alcanzados'
+                + '</span>'
+                + '</div>'
+                + '<div class="action-buttons-stack">'
+                + '<button type="button" class="btn-action-delete delete-goal-btn" data-id="' + goal.id + '" data-action="delete">'
+                + '<span class="btn-icon-span"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span> Eliminar'
+                + '</button>'
+                + '</div>'
+                + '</div>'
+                + '</article>';
+        }
+
+        const remaining = progress.remaining;
+        const remainingHtml = remaining > 0
+            ? '<span class="remaining-lbl">Faltan</span><span class="remaining-money">' + formatCurrency(remaining) + '</span><span class="remaining-lbl-sub">para completar tu objetivo</span>'
+            : '<span class="status-achieved" style="color: #2ecc71; font-weight: bold; font-size: 0.95rem;">META ALCANZADA!</span>';
+
+        return '<article class="goal-card ' + safePriority(goal.priority) + '" data-id="' + goal.id + '">'
+            + '<div class="goal-card-main">'
+            + '<div class="goal-icon-avatar ' + safePriority(goal.priority) + '-icon" aria-hidden="true">' + iconHtml + '</div>'
+            + '<div class="goal-info-body">'
+            + '<div class="goal-title-wrapper">'
+            + '<h3>' + escapeHTML(goal.name) + '</h3>'
+            + '<span class="priority-badge ' + safePriority(goal.priority) + '">' + priorityLabel + '</span>'
+            + '</div>'
+            + '<p class="goal-card-description">' + (goal.description ? escapeHTML(goal.description) : 'Fondo de ahorro personalizado controlado por tus balances.') + '</p>'
+            + '<div class="progress-row">'
+            + '<div class="progress-bar-bg"><div class="progress-fill ' + safePriority(goal.priority) + '" style="width: ' + pct.toFixed(1) + '%;"></div></div>'
+            + '<span class="percentage-text">' + pct.toFixed(0) + '%</span>'
+            + '</div>'
+            + '<div class="goal-values-track">'
+            + '<span class="current-saved">' + formatCurrency(saved) + '</span>'
+            + '<span class="divider">/</span>'
+            + '<span class="target-total">' + formatCurrency(target) + '</span>'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '<div class="goal-card-actions-panel">'
+            + '<div class="goal-remaining-status">' + remainingHtml + '</div>'
+            
+            /*+ '<div class="action-buttons-stack">'
+            + '<button type="button" class="btn-action-assign" data-id="' + goal.id + '" data-action="assign">'
+            + '<span class="btn-icon-span"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span> Asignar'
+            + '</button>'
+            + '<button type="button" class="btn-action-delete delete-goal-btn" data-id="' + goal.id + '" data-action="delete">'
+            + '<span class="btn-icon-span"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span> Eliminar'
+            + '</button>'
+            + '</div>'
+            */
+            + '<div class="action-buttons-stack">'
+            + '<button type="button" class="btn-action-assign" data-id="' + goal.id + '" data-action="assign">'
+            + '<span class="btn-icon-span"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span> Asignar'
+            + '</button>'
+            + '<button type="button" class="btn-action-edit" data-id="' + goal.id + '" data-action="edit">'
+            + '<span class="btn-icon-span"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span> Editar'
+            + '</button>'
+            + '<button type="button" class="btn-action-delete delete-goal-btn" data-id="' + goal.id + '" data-action="delete">'
+            + '<span class="btn-icon-span"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span> Eliminar'
+            + '</button>'
+            + '</div>'
+            + '</div>'
+            + '</article>';
+    }).join('');
+}
+
+// --- Mostrar o limpiar error en un campo del formulario ---
+export function setFieldError(fieldId, message) {
+    const errorEl = document.getElementById(fieldId + '-error');
+    const inputEl = document.getElementById(fieldId);
+    if (errorEl) errorEl.textContent = message || '';
+    
+    if (inputEl) {
+        if (message) inputEl.setAttribute('aria-invalid', 'true');
+        else inputEl.removeAttribute('aria-invalid');
+    }
+    
+}
+
+// --- Limpiar todos los errores de formularios ---
+export function clearAllErrors() {
+    setFieldError('amount');
+    setFieldError('category');
+    setFieldError('goal-name');
+    setFieldError('goal-amount');
+}
+
+// --- Poblar filtro de categorias en el historial ---
+export function populateCategoryFilter(categories) {
+    const select = document.getElementById('filter-category');
+    if (!select) return;
+    select.innerHTML = '<option value="all">Todas las categorias</option>';
+    categories.forEach(function(cat) {
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = capitalizeFirst(cat);
+        select.appendChild(opt);
+    });
+}
+
+// --- Abrir modal de asignacion de fondos ---
+export function openAssignModal(goal) {
+    const modal = document.getElementById('assign-modal');
+    if (!modal) return;
+    lastFocusedElement = document.activeElement;
+    modal.dataset.goalId = goal.id;
+    document.getElementById('assign-goal-name').textContent = goal.name;
+    const balance = calcBalance();
+    const saved = goal.saved || 0;
+    const remaining = Math.max((goal.amount || 0) - saved, 0);
+    const maxAssign = Math.min(balance, remaining);
+    document.getElementById('assign-balance').textContent = formatCurrency(balance);
+    const assignInput = document.getElementById('assign-amount');
+    assignInput.value = '';
+    assignInput.max = maxAssign;
+    document.getElementById('assign-error').textContent = maxAssign <= 0
+        ? (remaining <= 0 ? 'Esta meta ya está completada.' : 'No hay suficiente balance disponible.')
+        : '';
+    modal.classList.add('open');
+    document.body.classList.add('modal-open');
+    setupFocusTrap(modal);
+}
+
+// --- Cerrar modal de asignacion ---
+export function closeAssignModal() {
+    const modal = document.getElementById('assign-modal');
+    if (!modal) return;
+    teardownFocusTrap(modal);
+    modal.classList.remove('open');
+    document.body.classList.remove('modal-open');
+    if (lastFocusedElement) { lastFocusedElement.focus(); lastFocusedElement = null; }
+}
+
+// --- Abrir modal de edición de monto ---
+export function openEditModal(goal) {
+    const modal = document.getElementById('edit-modal');
+    if (!modal) return;
+    lastFocusedElement = document.activeElement;
+    modal.dataset.goalId = goal.id;
+    document.getElementById('edit-goal-name').textContent = goal.name;
+    document.getElementById('edit-goal-amount').value = goal.amount || '';
+    document.getElementById('edit-error').textContent = '';
+    const prioritySelect = document.getElementById('edit-goal-priority');
+    if (prioritySelect) prioritySelect.value = goal.priority || 'medium';
+    modal.classList.add('open');
+    document.body.classList.add('modal-open');
+    setupFocusTrap(modal);
+}
+
+// --- Cerrar modal de edición ---
+export function closeEditModal() {
+    const modal = document.getElementById('edit-modal');
+    if (!modal) return;
+    teardownFocusTrap(modal);
+    modal.classList.remove('open');
+    document.body.classList.remove('modal-open');
+    if (lastFocusedElement) { lastFocusedElement.focus(); lastFocusedElement = null; }
+}
+
+// --- Abrir modal de confirmación de eliminación ---
+export function openConfirmModal(goalId, goalName) {
+    const modal = document.getElementById('confirm-modal');
+    if (!modal) return;
+    lastFocusedElement = document.activeElement;
+    modal.dataset.goalId = goalId;
+    const textEl = document.getElementById('confirm-modal-text');
+    if (textEl) textEl.textContent = '¿Seguro que querés eliminar "' + goalName + '"? Esta acción no se puede deshacer.';
+    modal.classList.add('open');
+    document.body.classList.add('modal-open');
+    setupFocusTrap(modal);
+}
+
+// --- Cerrar modal de confirmación ---
+export function closeConfirmModal() {
+    const modal = document.getElementById('confirm-modal');
+    if (!modal) return;
+    teardownFocusTrap(modal);
+    modal.classList.remove('open');
+    document.body.classList.remove('modal-open');
+    if (lastFocusedElement) { lastFocusedElement.focus(); lastFocusedElement = null; }
+}
+
+// --- Abrir modal de edición de movimiento ---
+export function openEditMovementModal(movement) {
+    const modal = document.getElementById('edit-movement-modal');
+    if (!modal) return;
+    lastFocusedElement = document.activeElement;
+    modal.dataset.movementId = movement.id;
+    document.getElementById('edit-mov-amount').value = movement.amount;
+    const typeInput = document.querySelector('input[name="edit-mov-type"][value="' + movement.type + '"]');
+    if (typeInput) {
+        typeInput.checked = true;
+    } else {
+        const fallback = document.querySelector('input[name="edit-mov-type"][value="income"]');
+        if (fallback) fallback.checked = true;
+    }
+    const catSelect = document.getElementById('edit-mov-category');
+    Array.from(catSelect.options).forEach(function(opt) {
+        opt.hidden = (opt.dataset.type === 'income') !== (movement.type === 'income');
+    });
+    catSelect.value = movement.category;
+    document.getElementById('edit-mov-description').value = movement.description || '';
+    document.getElementById('edit-mov-error').textContent = '';
+    modal.classList.add('open');
+    document.body.classList.add('modal-open');
+    setupFocusTrap(modal);
+}
+
+// --- Cerrar modal de edición de movimiento ---
+export function closeEditMovementModal() {
+    const modal = document.getElementById('edit-movement-modal');
+    if (!modal) return;
+    teardownFocusTrap(modal);
+    modal.classList.remove('open');
+    document.body.classList.remove('modal-open');
+    if (lastFocusedElement) { lastFocusedElement.focus(); lastFocusedElement = null; }
+}
+
+// --- Abrir confirmación de eliminación de movimiento ---
+export function openDeleteMovementConfirm(movementId) {
+    const modal = document.getElementById('delete-movement-modal');
+    if (!modal) return;
+    lastFocusedElement = document.activeElement;
+    modal.dataset.movementId = movementId;
+    modal.classList.add('open');
+    document.body.classList.add('modal-open');
+    setupFocusTrap(modal);
+}
+
+// --- Cerrar confirmación de eliminación de movimiento ---
+export function closeDeleteMovementConfirm() {
+    const modal = document.getElementById('delete-movement-modal');
+    if (!modal) return;
+    teardownFocusTrap(modal);
+    modal.classList.remove('open');
+    document.body.classList.remove('modal-open');
+    if (lastFocusedElement) { lastFocusedElement.focus(); lastFocusedElement = null; }
+}
+
+// --- Formatear monto en ARS ---
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 2 }).format(amount);
+}
+
+// --- Formatear fecha ISO a DD/MM/AAAA ---
+function formatDate(isoDate) {
+    if (!isoDate) return '—';
+    const d = new Date(isoDate + 'T00:00:00');
+    if (isNaN(d.getTime())) return '—';
+    return new Intl.DateTimeFormat('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(d);
+}
+
+// --- Capitalizar primera letra ---
+function capitalizeFirst(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// --- Escapar HTML para evitar XSS ---
+const _escapeDiv = document.createElement('div');
+function escapeHTML(str) {
+    _escapeDiv.textContent = str;
+    return _escapeDiv.innerHTML;
+}
+
+function safePriority(priority) {
+    const VALID = ['high', 'medium', 'low'];
+    return VALID.includes(priority) ? priority : 'medium';
+}
+
+
+export { formatCurrency, formatDate, capitalizeFirst, escapeHTML };

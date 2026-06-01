@@ -1,0 +1,204 @@
+@layer components {
+  .benefits-section {
+    padding: clamp(3rem, 7vw, 6rem) 5%;
+    background: transparent;
+  }
+
+  .faq-section {
+    padding: clamp(3rem, 7vw, 6rem) 5%;
+    background: var(--color-surface);
+  }
+
+  .section-heading {
+    max-width: 760px;
+    margin: 0 auto 2rem;
+    text-align: center;
+  }
+
+  .benefit-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-card);
+    min-height: 220px;
+    padding: 1.5rem;
+    text-align: center;
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    gap: 0.75rem;
+  }
+
+  .benefit-icon {
+    width: 3.25rem;
+    height: 3.25rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-action) 16%, transparent);
+    color: var(--color-action);
+    font-size: 1.75rem;
+  }
+
+  .benefit-card h3 {
+    color: var(--color-white);
+    font-size: 1.2rem;
+  }
+
+  .benefit-card p {
+    color: var(--color-text-muted);
+    line-height: 1.55;
+  }
+
+  .benefits-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .faq-list {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 1rem;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .faq-list details {
+    position: relative;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 1rem 1.25rem;
+  }
+
+  .faq-list summary {
+    min-height: 48px;
+    touch-action: manipulation;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--color-white);
+    list-style: none;
+  }
+
+  .faq-list summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-list summary::after {
+    content: "+";
+    margin-left: auto;
+    color: var(--color-action);
+    font-size: 1.5rem;
+    line-height: 1;
+    font-weight: 800;
+    pointer-events: none;
+  }
+
+  .faq-list details[open] summary::after {
+    content: "-";
+  }
+
+  .faq-list p,
+  .faq-list ul {
+    margin-top: 0.8rem;
+    color: var(--color-text-muted);
+  }
+
+  .mobile-bottom-nav {
+    position: fixed;
+    z-index: 1200;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    padding: 0.55rem 1rem env(safe-area-inset-bottom);
+    background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .mobile-bottom-nav ul {
+    display: flex;
+    justify-content: space-evenly;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .mobile-bottom-nav li {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .mobile-bottom-nav a {
+    width: 100%;
+    min-height: 48px;
+    justify-content: center;
+    text-align: center;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.78rem;
+  }
+
+  .mobile-bottom-nav a[aria-current="page"] {
+    color: var(--color-action);
+  }
+
+  .steps-section:target,
+  .benefits-section:target,
+  .faq-section:target {
+    animation: section-focus 0.8s ease;
+    scroll-margin-top: 6rem;
+  }
+
+  @keyframes section-focus {
+    from {
+      outline: 3px solid var(--color-action);
+      outline-offset: 10px;
+    }
+
+    to {
+      outline: 3px solid transparent;
+      outline-offset: 0;
+    }
+  }
+
+  /* Oculto en mobile por defecto; se muestra en desktop via responsive.css */
+  .section-dots {
+    position: fixed;
+    right: max(1rem, env(safe-area-inset-right));
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 900;
+    display: none;
+    gap: 0.65rem;
+  }
+
+  .section-dots a {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 999px;
+    background: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+  }
+
+  .section-dots a:hover,
+  .section-dots a:focus-visible {
+    background: var(--color-action);
+    transform: scale(1.2);
+  }
+}

@@ -1,0 +1,228 @@
+@layer components {
+    .auth-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.82);
+        backdrop-filter: blur(4px);
+        z-index: 1400;
+        justify-content: center;
+        align-items: flex-start;
+        overflow-y: auto;
+        padding: 0;
+    }
+
+    .auth-overlay.open {
+        display: flex;
+    }
+
+    .auth-card {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        width: calc(100% - 2rem);
+        max-width: 420px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        animation: authCardIn 0.3s ease;
+        margin: var(--auth-card-offset, 12vh) auto 2rem;
+        flex-shrink: 0;
+    }
+
+    @keyframes authCardIn {
+        from { opacity: 0; transform: translateY(16px) scale(0.97); }
+        to   { opacity: 1; transform: translateY(0)    scale(1);    }
+    }
+
+    .auth-tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.75rem;
+        background: var(--color-bg);
+        border-radius: 8px;
+        padding: 0.25rem;
+    }
+
+    .auth-tab {
+        flex: 1;
+        padding: 0.55rem 1rem;
+        border: none;
+        border-radius: 6px;
+        background: transparent;
+        color: var(--color-text-muted);
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+    }
+
+    .auth-tab.active {
+        background: var(--color-surface);
+        color: var(--color-white);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+
+    .auth-form-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+    }
+
+    .auth-form-subtitle {
+        font-size: 0.85rem;
+        color: var(--color-text-muted);
+        margin-bottom: 1.25rem;
+    }
+
+    .auth-general-error {
+        display: block;
+        margin-bottom: 0.75rem;
+        font-size: 0.85rem;
+    }
+
+    .accounts-list-title {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin: 1.5rem 0 0.6rem;
+    }
+
+    .accounts-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        max-height: 180px;
+        overflow-y: auto;
+        padding: 0;
+    }
+
+    .account-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--color-bg);
+        border: 1px solid var(--color-border);
+        border-radius: 8px;
+        overflow: hidden;
+        transition: border-color 0.2s;
+    }
+
+    .account-item:hover {
+        border-color: var(--color-action);
+    }
+
+    .account-item-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.6rem 0.75rem;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        min-width: 0;
+    }
+
+    .account-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--color-action);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+    }
+
+    .account-item-name {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--color-white);
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .account-item-date {
+        font-size: 0.75rem;
+        color: var(--color-text-muted);
+        white-space: nowrap;
+    }
+
+    .account-item-delete {
+        padding: 0.6rem 0.75rem;
+        background: transparent;
+        border: none;
+        border-left: 1px solid var(--color-border);
+        color: var(--color-alert);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        transition: background 0.2s;
+        flex-shrink: 0;
+    }
+
+    .account-item-delete:hover {
+        background: rgba(239, 68, 68, 0.1);
+    }
+
+    .auth-confirm-delete {
+        margin-top: 0.75rem;
+        padding: 0.85rem 1rem;
+        background: rgba(239, 68, 68, 0.08);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        border-radius: 8px;
+        font-size: 0.85rem;
+        color: var(--color-white);
+    }
+
+    .auth-confirm-delete p {
+        margin-bottom: 0.6rem;
+    }
+
+    .auth-confirm-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .auth-confirm-actions .btn-danger,
+    .auth-confirm-actions .btn-secondary {
+        padding: 0.4rem 0.9rem;
+        font-size: 0.8rem;
+    }
+
+    .account-menu {
+        position: fixed;
+        top: calc(var(--navbar-h, 4.5rem) + 0.25rem + env(safe-area-inset-top, 0px));
+        right: 1rem;
+        z-index: 1250;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        padding: 1rem 1.25rem;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+        min-width: 200px;
+        animation: authCardIn 0.2s ease;
+    }
+
+    .account-menu-name {
+        font-size: 0.85rem;
+        color: var(--color-text-muted);
+        margin-bottom: 0.85rem;
+    }
+
+    .account-menu-name strong {
+        color: var(--color-white);
+        display: block;
+        font-size: 1rem;
+        margin-top: 0.1rem;
+    }
+}

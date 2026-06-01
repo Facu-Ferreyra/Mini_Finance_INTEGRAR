@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mini Finance - Resumen de metas de ahorro e historial de movimientos financieros.">
+    <title>Mini Finance - Resumen</title>
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="../assets/src/main.css">
+</head>
+
+<body data-page="resumen">
+    <header class="main-navbar">
+        <div class="navbar-container">
+            <a href="../index.html" class="logo" aria-label="Mini Finance - Volver al inicio">
+                <img class="brand-mark" src="../assets/img/logo-mini-finance.png" alt="" aria-hidden="true">
+                <strong>Mini <span class="accent-text">Finance</span></strong>
+            </a>
+            <button class="menu-toggle" id="mobile-menu" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="primary-nav">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <nav  id="primary-nav" aria-label="Navegación principal">
+                <ul class="nav-links no-search">
+                    <li>
+                        <a href="../index.html" class="nav-link-home">
+                            <span aria-hidden="true">🏠</span> Inicio
+                        </a>
+                    </li>
+                    <li>
+                        <a href="dashboard.html" class="btn-secondary">Dashboard</a>
+                    </li>
+                    <li>
+                        <button id="theme-toggle" class="btn-theme-toggle" aria-label="Cambiar tema">🌙</button>
+                    </li>
+                    <li>
+                    <button id="logout-page-btn" class="btn-theme-toggle" style="color: var(--color-alert); border-color: var(--color-alert);" aria-label="Cerrar sesión">Salir</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="summary-layout page-goals">
+        
+        <!-- Header de metas -->
+        <section class="summary-hero" aria-labelledby="summary-title">
+            <div class="hero-header-flex">
+                <div>
+                    <h1 id="summary-title">Mis Metas de Ahorro</h1>
+                    <p>Administra y organiza tus objetivos financieros.</p>
+                </div>
+                <div id="goals-header-info" class="goals-header-badges"></div>
+            </div>
+        </section>   
+
+        <div class="dashboard-grid goals-grid">
+            
+            <!-- Formulario de creacion de meta -->
+            <section id="nueva-meta" class="section-card goal-form-section" aria-labelledby="goal-form-title">
+                <form id="goal-form" action="#" method="POST" novalidate>
+                    <h2 id="goal-form-title">Crear Nueva Meta</h2>
+                    <p class="form-subtitle">Establece objetivos claros para mejorar tu tasa de ahorro.</p>
+
+                    <div class="form-group">
+                        <label for="goal-name-input">Nombre de la meta</label>
+                        <input
+                            type="text"
+                            id="goal-name-input"
+                            placeholder="Ej: Viaje 2026"
+                            aria-describedby="goal-name-error"
+                            required
+                        >
+                        <span id="goal-name-error" class="error-message" role="status" aria-live="polite"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="goal-amount-input">Monto objetivo ($)</label>
+                        <input 
+                            type="number"
+                            id="goal-amount-input"
+                            min="1"
+                            step="0.01"
+                            placeholder="0.00"
+                            aria-describedby="goal-amount-error"
+                            required
+                        >
+                        <span id="goal-amount-error" class="error-message" role="status" aria-live="polite"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="goal-priority">Prioridad</label>
+                        <select id="goal-priority">
+                            <option value="high">Alta</option>
+                            <option value="medium">Media</option>
+                            <option value="low">Baja</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="goal-description">Descripcion (opcional)</label>
+                        <input type="text" id="goal-description" placeholder="Ej: Fondo para viaje a Japon en 2026">
+                    </div>
+
+                    <div id="priority-legend" class="priority-legend-container"></div>
+
+                    <div class="goal-actions">
+                        <button type="submit" id="save-goal-btn" class="btn-primary btn-block">Guardar Meta</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Lista de metas activas/completadas -->
+            <section id="editar-meta" class="section-card goals-list-section" aria-labelledby="goals-list-title">
+                <div class="goals-header">
+                    <div class="goals-header-row">
+                        <div>
+                            <h2 id="goals-list-title">Mis Metas (Ordenadas por prioridad)</h2>
+                            <p>Asigna fondos desde tu balance disponible a cada meta.</p>
+                        </div>
+                        <div id="goals-filter-toggle"></div>
+                    </div>
+                </div>
+
+                <div id="goals-list-container"></div>
+
+                <div id="goals-footer-banner" class="goals-helper-banner"></div>
+            </section>
+        </div>
+
+        <!-- Assign Modal -->
+        <div id="assign-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="assign-mod-title">
+            <div class="modal-content">
+                <h3>Asignar fondos</h3>
+                <p class="modal-subtitle">Asignar dinero a: <strong id="assign-goal-name"></strong></p>
+                <div class="form-group">
+                    <label>Balance disponible:</label>
+                    <span id="assign-balance" class="assign-balance-value"></span>
+                </div>
+                <div class="form-group">
+                    <label for="assign-amount">Monto a asignar ($):</label>
+                    <input type="number" id="assign-amount" min="0.01" step="0.01" placeholder="0.00">
+                    <span id="assign-error" class="error-message"></span>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="assign-confirm" class="btn-primary">Confirmar</button>
+                    <button type="button" id="assign-cancel" class="btn-secondary">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Goal Modal -->
+        <div id="edit-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="edit-goal-title">
+            <div class="modal-content">
+                <h3 id="edit-goal-title">Modificar meta</h3>
+                <p class="modal-subtitle">Editando: <strong id="edit-goal-name"></strong></p>
+                <div class="form-group">
+                    <label for="edit-goal-amount">Nuevo monto objetivo ($):</label>
+                    <input type="number" id="edit-goal-amount" min="1" step="0.01" placeholder="0.00">
+                    <span id="edit-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="edit-goal-priority">Prioridad:</label>
+                    <select id="edit-goal-priority">
+                        <option value="high">Alta</option>
+                        <option value="medium">Media</option>
+                        <option value="low">Baja</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="edit-confirm" class="btn-primary">Confirmar</button>
+                    <button type="button" id="edit-cancel" class="btn-secondary">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirm Delete Modal -->
+        <div id="confirm-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+            <div class="modal-content">
+                <h3 id="confirm-modal-title">¿Eliminar meta?</h3>
+                <p class="modal-subtitle" id="confirm-modal-text">Esta acción no se puede deshacer.</p>
+                <div class="modal-actions">
+                    <button type="button" id="confirm-delete-btn" class="btn-danger">Sí, eliminar</button>
+                    <button type="button" id="confirm-cancel-btn" class="btn-secondary">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metricas de ahorro -->
+        <section class="metrics-grid" aria-label="Métricas de ahorro">
+            <article class="metric-card card-balance">
+                <div class="card-content">
+                    <h3>Balance Neto</h3>
+                    <p id="balance-total" class="card-value">$0.00</p>
+                    <span class="trend-badge" id="balance-trend">↑ +0.0%</span>
+                </div>
+                <span class="card-icon" aria-hidden="true">$</span>
+            </article>
+            <article class="metric-card card-income">
+                <div class="card-content">
+                    <h3>Ingresos</h3>
+                    <p id="income-total" class="card-value">$0.00</p>
+                    <span class="trend-badge" id="income-trend">↑ +0.0%</span>
+                </div>
+                <span class="card-icon" aria-hidden="true">↗</span>
+            </article>
+            <article class="metric-card card-savings">
+                <div class="card-content">
+                    <h3>Porcentaje de Ahorro</h3>
+                    <p id="savings-rate" class="card-value">0%</p>
+                    <span class="trend-badge" id="savings-trend">↑ +0.0%</span>
+                </div>
+                <span class="card-icon" aria-hidden="true">%</span>
+            </article>
+        </section>
+
+        <!-- Historial completo de movimientos -->
+        <section class="section-card history-container" aria-labelledby="history-title">
+            <h2 id="history-title">Historial Completo</h2>
+            <div class="form-group filter-group">
+                <label for="filter-category">Filtrar por:</label>
+                <select id="filter-category" aria-controls="history-body">
+                    <option value="all">Todas las categorías</option>
+                </select>
+            </div>
+            <div class="movements-list-wrapper" role="region" aria-label="Historial de movimientos">
+                <div class="movements-list-wrapper">
+                    <table class="history-table">
+                        <caption class="visually-hidden">Historial completo de movimientos financieros</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col" id="sort-date-btn" class="sortable" aria-sort="descending" tabindex="0" role="button">
+                                    Fecha <em class="sort-icon" aria-hidden="true">▼</em>
+                                </th>
+                                <th scope="col">Tipo</th>
+                                <th scope="col">Categoria</th>
+                                <th scope="col" id="sort-amount-btn" class="sortable" aria-sort="descending" tabindex="0" role="button">
+                                    Monto <em class="sort-icon" aria-hidden="true">▼</em>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <nav class="mobile-bottom-nav" aria-label="Navegación inferior">
+        <ul>
+            <li><a href="../index.html"><span aria-hidden="true">⌂</span>Home</a></li>
+            <li><a href="dashboard.html"><span aria-hidden="true">▦</span>Panel</a></li>
+            <li><a href="resumen.html" aria-current="page"><span aria-hidden="true">◎</span>Resumen</a></li>
+        </ul>
+    </nav>
+
+    <script type="module" src="../assets/scripts/main.js" ></script>
+</body>
+</html>
