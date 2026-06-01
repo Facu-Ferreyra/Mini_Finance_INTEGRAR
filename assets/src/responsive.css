@@ -1,109 +1,35 @@
 @layer responsive {
 
-    /* --- Mobile base (< 768px) --- */
-    main {
-        width: 95%;
-        margin: 1rem auto;
-        padding: 0 0.5rem;
-    }
+    /* =====================================================================
+       MOBILE BASE
+       Estas reglas aplican a TODOS los viewports como punto de partida.
+       No son overrides: son adiciones que los archivos de componente no
+       pueden expresar por sí solos (estados JS, comportamientos landing, etc.)
+       ===================================================================== */
 
-    .navbar-container {
-        flex-direction: row;
-        justify-content: space-between;
-        gap: 0;
-        text-align: left;
-    }
-
-    .menu-toggle {
-        display: block;
-    }
-
-    .main-navbar nav {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-    }
-
-    .nav-links {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0;
-        width: 100%;
-        padding: 1rem;
-        background-color: var(--color-surface);
-        border-bottom: 1px solid var(--color-border);
-        transform: translateX(-101%);
-        transition: transform 0.4s ease;
-        pointer-events: none;
-        visibility: hidden;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .nav-links {
-        transition: none;
-      }
-    }
-
+    /* Estado abierto del menú mobile — controlado por JS */
     .nav-links.mobile-nav {
-        
+        transform: translateX(0);
         pointer-events: auto;
         visibility: visible;
     }
 
-    .nav-links li {
-        width: 100%;
-    }
-
-    .nav-links a,
-    .nav-links button {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .benefits-list {
-        grid-template-columns: 1fr;
-    }
-
-    main.main-home {
-        width: 100%;
-        max-width: 100%;
-        margin: 0;
-        padding: 0;
-    }
-
-    .recent-activity-header {
-        flex-wrap: wrap;
-        gap: 0.5rem;
-    }
-
-    .recent-activity-header h2 {
-        flex: 1 1 auto;
-        min-width: 0;
-    }
-
-    .steps-btn--prev { left: 0.5rem; }
-    .steps-btn--next { right: 0.5rem; }
-
+    /* Landing: espacio inferior extra para evitar solapamiento con bottom-nav */
     .faq-section {
         padding-bottom: 6rem;
     }
 
+    /* Bottom nav fija visible en mobile */
     .mobile-bottom-nav {
         display: block;
     }
 
+    /* Espacio en body para la bottom-nav fija */
     body {
         padding-bottom: 4.75rem;
     }
 
-    .metrics-grid,
-    .dashboard-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
+    /* Contenedor de scroll horizontal para la tabla de movimientos */
     .movements-list-wrapper {
         display: block;
         width: 100%;
@@ -116,71 +42,28 @@
         white-space: nowrap;
     }
 
+    /* Escalado global de encabezados en pantallas pequeñas */
     h1, h2 {
         font-size: 1.4rem;
     }
 
-    .metric-card .card-value {
-        font-size: 1.35rem;
-    }
-
+    /* Reducción de padding en cards para viewports estrechos */
     .section-card {
         padding: 1rem 0.875rem;
     }
 
+    /* Selector de tipo ingreso/egreso — siempre en fila */
     .form-group-type {
         flex-direction: row;
         gap: 0.5rem;
     }
 
+    /* Goals: columna única en mobile */
     .goals-grid {
         grid-template-columns: 1fr;
     }
 
-    .page-goals .goal-card {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .goal-card-main {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 1rem;
-    }
-
-    .goal-card-actions-panel {
-        flex-direction: column;
-        gap: 0.75rem;
-        padding: 1rem;
-        border-top: 1px solid var(--color-border);
-    }
-
-    .action-buttons-stack {
-        flex-direction: row;
-        width: 100%;
-    }
-
-    .action-buttons-stack .btn-action-assign,
-    .action-buttons-stack .btn-action-delete {
-        flex: 1;
-    }
-
-    .goals-header-badges {
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-    }
-
-    .hero-header-flex {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .goals-header-row {
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
+    /* Historia de movimientos — scroll horizontal en mobile */
     .history-table {
         font-size: 0.85rem;
         white-space: nowrap;
@@ -192,11 +75,13 @@
         padding: 0.6rem 0.5rem;
     }
 
+    /* Badge de contador de metas — tamaño reducido en mobile */
     .goals-count-badge {
         font-size: 0.68rem;
         padding: 0.2rem 0.5rem;
     }
 
+    /* Página resumen mobile */
     .summary-layout {
         padding: 0;
     }
@@ -209,6 +94,7 @@
         max-width: 100%;
     }
 
+    /* Footer landing mobile */
     .footer-inner {
         flex-direction: column;
         gap: 2rem;
@@ -220,16 +106,29 @@
         gap: 1.5rem;
     }
 
+    /* Footer páginas internas mobile */
     .footer-container {
         flex-direction: column;
         gap: 1rem;
         text-align: center;
     }
-    
 
-    /* --- Desktop (>= 768px) --- */
+    /* Landing: hero ocupa ancho completo */
+    main.main-home {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+
+    /* =====================================================================
+       DESKTOP (>= 768px)
+       Escala progresiva desde el base mobile.
+       ===================================================================== */
     @media (min-width: 768px) {
 
+        /* Layout general */
         main {
             width: 90%;
             max-width: 1200px;
@@ -244,18 +143,7 @@
             padding: 0;
         }
 
-        .benefits-list {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .mobile-bottom-nav {
-            display: none;
-        }
-
-        body {
-            padding-bottom: 0;
-        }
-
+        /* Grids de métricas y dashboard */
         .metrics-grid {
             grid-template-columns: repeat(3, 1fr);
             gap: var(--gap-base, 1.5rem);
@@ -266,22 +154,96 @@
             gap: var(--gap-base, 1.5rem);
         }
 
+        /* Cards */
         .section-card {
             padding: 2rem;
         }
 
+        /* Encabezados — revertir escala mobile */
         h1, h2 {
             font-size: revert;
         }
 
-        .metric-card .card-value {
-            font-size: revert;
+        /* Navbar desktop */
+        .menu-toggle {
+            display: none;
         }
 
+        .main-navbar nav {
+            position: static;
+            width: auto;
+        }
+
+        .nav-links {
+            transform: none;
+            visibility: visible;
+            pointer-events: auto;
+            flex-direction: row;
+            align-items: center;
+            width: auto;
+            padding: 0;
+            background-color: transparent;
+            border-bottom: 0;
+            gap: var(--gap-base, 1.5rem);
+        }
+
+        .nav-links li {
+            width: auto;
+        }
+
+        .nav-links a,
+        .nav-links button {
+            width: auto;
+            min-width: 112px;
+        }
+
+        header a.nav-link-home {
+            padding: 0.5rem 1rem;
+            font-size: 0.95rem;
+        }
+
+        /* Bottom nav oculta en desktop */
+        .mobile-bottom-nav {
+            display: none;
+        }
+
+        /* Espacio body — sin bottom nav en desktop */
+        body {
+            padding-bottom: 0;
+        }
+
+        /* Landing: grid de beneficios — 2 columnas en tablet */
+        .benefits-list {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        /* Dots de secciones — visibles en desktop */
+        .section-dots {
+            display: grid;
+        }
+
+        /* Goals */
         .goals-grid {
             grid-template-columns: 1fr 1fr;
         }
 
+        .goals-header-row {
+            flex-direction: row;
+            gap: 0;
+        }
+
+        .goals-header-badges {
+            flex-direction: row;
+            align-items: center;
+            width: auto;
+        }
+
+        .goals-count-badge {
+            font-size: 0.72rem;
+            padding: 0.25rem 0.6rem;
+        }
+
+        /* Goal card — layout horizontal en desktop */
         .page-goals .goal-card {
             flex-direction: row;
             align-items: center;
@@ -303,6 +265,7 @@
         .action-buttons-stack {
             flex-direction: column;
             width: auto;
+            min-width: 115px;
         }
 
         .action-buttons-stack .btn-action-assign,
@@ -310,70 +273,27 @@
             flex: none;
         }
 
-        .goals-header-badges {
-            flex-direction: row;
-            align-items: center;
-            width: auto;
-        }
-
+        /* Hero header — fila en desktop */
         .hero-header-flex {
             flex-direction: row;
             gap: 0;
-        }
-
-        .goals-header-row {
-            flex-direction: row;
-            gap: 0;
-        }
-
-        /* Navbar & Hero desktop overrides */
-        .navbar-container {
-            flex-direction: row;
             justify-content: space-between;
-            gap: 0;
-            padding: 1rem 0;
-            text-align: left;
-        }
-
-        .nav-links {
-            gap: var(--gap-base, 1.5rem);
-            visibility: visible;
-            pointer-events: auto
-        }
-
-        header a.nav-link-home {
-            padding: 0.5rem 1rem;
-            font-size: 0.95rem;
-        }
-
-        .menu-toggle {
-        display: none;
-        }
-
-        .main-navbar nav {
-            position: static;
-            width: auto;
-        }
-
-        .nav-links {
-            transform: none;
-            flex-direction: row;
             align-items: center;
-            width: auto;
-            padding: 0;
-            background-color: transparent;
-            border-bottom: 0;
-        }
-        .nav-links li {
-            width: auto;
         }
 
-        .nav-links a,
-        .nav-links button {
-            width: auto;
+        /* Modal actions — fila en desktop */
+        .modal-actions {
+            flex-direction: row;
         }
-        
 
+        .modal-actions .btn-primary,
+        .modal-actions .btn-secondary,
+        .modal-actions .btn-danger {
+            width: auto;
+            flex: 1;
+        }
+
+        /* Historia de movimientos desktop */
         .history-table {
             font-size: 0.95rem;
         }
@@ -383,16 +303,12 @@
             padding: 1rem;
         }
 
-        .goals-count-badge {
-            font-size: 0.72rem;
-            padding: 0.25rem 0.6rem;
-        }
-
+        /* Página resumen */
         .summary-layout .dashboard-grid {
             grid-template-columns: 1fr 1.5fr;
         }
 
-        /* Dashboard: panel de metas en desktop — fila completa */
+        /* Dashboard: panel de metas en fila */
         .dash-goals-body {
             flex-direction: row;
             align-items: flex-start;
@@ -411,16 +327,15 @@
             flex: 1;
         }
 
-
-        /* Steps: desktop — mostrar múltiples cards */
+        /* Carrusel — 3 cards visibles en desktop */
         .step-card {
-            flex: 0 0 calc(33.333% - 0.7rem);   /* 3 cards visibles en desktop */
+            flex: 0 0 calc(33.333% - 0.7rem);
         }
 
         .steps-btn--prev { left: -1.25rem; }
         .steps-btn--next { right: -1.25rem; }
 
-        /* Hero sin carrusel: centrado en desktop también */
+        /* Hero landing solo — centrado */
         .hero.hero-solo {
             grid-template-columns: 1fr;
             justify-items: center;
@@ -434,7 +349,7 @@
             max-width: 600px;
         }
 
-        /* Footer: desktop en fila */
+        /* Footer landing desktop */
         .footer-inner {
             flex-direction: row;
             align-items: flex-start;
@@ -453,6 +368,9 @@
         }
     }
 
+    /* =====================================================================
+       WIDE DESKTOP (>= 1024px)
+       ===================================================================== */
     @media (min-width: 1024px) {
         .benefits-list {
             grid-template-columns: repeat(4, 1fr);

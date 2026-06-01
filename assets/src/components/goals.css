@@ -48,8 +48,9 @@
 
     .goal-card-main {
         display: flex;
+        flex-direction: column;
         gap: 0.5rem;
-        padding: 1.5rem;
+        padding: 1rem;
         flex: 1;
         align-items: flex-start;
     }
@@ -108,13 +109,15 @@
         margin-top: auto;
     }
 
+    /* Mobile-first: apilado verticalmente; se convierte en fila en desktop */
     .goal-card-actions-panel {
-        padding: 0.25rem 0.5rem;
+        padding: 1rem;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
-        gap: 1.5rem;
+        gap: 0.75rem;
         justify-content: space-between;
+        border-top: 1px solid var(--color-border);
     }
 
     .goal-remaining-status {
@@ -141,11 +144,17 @@
         color: var(--color-text-muted);
     }
 
+    /* Mobile: botones en fila; en desktop vuelven a columna (responsive.css) */
     .action-buttons-stack {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         gap: 0.55rem;
-        min-width: 115px;
+        width: 100%;
+    }
+
+    .action-buttons-stack .btn-action-assign,
+    .action-buttons-stack .btn-action-delete {
+        flex: 1;
     }
 
     .goal-status {
@@ -368,18 +377,23 @@
         flex-shrink: 0;
     }
 
+    /* Mobile-first: badges en columna; en desktop pasan a fila (responsive.css) */
     .goals-header-badges {
         display: flex;
+        flex-direction: column;
         gap: 0.5rem;
-        align-items: center;
+        align-items: flex-start;
         flex-wrap: wrap;
+        width: 100%;
     }
 
+    /* Mobile-first: cabecera en columna; en desktop en fila (responsive.css) */
     .goals-header-row {
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
         align-items: flex-start;
-        gap: 1rem;
+        gap: 0.75rem;
     }
 
     .goals-helper-banner {

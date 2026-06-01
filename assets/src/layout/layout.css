@@ -2,6 +2,7 @@
     body {
         display: grid;
         grid-template-rows: 1fr auto;
+        grid-template-columns: minmax(0, 1fr);
         min-height: 100dvh;
         padding-top: var(--navbar-h, 4.5rem);
         background: var(--gradient-bg);
@@ -9,6 +10,7 @@
         color: var(--color-white);
         margin: 0;
         font-family: 'Inter', sans-serif;
+        overflow-x: hidden;
     }
 
     header.main-navbar {
@@ -19,12 +21,14 @@
 
     .navbar-container {
         display: flex;
-        justify-content: space-between; 
-        align-items: center; 
+        justify-content: space-between;
+        align-items: center;
         width: 90%;
         max-width: 1200px;
         margin: 0 auto;
         padding: 1rem 0;
+        gap: 0;
+        text-align: left;
     }
 
     .logo {
@@ -70,11 +74,18 @@
     }
 
     main {
-        width: 90%;
+        width: 95%;
         max-width: 1200px;
-        margin: 2rem auto;
+        margin: 1rem auto;
+        padding: 0 0.5rem;
         display: grid;
         gap: var(--gap-base, 1.5rem);
+        min-width: 0;
+    }
+
+    /* Grid items de main no expanden el track más allá del container */
+    main > * {
+        min-width: 0;
     }
 
     main.main-home {
@@ -83,19 +94,20 @@
         margin: 0;
         max-width: 100%;
         width: 100%;
+        overflow-x: hidden;
     }
 
     .metrics-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr); 
-        gap: var(--gap-base, 1.5rem);
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
     .dashboard-grid,
     .dashboard-content {
         display: grid;
-        grid-template-columns: 1fr 1.5fr;
-        gap: var(--gap-base, 1.5rem);
+        grid-template-columns: 1fr;
+        gap: 1rem;
         align-items: stretch;
     }
 

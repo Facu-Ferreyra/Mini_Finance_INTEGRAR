@@ -169,15 +169,20 @@
         border: 1px solid rgba(239, 68, 68, 0.25);
     }
 
+    /* Mobile-first: permite wrap para evitar colapso en pantallas estrechas */
     .recent-activity-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
     }
 
     .recent-activity-header h2 {
         margin: 0;
+        flex: 1 1 auto;
+        min-width: 0;
     }
 
     .recent-ver-todo {

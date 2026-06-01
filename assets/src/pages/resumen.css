@@ -40,18 +40,20 @@
         gap: 0.5rem;
     }
 
+    /* Mobile-first: card en columna; en desktop en fila (responsive.css) */
     .page-goals .goal-card {
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-between;
-        align-items: center;
-        padding: 0.5rem; 
+        align-items: stretch;
+        padding: 0.5rem;
         overflow: hidden;
     }
 
+    /* Mobile-first: encabezado en columna; en desktop en fila (responsive.css) */
     .hero-header-flex {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
+        gap: 1rem;
         width: 100%;
     }
 

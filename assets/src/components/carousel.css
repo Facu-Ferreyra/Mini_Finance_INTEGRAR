@@ -186,8 +186,9 @@
         transform: translateY(-50%) scale(0.95);
     }
 
-    .steps-btn--prev { left: -1.25rem; }
-    .steps-btn--next { right: -1.25rem; }
+    /* Mobile-first: botones pegados al borde interior; en desktop salen fuera (responsive.css) */
+    .steps-btn--prev { left: 0.5rem; }
+    .steps-btn--next { right: 0.5rem; }
 
     /* --- Dots del carrusel de pasos --- */
     .steps-dots {

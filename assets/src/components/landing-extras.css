@@ -52,7 +52,7 @@
 
   .benefits-list {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr;
     gap: 1.25rem;
     list-style: none;
     padding: 0;
@@ -177,13 +177,14 @@
     }
   }
 
+  /* Oculto en mobile por defecto; se muestra en desktop via responsive.css */
   .section-dots {
     position: fixed;
     right: max(1rem, env(safe-area-inset-right));
     top: 50%;
     transform: translateY(-50%);
     z-index: 900;
-    display: grid;
+    display: none;
     gap: 0.65rem;
   }
 
@@ -199,11 +200,5 @@
   .section-dots a:focus-visible {
     background: var(--color-action);
     transform: scale(1.2);
-  }
-
-  @media (max-width: 767px) {
-    .section-dots {
-      display: none;
-    }
   }
 }

@@ -63,26 +63,17 @@
     color: var(--color-success);
   }
 
+  /* Mobile-first: botones apilados; se reorganizan en fila en desktop (responsive.css) */
   .modal-actions {
     display: flex;
+    flex-direction: column;
     gap: 0.75rem;
     margin-top: 1.5rem;
   }
 
   .modal-actions .btn-primary,
-  .modal-actions .btn-secondary {
-    flex: 1;
-  }
-
-  @media (max-width: 480px) {
-    .modal-actions {
-      flex-direction: column;
-    }
-
-    .modal-actions .btn-primary,
-    .modal-actions .btn-secondary,
-    .modal-actions .btn-danger {
-      width: 100%;
-    }
+  .modal-actions .btn-secondary,
+  .modal-actions .btn-danger {
+    width: 100%;
   }
 }
